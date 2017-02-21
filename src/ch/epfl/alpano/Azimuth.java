@@ -8,6 +8,11 @@ import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public interface Azimuth {
     
+    /**
+     * check if a radian angle is in [0,PI2[
+     * @param azimuth radian angle to check
+     * @return boolean, true if azimuth is in [0,PI2[, false otherwise
+     */
     public static boolean isCanonical(double azimuth) {
         if (azimuth >= 0 && azimuth < PI2) {
             return true;
@@ -18,19 +23,6 @@ public interface Azimuth {
     
     public static double canonicalize(double azimuth) {
         return floorMod(azimuth, PI2);
-        /*
-        else {
-            while (!isCanonical(azimuth)) {
-                if (azimuth < 0) {
-                    azimuth += PI2;
-                } else if (azimuth > 0) {
-                    azimuth -= PI2;
-                }
-            }
-            
-            return canonicalize(azimuth);
-        }
-        */
     }
     
     public static double toMath(double azimuth) {
