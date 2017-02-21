@@ -5,6 +5,12 @@ import static java.lang.Math.sin;
 import static java.lang.Math.floor;
 import java.util.function.DoubleUnaryOperator;
 
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
 public interface Math2 {
 
     public static double PI2 = 2*PI;
