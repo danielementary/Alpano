@@ -113,7 +113,7 @@ public interface Math2 {
      * @param f function for which we are seeking a root
      * @param x1 first bound
      * @param x2 second bound
-     * @param epsilon percision we want
+     * @param epsilon precision we want
      * @return the lower bound of the interval smaller or equal to epsilon containing the root
      */
     public static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
