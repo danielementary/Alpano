@@ -1,7 +1,9 @@
 package ch.epfl.alpano;
 
+import static java.lang.Math.PI;
 import static ch.epfl.alpano.Math2.PI2;
 import static ch.epfl.alpano.Math2.PI_OVER8;
+import static ch.epfl.alpano.Math2.floorMod;
 import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public interface Azimuth {
@@ -15,15 +17,20 @@ public interface Azimuth {
     }
     
     public static double canonicalize(double azimuth) {
-        if (isCanonical(azimuth)) {
-            return azimuth;
-        } else {
+        return floorMod(azimuth, PI2);
+        /*
+        else {
             while (!isCanonical(azimuth)) {
-                azimuth -= PI2;
+                if (azimuth < 0) {
+                    azimuth += PI2;
+                } else if (azimuth > 0) {
+                    azimuth -= PI2;
+                }
             }
             
-            return azimuth;
+            return canonicalize(azimuth);
         }
+        */
     }
     
     public static double toMath(double azimuth) {
@@ -50,8 +57,14 @@ public interface Azimuth {
         
         if (azimuth > PI2-3*PI_OVER8 || azimuth < 3*PI_OVER8) {
             cardinalDirection += n;
-        } else if (azimuth <= 180+3*PI_OVER8 && azimuth >= 180-3*PI_OVER8) {
+        } else if (azimuth <= PI+3*PI_OVER8 && azimuth >= PI-3*PI_OVER8) {
             cardinalDirection += s;
+        }
+        
+        if (azimuth > PI_OVER8 && azimuth < PI-PI_OVER8) {
+            cardinalDirection += e;
+        } else if (azimuth > PI+PI_OVER8 && azimuth < PI2-PI_OVER8) {
+            cardinalDirection += w;
         }
 
         return cardinalDirection;
