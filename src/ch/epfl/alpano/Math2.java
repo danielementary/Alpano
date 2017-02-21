@@ -3,6 +3,7 @@ package ch.epfl.alpano;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
 import static java.lang.Math.floor;
+import java.util.function.DoubleUnaryOperator;
 
 public interface Math2 {
 
@@ -41,5 +42,30 @@ public interface Math2 {
         return lerp(lerp1, lerp2, y);
     }
     
-    
+    /**
+     * 
+     * @param f
+     * @param minX
+     * @param maxX
+     * @param dX
+     * @return
+     */
+    public static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
+        double currentMinX = minX;
+        double currentMaxX = minX + dX;
+        
+        do{
+            if (currentMaxX > maxX){
+                currentMaxX = maxX;
+            }
+            if(f.applyAsDouble(currentMinX) * f.applyAsDouble(currentMaxX) <= 0){
+                return currentMinX;
+            }
+            
+            currentMinX = currentMaxX;
+            currentMaxX = currentMaxX + dX;
+        }while (currentMinX < maxX);
+        
+        return Double.POSITIVE_INFINITY;
+    }
 }
