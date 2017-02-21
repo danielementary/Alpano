@@ -1,6 +1,10 @@
 package ch.epfl.alpano;
 
+import static java.lang.Math.PI;
 import static ch.epfl.alpano.Math2.PI2;
+import static ch.epfl.alpano.Math2.PI_OVER8;
+import static ch.epfl.alpano.Math2.floorMod;
+import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public interface Azimuth {
     
@@ -13,50 +17,56 @@ public interface Azimuth {
     }
     
     public static double canonicalize(double azimuth) {
-        if (isCanonical(azimuth)) {
-            return azimuth;
-        } else {
+        return floorMod(azimuth, PI2);
+        /*
+        else {
             while (!isCanonical(azimuth)) {
-                azimuth -= PI2;
+                if (azimuth < 0) {
+                    azimuth += PI2;
+                } else if (azimuth > 0) {
+                    azimuth -= PI2;
+                }
             }
             
-            return azimuth;
+            return canonicalize(azimuth);
         }
+        */
     }
     
     public static double toMath(double azimuth) {
-        if (!isCanonical(azimuth)) {
-            throw new IllegalArgumentException();
-        }
+        checkArgument(isCanonical(azimuth));
         
-        double angle = 360 - azimuth*360/PI2;
+        double angle = PI2 - azimuth;
         
-        return angle;
+        return canonicalize(angle);
     }
     
     public static double fromMath(double azimuth) {
-        double radianAng = PI2 - azimuth*PI2/360;
+        checkArgument(isCanonical(azimuth));
         
-        if (!isCanonical(azimuth)) {
-            throw new IllegalArgumentException();
-        }
+        double radianAng = PI2 - azimuth;
         
-        return radianAng;
+        return canonicalize(radianAng);
         
     }
 
     public static String toOctantString(double azimuth, String n, String e, String s, String w) {
-        if (!isCanonical(azimuth)) {
-            throw new IllegalArgumentException();
-        }
+        checkArgument(isCanonical(azimuth));
         
         String cardinalDirection = "";
         
-        //a compléter
-        if (azimuth > 292.5 || azimuth < 67.5) {
+        if (azimuth > PI2-3*PI_OVER8 || azimuth < 3*PI_OVER8) {
             cardinalDirection += n;
+        } else if (azimuth <= PI+3*PI_OVER8 && azimuth >= PI-3*PI_OVER8) {
+            cardinalDirection += s;
         }
         
+        if (azimuth > PI_OVER8 && azimuth < PI-PI_OVER8) {
+            cardinalDirection += e;
+        } else if (azimuth > PI+PI_OVER8 && azimuth < PI2-PI_OVER8) {
+            cardinalDirection += w;
+        }
+
         return cardinalDirection;
     }
 
