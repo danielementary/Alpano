@@ -72,7 +72,7 @@ public interface Math2 {
     
     public static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
         
-        Preconditions.checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) > 0);
+        Preconditions.checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
         
         if (x1 > x2){
             double temp = x1;
