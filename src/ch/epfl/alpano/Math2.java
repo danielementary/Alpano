@@ -35,7 +35,11 @@ public interface Math2 {
     }
     
     public static double bilerp(double z00, double z10, double z01, double z11, double x, double y) {
-        //à compléter
-        return 0.0;
+        double lerp1 = lerp(z00, z10, x);
+        double lerp2 = lerp(z01, z11, x);
+ 
+        return lerp(lerp1, lerp2, y);
     }
+    
+    
 }
