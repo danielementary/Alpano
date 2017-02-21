@@ -24,6 +24,40 @@ public interface Azimuth {
         }
     }
     
+    public static double toMath(double azimuth) {
+        if (!isCanonical(azimuth)) {
+            throw new IllegalArgumentException();
+        }
+        
+        double angle = 360 - azimuth*360/PI2;
+        
+        return angle;
+    }
     
+    public static double fromMath(double azimuth) {
+        double radianAng = PI2 - azimuth*PI2/360;
+        
+        if (!isCanonical(azimuth)) {
+            throw new IllegalArgumentException();
+        }
+        
+        return radianAng;
+        
+    }
+
+    public static String toOctantString(double azimuth, String n, String e, String s, String w) {
+        if (!isCanonical(azimuth)) {
+            throw new IllegalArgumentException();
+        }
+        
+        String cardinalDirection = "";
+        
+        //a compléter
+        if (azimuth > 292.5 || azimuth < 67.5) {
+            cardinalDirection += n;
+        }
+        
+        return cardinalDirection;
+    }
 
 }
