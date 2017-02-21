@@ -8,6 +8,7 @@ import java.util.function.DoubleUnaryOperator;
 public interface Math2 {
 
     public static double PI2 = 2*PI;
+    public static double PI_OVER8 = PI/8;
     
     public static double sq(double x) {
         return x*x;
@@ -43,12 +44,12 @@ public interface Math2 {
     }
     
     /**
-     * 
-     * @param f
-     * @param minX
-     * @param maxX
-     * @param dX
-     * @return
+     * return the lower bound of the smallest interval of size dX containing a root of the function f, between maxX and minX
+     * @param f the function for which we are seeking a root
+     * @param minX the lower bound of interval in which we are seeking
+     * @param maxX the upper bound of interval in which we are seeking
+     * @param dX the size of the the interval we want
+     * @return the lower bound of the interval of size dX containing the root
      */
     public static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
         double currentMinX = minX;
@@ -59,7 +60,7 @@ public interface Math2 {
                 currentMaxX = maxX;
             }
             if(f.applyAsDouble(currentMinX) * f.applyAsDouble(currentMaxX) <= 0){
-                return currentMinX;
+                return currentMaxX - dX;
             }
             
             currentMinX = currentMaxX;
@@ -68,4 +69,14 @@ public interface Math2 {
         
         return Double.POSITIVE_INFINITY;
     }
+    
+    public static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
+        
+        if ()
+        if (x1 > x2){
+            double temp
+        }
+    }
+    
+    
 }
