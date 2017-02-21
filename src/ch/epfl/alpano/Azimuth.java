@@ -9,8 +9,8 @@ import static ch.epfl.alpano.Preconditions.checkArgument;
 public interface Azimuth {
     
     /**
-     * check if a radian angle is in [0,PI2[
-     * @param azimuth radian angle to check
+     * check if a azimuth is in [0,PI2[
+     * @param azimuth to check
      * @return boolean, true if azimuth is in [0,PI2[, false otherwise
      */
     public static boolean isCanonical(double azimuth) {
@@ -21,6 +21,11 @@ public interface Azimuth {
         return false;
     }
     
+    /**
+     * transform azimuth into an equivalent between [0,PI2[
+     * @param azimuth to modify
+     * @return equivalent azimuth between [0,PI2[
+     */
     public static double canonicalize(double azimuth) {
         return floorMod(azimuth, PI2);
     }
