@@ -1,16 +1,17 @@
 package ch.epfl.alpano;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.sin;
-import static java.lang.Math.floor;
-import java.util.function.DoubleUnaryOperator;
-
 /**
  * 
  * @author Samuel Chassot (270955)
  * @author Daniel Filipe Nunes Silva (275197)
  *
  */
+
+import static java.lang.Math.PI;
+import static java.lang.Math.sin;
+import static java.lang.Math.floor;
+import java.util.function.DoubleUnaryOperator;
+
 public interface Math2 {
     
     /**

@@ -1,17 +1,18 @@
 package ch.epfl.alpano;
 
-import static java.lang.Math.PI;
-import static ch.epfl.alpano.Math2.PI2;
-import static ch.epfl.alpano.Math2.PI_OVER8;
-import static ch.epfl.alpano.Math2.floorMod;
-import static ch.epfl.alpano.Preconditions.checkArgument;
-
 /**
  * 
  * @author Samuel Chassot (270955)
  * @author Daniel Filipe Nunes Silva (275197)
  *
  */
+
+import static java.lang.Math.PI;
+import static ch.epfl.alpano.Math2.PI2;
+import static ch.epfl.alpano.Math2.PI_OVER8;
+import static ch.epfl.alpano.Math2.floorMod;
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 public interface Azimuth {
     
     /**

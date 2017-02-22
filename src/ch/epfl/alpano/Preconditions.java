@@ -6,6 +6,7 @@ package ch.epfl.alpano;
  * @author Daniel Filipe Nunes Silva (275197)
  *
  */
+
 public interface Preconditions {
     
     /**
