@@ -72,9 +72,10 @@ public final class GeoPoint {
     @Override
     public String toString(){
         Locale region = null;
-        double degreeLatitude = Azimuth.fromMath(latitude);
-        double degreeLongitude = Azimuth.fromMath(longitude);
-        String str = String.format(region, "(%.4f; %.4f]", degreeLongitude, degreeLatitude);
+        double degreeLatitude = latitude * 180 / Math.PI;
+        double degreeLongitude = longitude * 180 / Math.PI;
+        
+        String str = String.format(region, "(%.4f,%.4f)", degreeLongitude, degreeLatitude);
         return str;
     }
     
