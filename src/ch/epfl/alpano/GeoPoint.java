@@ -17,15 +17,15 @@ import java.util.Locale;
 
 public final class GeoPoint {
     
-    final double longitude;
-    final double latitude;
+    private final double longitude;
+    private final double latitude;
     
     /**
      * Creates an instance of GeoPoint representing a Point on the Earth's surface by its longitude and latitude
      * @param longitude in radians
      * @param latitude in radians
      */
-    GeoPoint(double longitude, double latitude){
+    public GeoPoint(double longitude, double latitude){
         Preconditions.checkArgument(longitude <= PI && longitude >= -PI);
         Preconditions.checkArgument(latitude <= PI/2 && latitude >= -PI/2);
         
@@ -37,7 +37,7 @@ public final class GeoPoint {
      * gives the longitude of the point
      * @return longitude in double
      */
-    public double longitude(){
+    public final double longitude(){
         return longitude;
     }
     
@@ -45,7 +45,7 @@ public final class GeoPoint {
      * gives the latitude of the point
      * @return latitude in double
      */
-    public double latitude(){
+    public final double latitude(){
         return latitude;
     }
     
@@ -54,7 +54,7 @@ public final class GeoPoint {
      * @param that other GeoPoint
      * @return the distance between these points in double
      */
-    public double distanceTo(GeoPoint that){
+    public final double distanceTo(GeoPoint that){
         double sqrt = sqrt(Math2.haversin(this.latitude - that.latitude)
                                     + cos(this.latitude) * cos(that.latitude) 
                                     * Math2.haversin(this.longitude - that.longitude));
@@ -69,7 +69,7 @@ public final class GeoPoint {
      * @param that other GeoPoint
      * @return azimuth in radians
      */
-    public double azimuthTo(GeoPoint that){
+    public final double azimuthTo(GeoPoint that){
         double beta = atan2(sin(this.longitude - that.longitude)
                 * cos(that.latitude), cos(this.latitude) 
                 * sin(that.latitude) - sin(this.latitude)
@@ -83,7 +83,7 @@ public final class GeoPoint {
      * with 4 decimals precision between brackets
      */
     @Override
-    public String toString(){
+    public final String toString(){
         Locale region = null;
         
         double degreeLatitude = latitude*180 / PI;
