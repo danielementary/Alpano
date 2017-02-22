@@ -28,10 +28,12 @@ public class GeoPointTest {
     @Test
     public void toStringToWorks(){
         GeoPoint zurich = new GeoPoint(0.12999386801779, 0.8193971772263);
-        GeoPoint sydney = new GeoPoint(2.6390617473923, -0.59112381902871);
+        GeoPoint pole = new GeoPoint(0.0, Math.PI/2);
         GeoPoint tokyo = new GeoPoint(2.4379160417585, 0.6227072971728);
         
         assertEquals("(139.6823,35.6785)", tokyo.toString());
+        assertEquals("(7.4481,46.9480)", zurich.toString());
+        assertEquals("(0.0000,90.0000)", pole.toString());
     }
     
 
