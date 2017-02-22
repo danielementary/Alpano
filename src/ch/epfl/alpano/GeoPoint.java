@@ -75,7 +75,7 @@ public final class GeoPoint {
                 * sin(that.latitude) - sin(this.latitude)
                 * cos(that.latitude) * cos(this.longitude - that.longitude));
         
-        return Azimuth.fromMath(beta);
+        return Azimuth.fromMath(Azimuth.canonicalize(beta));
     }
     
     /**
