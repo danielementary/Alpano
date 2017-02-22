@@ -12,8 +12,15 @@ import java.util.function.DoubleUnaryOperator;
  *
  */
 public interface Math2 {
-
+    
+    /**
+     * 2 times PI
+     */
     public static double PI2 = 2*PI;
+    
+    /**
+     * PI divided by 8
+     */
     public static double PI_OVER8 = PI/8;
     
     /**
