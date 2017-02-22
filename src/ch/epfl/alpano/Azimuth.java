@@ -44,9 +44,9 @@ public interface Azimuth {
     public static double toMath(double azimuth) {
         checkArgument(isCanonical(azimuth));
         
-        double angle = PI2 - azimuth;
+        double radianAngle = PI2 - azimuth;
         
-        return canonicalize(angle);
+        return canonicalize(radianAngle);
     }
     
     /**
@@ -54,19 +54,19 @@ public interface Azimuth {
      * @param azimuth, radian angle
      * @return azimuth equivalent to radian angle
      */
-    public static double fromMath(double azimuth) {
-        checkArgument(isCanonical(azimuth));
+    public static double fromMath(double radianAngle) {
+        checkArgument(isCanonical(radianAngle));
         
-        double radianAng = PI2 - azimuth;
+        double azimuth = PI2 - radianAngle;
         
-        return canonicalize(radianAng);
+        return canonicalize(azimuth);
         
     }
 
     /**
-     * reprent an azimuth by a string
+     * reprents an azimuth by a string
      * @param azimuth to represent
-     * @param n nord String
+     * @param n north String
      * @param e est String
      * @param s South String
      * @param w West String
