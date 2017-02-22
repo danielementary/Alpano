@@ -1,11 +1,18 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        22 févr. 2017
+package ch.epfl.alpano;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
  */
 
-
-package ch.epfl.alpano;
-import java.lang.Math;
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan2;
 import java.util.Locale;
 
 public final class GeoPoint {
@@ -19,8 +26,8 @@ public final class GeoPoint {
      * @param latitude in radians
      */
     GeoPoint(double longitude, double latitude){
-        Preconditions.checkArgument(longitude <= Math.PI && longitude >= - Math.PI);
-        Preconditions.checkArgument(latitude <= Math.PI/2 && latitude >= - Math.PI/2);
+        Preconditions.checkArgument(longitude <= PI && longitude >= -PI);
+        Preconditions.checkArgument(latitude <= PI/2 && latitude >= -PI/2);
         
         this.latitude = latitude;
         this.longitude = longitude;
@@ -48,10 +55,11 @@ public final class GeoPoint {
      * @return the distance between these points in double
      */
     public double distanceTo(GeoPoint that){
-        double sqrt = Math.sqrt(Math2.haversin(this.latitude - that.latitude) + Math.cos(this.latitude)
-        * Math.cos(that.latitude) * Math2.haversin(this.longitude - that.longitude));
+        double sqrt = sqrt(Math2.haversin(this.latitude - that.latitude)
+                                    + cos(this.latitude) * cos(that.latitude) 
+                                    * Math2.haversin(this.longitude - that.longitude));
         
-        double alpha = 2*Math.asin(sqrt);
+        double alpha = 2*asin(sqrt);
         
         return Distance.toMeters(alpha);
     }
@@ -62,9 +70,10 @@ public final class GeoPoint {
      * @return azimuth in radians
      */
     public double azimuthTo(GeoPoint that){
-        double beta = Math.atan2(Math.sin(this.longitude - that.longitude) * Math.cos(that.latitude),
-                Math.cos(this.latitude) * Math.sin(that.latitude) - Math.sin(this.latitude)
-                * Math.cos(that.latitude) * Math.cos(this.longitude - that.longitude));
+        double beta = atan2(sin(this.longitude - that.longitude)
+                * cos(that.latitude), cos(this.latitude) 
+                * sin(that.latitude) - sin(this.latitude)
+                * cos(that.latitude) * cos(this.longitude - that.longitude));
         
         return Azimuth.fromMath(beta);
     }
@@ -72,13 +81,13 @@ public final class GeoPoint {
     @Override
     public String toString(){
         Locale region = null;
-        double degreeLatitude = latitude * 180 / Math.PI;
-        double degreeLongitude = longitude * 180 / Math.PI;
+        
+        double degreeLatitude = latitude * 180 / PI;
+        double degreeLongitude = longitude * 180 / PI;
         
         String str = String.format(region, "(%.4f,%.4f)", degreeLongitude, degreeLatitude);
+        
         return str;
     }
-    
-    
        
 }
