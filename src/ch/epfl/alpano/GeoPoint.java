@@ -24,6 +24,50 @@ public final class GeoPoint {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+    
+    /**
+     * give the longitude of the point
+     * @return longitude in double
+     */
+    public double longitude(){
+        return longitude;
+    }
+    
+    /**
+     * give the latitude of the point
+     * @return latitude in double
+     */
+    public double latitude(){
+        return latitude;
+    }
+    
+    /**
+     * calculate the distance between the point this and that
+     * @param that other GeoPoint
+     * @return the distance between these points in double
+     */
+    public double distanceTo(GeoPoint that){
+        double sqrt = Math.sqrt(Math2.haversin(this.latitude - that.latitude) + Math.cos(this.latitude)
+        * Math.cos(that.latitude) * Math2.haversin(this.longitude - that.longitude));
         
+        double alpha = 2*Math.asin(sqrt);
         
+        return Distance.toMeters(alpha);
+    }
+    
+    /**
+     * return the azimuth of that according to this
+     * @param that other GeoPoint
+     * @return azimuth in radians
+     */
+    public double azimuthTo(GeoPoint that){
+        double beta = Math.atan2(Math.sin(this.longitude - that.longitude) * Math.cos(that.latitude),
+                Math.cos(this.latitude) * Math.sin(that.latitude) - Math.sin(this.latitude)
+                * Math.cos(that.latitude) * Math.cos(this.longitude - that.longitude));
+        
+        return Azimuth.fromMath(beta);
+    }
+    
+    
+       
 }
