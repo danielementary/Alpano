@@ -6,6 +6,7 @@
 
 package ch.epfl.alpano;
 import java.lang.Math;
+import java.util.Locale;
 
 public final class GeoPoint {
     
@@ -66,6 +67,13 @@ public final class GeoPoint {
                 * Math.cos(that.latitude) * Math.cos(this.longitude - that.longitude));
         
         return Azimuth.fromMath(beta);
+    }
+    
+    @Override
+    public String toString(){
+        Locale region = null;
+        String str = String.format(region, "(%.4f; %.4f]", longitude, latitude);
+        return str;
     }
     
     
