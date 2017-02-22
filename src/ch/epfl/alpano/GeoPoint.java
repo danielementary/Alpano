@@ -21,7 +21,7 @@ public final class GeoPoint {
     final double latitude;
     
     /**
-     * Create an instance of GeoPoint representing a Point on the Earth's surface by its longitude and latitude
+     * Creates an instance of GeoPoint representing a Point on the Earth's surface by its longitude and latitude
      * @param longitude in radians
      * @param latitude in radians
      */
@@ -34,7 +34,7 @@ public final class GeoPoint {
     }
     
     /**
-     * give the longitude of the point
+     * gives the longitude of the point
      * @return longitude in double
      */
     public double longitude(){
@@ -42,7 +42,7 @@ public final class GeoPoint {
     }
     
     /**
-     * give the latitude of the point
+     * gives the latitude of the point
      * @return latitude in double
      */
     public double latitude(){
@@ -50,7 +50,7 @@ public final class GeoPoint {
     }
     
     /**
-     * calculate the distance between the point this and that
+     * calculates the distance between the point this and that
      * @param that other GeoPoint
      * @return the distance between these points in double
      */
@@ -65,7 +65,7 @@ public final class GeoPoint {
     }
     
     /**
-     * return the azimuth of that according to this
+     * returns the azimuth of that according to this
      * @param that other GeoPoint
      * @return azimuth in radians
      */
@@ -78,12 +78,16 @@ public final class GeoPoint {
         return Azimuth.fromMath(beta);
     }
     
+    /**
+     * displays the coordinates of the instance's point
+     * with 4 decimals precision between brackets
+     */
     @Override
     public String toString(){
         Locale region = null;
         
-        double degreeLatitude = latitude * 180 / PI;
-        double degreeLongitude = longitude * 180 / PI;
+        double degreeLatitude = latitude*180 / PI;
+        double degreeLongitude = longitude*180 / PI;
         
         String str = String.format(region, "(%.4f,%.4f)", degreeLongitude, degreeLatitude);
         
