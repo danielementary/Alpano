@@ -18,6 +18,7 @@ public class Interval1DTest {
     private Interval1D inter4 = new Interval1D(0,0);
     private Interval1D inter5 = new Interval1D(-2,2);
     private Interval1D inter6 = new Interval1D(1,5);
+    private Interval1D inter7 = new Interval1D(-6,-2);
     
     @Test(expected = IllegalArgumentException.class)
     public void creationException(){
@@ -79,5 +80,23 @@ public class Interval1DTest {
         assertTrue(inter4.contains(0));
         assertFalse(inter3.contains(1000));
         
+    }
+    
+    @Test
+    public void isUnionableWithTest(){
+        assertTrue(inter1.isUnionableWith(inter2));
+        assertTrue(inter2.isUnionableWith(inter3));
+        assertFalse(inter1.isUnionableWith(inter7));
+    }
+    
+    @Test
+    public void unionTest(){
+        assertTrue((inter1.union(inter2)).equals(new Interval1D(1,9)));
+        assertTrue((inter2.union(inter3)).equals(new Interval1D(-3,9)));
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void unionErrorTest(){
+        inter1.union(inter7);
     }
 }
