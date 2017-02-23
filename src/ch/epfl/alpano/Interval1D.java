@@ -1,6 +1,5 @@
 package ch.epfl.alpano;
 
-import java.util.Locale;
 import java.util.Objects;
 
 /**

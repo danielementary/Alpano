@@ -12,7 +12,8 @@ public final class Interval2D {
     private Interval1D iY;
     
     /**
-     * Creates an instance of a bidimensional interval with two unidimensional intervals
+     * Creates an instance of a bidimensional interval
+     * with two unidimensional intervals
      * @param iX first unidimensional interval
      * @param iY second unidimensional interval
      */
@@ -74,9 +75,11 @@ public final class Interval2D {
     }
     
     /**
-     * calculates a bidimensional interval with boundingUnions of this and that
+     * calculates a bidimensional interval with boundingUnions 
+     * of this and that
      * @param that
-     * @return an Interval2D whose intervals are boundingUnions with that's intervals
+     * @return an Interval2D whose intervals are boundingUnions 
+     * with that's intervals
      */
     public final Interval2D boundingUnion(Interval2D that) {
         Interval1D interval1 = iX.boundingUnion(that.iX());
@@ -85,12 +88,34 @@ public final class Interval2D {
         return new Interval2D(interval1, interval2);
     }
     
+    /**
+     * if the cartesian product this and that are unionable -> true
+     * @param that bidimensional interval to compare
+     * @return boolean true if this and that are unionable, false otherwise
+     */
     public final boolean isUnionableWith(Interval2D that) {
-        
-        //à compléter
-        
-        return false;
+        if (iX.isUnionableWith(that.iX()) && iY.isUnionableWith(that.iY())) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
+    /**
+     * return the union of this and that or raise an exception
+     * if they are not unionable
+     * @param that Interval2D for union with this
+     * @return an Interval2D whichh represents the union 
+     * of bidimensional interval this and that
+     */
+    public final Interval2D union(Interval2D that) {
+        Preconditions.checkArgument(iX.isUnionableWith(that.iX()));
+        Preconditions.checkArgument(iY.isUnionableWith(that.iY()));
+        
+        Interval1D interval1 = iX.union(that.iX());
+        Interval1D interval2 = iY.union(that.iY());
+        
+        return new Interval2D(interval1, interval2);
+    }
     
 }
