@@ -20,8 +20,8 @@ public final class Interval2D {
      * @param iY second unidimensional interval
      */
     public Interval2D(Interval1D iX, Interval1D iY) {
-        Preconditions.checkArgument(iX != null);
-        Preconditions.checkArgument(iY != null);
+        Preconditions.checkArgumentNullPointer(iX != null);
+        Preconditions.checkArgumentNullPointer(iY != null);
         
         this.iX = iX;
         this.iY = iY;

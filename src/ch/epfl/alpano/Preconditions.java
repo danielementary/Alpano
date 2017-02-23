@@ -30,5 +30,15 @@ public interface Preconditions {
         }
     }
     
+    /**
+     * throw an NullPointerExpection without an message if b is false 
+     * @param b condition boolean
+     */
+    public static void checkArgumentNullPointer(boolean b) {
+        if (!b) {
+            throw new NullPointerException();
+        }
+    }
+    
     
 }
