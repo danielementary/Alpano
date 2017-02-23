@@ -1,5 +1,7 @@
 package ch.epfl.alpano;
 
+import java.util.Objects;
+
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -129,6 +131,11 @@ public final class Interval2D {
             return true;
         }
         return false;
+    }
+    
+    @Override
+    public int hashCode() {
+      return Objects.hash(iX(), iY());
     }
     
 }
