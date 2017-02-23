@@ -1,5 +1,8 @@
 package ch.epfl.alpano;
 
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -136,5 +139,22 @@ public final class Interval1D {
         }
         return false;
         
+    }
+    
+    @Override
+    public int hashCode() {
+      return Objects.hash(includedFrom(), includedTo());
+    }
+    
+    @Override
+    public String toString(){
+        Locale region = null;
+        String str = String.format(region, "[%..%]", this.includedFrom(), this.includedTo());
+        
+        return str;
+    }
+    
+    public final boolean contains(int that){
+        return (that >= this.includedFrom && that <= this.includedTo);
     }
 }

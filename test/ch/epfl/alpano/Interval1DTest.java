@@ -65,4 +65,17 @@ public class Interval1DTest {
         assertTrue(inter1.equals(inter6));
         
     }
+    
+    @Test
+    public void toStringTest(){
+        System.out.println(inter1.toString());
+        assertEquals("[1..5]", inter1.toString());
+    }
+    
+    @Test
+    public void containsTest(){
+        assertTrue(inter1.contains(2));
+        assertTrue(inter4.contains(0));
+        assertFalse(inter3.contains(1000));
+    }
 }
