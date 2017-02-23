@@ -20,5 +20,14 @@ public class Interval2DTest {
     public void creationFail(){
         new Interval2D(null, inter1D1);
     }
+    
+    @Test
+    public void gettersTest(){
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        
+        assertTrue(inter1D1 == inter1.iX());
+        assertTrue(inter1D2 == inter1.iY());
+        assertFalse(inter1D3 == inter1.iX());
+    }
 
 }
