@@ -148,8 +148,8 @@ public final class Interval1D {
     
     @Override
     public String toString(){
-        Locale region = null;
-        String str = String.format(region, "[%..%]", this.includedFrom(), this.includedTo());
+
+        String str = "[" + this.includedFrom() + ".." + this.includedTo() + "]";
         
         return str;
     }
