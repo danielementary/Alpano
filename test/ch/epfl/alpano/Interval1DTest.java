@@ -68,8 +68,9 @@ public class Interval1DTest {
     
     @Test
     public void toStringTest(){
-        System.out.println(inter1.toString());
         assertEquals("[1..5]", inter1.toString());
+        assertEquals("[0..0]", inter4.toString());
+        assertEquals("[-2..2]", inter5.toString());
     }
     
     @Test
@@ -77,5 +78,6 @@ public class Interval1DTest {
         assertTrue(inter1.contains(2));
         assertTrue(inter4.contains(0));
         assertFalse(inter3.contains(1000));
+        
     }
 }
