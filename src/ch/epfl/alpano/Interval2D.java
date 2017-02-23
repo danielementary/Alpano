@@ -138,4 +138,9 @@ public final class Interval2D {
       return Objects.hash(iX(), iY());
     }
     
+    @Override
+    public final String toString(){
+        return iX().toString() + "x" + iY().toString();
+    }
+    
 }
