@@ -52,5 +52,45 @@ public final class Interval2D {
             return false;
         }
     }
-
+    
+    /**
+     * size of cartesian product of iX and iY
+     * @return int size of instance's bidimensional interval
+     */
+    public final int size() {
+        return iX.size()*iY.size();
+    }
+    
+    /**
+     * calculates the size of intersection between this and that
+     * @param that other bidimensional interval
+     * @return int size of intersection between this and that
+     */
+    public final int sizeOfIntersectionWith(Interval2D that) {
+        int sizeOfIntersectionWithX = iX.sizeOfIntersectionWith(that.iX());
+        int sizeOfIntersectionWithY = iY.sizeOfIntersectionWith(that.iY());
+        
+        return sizeOfIntersectionWithX*sizeOfIntersectionWithY;
+    }
+    
+    /**
+     * calculates a bidimensional interval with boundingUnions of this and that
+     * @param that
+     * @return an Interval2D whose intervals are boundingUnions with that's intervals
+     */
+    public final Interval2D boundingUnion(Interval2D that) {
+        Interval1D interval1 = iX.boundingUnion(that.iX());
+        Interval1D interval2 = iY.boundingUnion(that.iY());
+        
+        return new Interval2D(interval1, interval2);
+    }
+    
+    public final boolean isUnionableWith(Interval2D that) {
+        
+        //à compléter
+        
+        return false;
+    }
+    
+    
 }
