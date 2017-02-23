@@ -118,4 +118,17 @@ public final class Interval2D {
         return new Interval2D(interval1, interval2);
     }
     
+    @Override
+    public boolean equals(Object thatO){
+        if(thatO.getClass() != this.getClass()){
+            return false;
+        }
+        Interval2D that = (Interval2D) thatO;
+        
+        if((this.iX().equals(that.iX())) && this.iY().equals(that.iY())){
+            return true;
+        }
+        return false;
+    }
+    
 }
