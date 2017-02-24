@@ -29,5 +29,25 @@ public class Interval2DTest {
         assertTrue(inter1D2 == inter1.iY());
         assertFalse(inter1D3 == inter1.iX());
     }
+    
+    @Test
+    public void containsWorks(){
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        
+        assertTrue(inter1.contains(2, 2));
+        assertFalse(inter1.contains(-4,-4));
+    }
+    
+    @Test
+    public void sizeTest(){
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        
+        assertEquals(inter1D1.size()*inter1D2.size(), inter1.size(), 0);
+    }
+    
+    @Test
+    public void sizeOfIntersectionWith(){
+        fail("not implemented");
+    }
 
 }
