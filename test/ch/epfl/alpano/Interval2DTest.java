@@ -47,7 +47,10 @@ public class Interval2DTest {
     
     @Test
     public void sizeOfIntersectionWith(){
-        fail("not implemented");
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(inter1D3, inter1D4);
+        
+        assertEquals(inter1D1.sizeOfIntersectionWith(inter1D3) * inter1D2.sizeOfIntersectionWith(inter1D4), inter1.sizeOfIntersectionWith(inter2), 0);
     }
 
 }
