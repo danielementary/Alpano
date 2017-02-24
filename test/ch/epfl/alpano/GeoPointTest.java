@@ -65,6 +65,7 @@ public class GeoPointTest {
         GeoPoint tokyo = new GeoPoint(2.4379160417585, 0.6227072971728);
         GeoPoint zurich = new GeoPoint(0.12999386801779, 0.8193971772263);
         GeoPoint sydney = new GeoPoint(2.6390617473923, -0.59112381902871);
+
         
         //on trivial values
         assertEquals(5.747268040636002, tokyo.azimuthTo(zurich), 1e-1);
