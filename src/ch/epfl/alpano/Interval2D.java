@@ -120,26 +120,37 @@ public final class Interval2D {
         return new Interval2D(interval1, interval2);
     }
     
+    /**
+     * redefines how bidimensional intervals should be compared
+     */
     @Override
-    public boolean equals(Object thatO){
-        if(thatO.getClass() != this.getClass()){
+    public boolean equals(Object thatO) {
+        if(thatO.getClass() != this.getClass()) {
             return false;
         }
-        Interval2D that = (Interval2D) thatO;
         
-        if((this.iX().equals(that.iX())) && this.iY().equals(that.iY())){
+        Interval2D that = (Interval2D)thatO;
+        
+        if((this.iX().equals(that.iX())) && this.iY().equals(that.iY())) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
     
+    /**
+     * overriding hashCode() for equals() 
+     */
     @Override
     public int hashCode() {
       return Objects.hash(iX(), iY());
     }
     
+    /**
+     * displays the instance like "[lowerBound1 .. upperBound1]x[lowerbound2 .. upperbound2]"
+     */
     @Override
-    public final String toString(){
+    public final String toString() {
         return iX().toString() + "x" + iY().toString();
     }
     
