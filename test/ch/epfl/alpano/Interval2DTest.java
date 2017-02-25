@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 public class Interval2DTest {
-    
     private Interval1D inter1D1 = new Interval1D(1,6);
     private Interval1D inter1D2 = new Interval1D(-3,3);
     private Interval1D inter1D3 = new Interval1D(0,0);
