@@ -1,16 +1,17 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        23 févr. 2017
+package ch.epfl.alpano;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
  */
 
-
-package ch.epfl.alpano;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-
-import org.junit.Test;
 
 public class Interval1DTest {
     private Interval1D inter1 = new Interval1D(1,5);

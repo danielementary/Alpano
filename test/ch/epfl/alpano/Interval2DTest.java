@@ -1,8 +1,16 @@
 package ch.epfl.alpano;
 
-import static org.junit.Assert.*;
-
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class Interval2DTest {
     
@@ -25,9 +33,9 @@ public class Interval2DTest {
     public void gettersTest(){
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         
-        assertTrue(inter1D1 == inter1.iX());
-        assertTrue(inter1D2 == inter1.iY());
-        assertFalse(inter1D3 == inter1.iX());
+        assertTrue(inter1D1.equals(inter1.iX()));
+        assertTrue(inter1D2.equals(inter1.iY()));
+        assertFalse(inter1D3.equals(inter1.iX()));
     }
     
     @Test
@@ -35,14 +43,17 @@ public class Interval2DTest {
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         
         assertTrue(inter1.contains(2, 2));
+        assertTrue(inter1.contains(6, -3));
         assertFalse(inter1.contains(-4,-4));
     }
     
     @Test
     public void sizeTest(){
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
         
         assertEquals(inter1D1.size()*inter1D2.size(), inter1.size(), 0);
+        assertEquals(inter1D3.size()*inter1D3.size(), inter2.size(), 0);
     }
     
     @Test
@@ -50,7 +61,7 @@ public class Interval2DTest {
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         Interval2D inter2 = new Interval2D(inter1D3, inter1D4);
         
-        assertEquals(inter1D1.sizeOfIntersectionWith(inter1D3) * inter1D2.sizeOfIntersectionWith(inter1D4), inter1.sizeOfIntersectionWith(inter2), 0);
+        assertEquals(inter1D1.sizeOfIntersectionWith(inter1D3)*inter1D2.sizeOfIntersectionWith(inter1D4), inter1.sizeOfIntersectionWith(inter2), 0);
     }
 
 }

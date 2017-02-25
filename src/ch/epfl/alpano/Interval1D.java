@@ -1,13 +1,13 @@
 package ch.epfl.alpano;
 
-import java.util.Objects;
-
 /**
  * 
  * @author Samuel Chassot (270955)
  * @author Daniel Filipe Nunes Silva (275197)
  *
  */
+
+import java.util.Objects;
 
 public final class Interval1D {
     

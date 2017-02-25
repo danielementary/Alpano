@@ -1,5 +1,12 @@
 package ch.epfl.alpano;
 
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
+
 import static ch.epfl.alpano.Math2.angularDistance;
 import static ch.epfl.alpano.Math2.bilerp;
 import static ch.epfl.alpano.Math2.firstIntervalContainingRoot;

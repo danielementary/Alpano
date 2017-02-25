@@ -1,5 +1,12 @@
 package ch.epfl.alpano;
 
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
+
 import org.junit.Test;
 
 import static ch.epfl.alpano.Preconditions.checkArgument;

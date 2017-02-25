@@ -1,5 +1,12 @@
 package ch.epfl.alpano;
 
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
+
 import static ch.epfl.alpano.Azimuth.canonicalize;
 import static ch.epfl.alpano.Azimuth.fromMath;
 import static ch.epfl.alpano.Azimuth.isCanonical;
