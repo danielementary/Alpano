@@ -72,13 +72,13 @@ public final class Interval1D {
         
         Interval1D intersection;
         
-        if (interTo < interFrom){
+        if (interTo < interFrom) {
             return 0;
         }else{
             intersection = new Interval1D(interFrom, interTo);
-        }
 
-        return intersection.size();
+            return intersection.size();
+        }
     }
     
     /**
@@ -86,8 +86,7 @@ public final class Interval1D {
      * @param that the other interval
      * @return the bounding union (a new interval)
      */
-    
-    public final Interval1D boundingUnion(Interval1D that){
+    public final Interval1D boundingUnion(Interval1D that) {
         int interFrom = Math.min(this.includedFrom(), that.includedFrom());
         int interTo = Math.max(this.includedTo(), that.includedTo());
         
@@ -99,7 +98,7 @@ public final class Interval1D {
      * @param that other interval
      * @return boolean true if unionable
      */
-    public final boolean isUnionableWith(Interval1D that){
+    public final boolean isUnionableWith(Interval1D that) {
         int thisFrom = this.includedFrom();
         int thisTo = this.includedTo();
         int thatFrom = that.includedFrom();
@@ -117,43 +116,56 @@ public final class Interval1D {
      * @return the union
      * @throws IllegalArgumentException
      */
-    
-    public final Interval1D union(Interval1D that){
+    public final Interval1D union(Interval1D that) {
         Preconditions.checkArgument(this.isUnionableWith(that));
         
         return this.boundingUnion(that);
     }
     
+    /**
+     * redefines how intervals should be compared
+     */
     @Override
-    public final boolean equals(Object that){
-   
-        if (that.getClass() != this.getClass()){
+    public final boolean equals(Object that) {
+        if (that.getClass() != this.getClass()) {
             return false;
         }
-        Interval1D thatInter;
-        thatInter = (Interval1D) that;
         
-        if (thatInter.includedFrom() == this.includedFrom() && thatInter.includedTo() == this.includedTo()){
+        Interval1D thatInter;
+        thatInter = (Interval1D)that;
+        
+        if (thatInter.includedFrom()==this.includedFrom() && thatInter.includedTo()==this.includedTo()) {
             return true;
         }
-        return false;
         
+        return false;
     }
     
+    /**
+     * overriding hashCode() for equals() 
+     */
     @Override
     public int hashCode() {
       return Objects.hash(includedFrom(), includedTo());
     }
     
+    /**
+     * displays the interval like : "[lowerBound .. upperBound]"
+     */
     @Override
-    public String toString(){
-
+    public String toString() {
         String str = "[" + this.includedFrom() + ".." + this.includedTo() + "]";
         
         return str;
     }
     
-    public final boolean contains(int that){
+    /**
+     * checks if an int is contained in this interval
+     * @param that int to check
+     * @return true if it is contained false otherwise
+     */
+    public final boolean contains(int that) {
         return (that >= this.includedFrom && that <= this.includedTo);
     }
+    
 }
