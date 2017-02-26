@@ -117,7 +117,7 @@ public final class Interval1D {
      * @throws IllegalArgumentException
      */
     public final Interval1D union(Interval1D that) {
-        Preconditions.checkArgument(this.isUnionableWith(that));
+        Preconditions.checkArgument(this.isUnionableWith(that), "These 2 Interval1D are not unionable");
         
         return this.boundingUnion(that);
     }
