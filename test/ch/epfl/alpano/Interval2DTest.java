@@ -90,10 +90,33 @@ public class Interval2DTest {
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
         Interval2D inter3 = new Interval2D(inter1D3, inter1D4);
+        Interval2D inter4 = new Interval2D(inter1D2, inter1D2);
+        Interval2D inter5 = new Interval2D(inter1D3, inter1D3);
         
         assertFalse(inter1.isUnionableWith(inter2));
         assertFalse(inter2.isUnionableWith(inter3));
         assertFalse(inter3.isUnionableWith(inter1));
+        
+        assertTrue(inter4.isUnionableWith(inter5));
+        assertTrue(inter5.isUnionableWith(inter4));
+    }
+    
+    @Test
+    public void unionWorks() {
+        Interval2D inter1 = new Interval2D(inter1D2, inter1D2);
+        Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
+        
+        Interval2D inter3 = new Interval2D(inter1D2.union(inter1D3), inter1D2.union(inter1D3));
+        
+        assertTrue(inter3.equals(inter1.union(inter2)));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void unionFails() {
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
+        
+        inter1.union(inter2);
     }
 
 }
