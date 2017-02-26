@@ -38,7 +38,17 @@ public class Interval1DTest {
         assertEquals(5, inter1.includedTo(), 0);
     }
     
-
+    @Test
+    public void sizeWorks() {
+        assertEquals(5, inter1.size(), 0);
+        assertEquals(8, inter2.size(), 0);
+        assertEquals(8, inter3.size(), 0);
+        assertEquals(1, inter4.size(), 0);
+        assertEquals(5, inter5.size(), 0);
+        assertEquals(5, inter6.size(), 0);
+        assertEquals(5, inter7.size(), 0);
+    }
+    
     @Test
     public void intersectionSizeWorks() {
         assertEquals(4, inter1.sizeOfIntersectionWith(inter2));
