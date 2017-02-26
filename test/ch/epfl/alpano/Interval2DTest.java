@@ -6,6 +6,7 @@ package ch.epfl.alpano;
  * @author Daniel Filipe Nunes Silva (275197)
  *
  */
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -118,5 +119,32 @@ public class Interval2DTest {
         
         inter1.union(inter2);
     }
+    
+    @Test
+    public void equalsWorks() {
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(new Interval1D(1, 6), new Interval1D(-3, 3));
+        Interval2D inter3 = new Interval2D(new Interval1D(1, 6), inter1D2);
+        Interval2D inter4 = new Interval2D(inter1D1, new Interval1D(-3, 3));
+        
+        assertTrue(inter1.equals(inter2));
+        assertTrue(inter2.equals(inter3));
+        assertTrue(inter3.equals(inter4));
+        assertTrue(inter4.equals(inter1));
+    }
+    
+    @Test
+    public void equalsFails() {
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(new Interval1D(1, 6), new Interval1D(-3, 2));
+        
+        assertFalse(inter1.equals(inter2));
+    }
+    
+    @Test
+    public void toStringWorks() {
+        //à compléter
+    }
+    
 
 }
