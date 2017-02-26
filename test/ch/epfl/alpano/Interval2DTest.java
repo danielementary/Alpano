@@ -19,17 +19,17 @@ public class Interval2DTest {
     private Interval1D inter1D4 = new Interval1D(12,19);
     
     @Test
-    public void creationTest() {
+    public void creationWorkst() {
         new Interval2D(inter1D1, inter1D2);
     }
     
     @Test (expected = NullPointerException.class)
-    public void creationFail(){
+    public void creationFails() {
         new Interval2D(null, inter1D1);
     }
     
     @Test
-    public void gettersTest(){
+    public void gettersWork() {
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         
         assertTrue(inter1D1.equals(inter1.iX()));
@@ -38,7 +38,7 @@ public class Interval2DTest {
     }
     
     @Test
-    public void containsWorks(){
+    public void containsWorks() {
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         
         assertTrue(inter1.contains(2, 2));
@@ -47,7 +47,7 @@ public class Interval2DTest {
     }
     
     @Test
-    public void sizeTest(){
+    public void sizeWorks() {
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
         
@@ -56,11 +56,44 @@ public class Interval2DTest {
     }
     
     @Test
-    public void sizeOfIntersectionWith(){
+    public void sizeOfIntersectionWithWorks() {
         Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
         Interval2D inter2 = new Interval2D(inter1D3, inter1D4);
         
         assertEquals(inter1D1.sizeOfIntersectionWith(inter1D3)*inter1D2.sizeOfIntersectionWith(inter1D4), inter1.sizeOfIntersectionWith(inter2), 0);
+    }
+    
+    @Test
+    public void boundingUnionWorks() {
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
+        
+        Interval2D inter3 = new Interval2D(inter1D1.boundingUnion(inter1D3), inter1D2.boundingUnion(inter1D3));
+        
+        Interval2D inter4 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter5 = new Interval2D(inter1D3, inter1D4);
+        
+        Interval2D inter6 = new Interval2D(inter1D1.boundingUnion(inter1D3), inter1D2.boundingUnion(inter1D4));
+        
+        Interval2D inter7 = new Interval2D(inter1D3, inter1D3);
+        Interval2D inter8 = new Interval2D(inter1D3, inter1D3);
+        
+        Interval2D inter9 = new Interval2D(inter1D3.boundingUnion(inter1D3), inter1D3.boundingUnion(inter1D3));
+        
+        assertTrue(inter3.equals(inter1.boundingUnion(inter2)));
+        assertTrue(inter6.equals(inter4.boundingUnion(inter5)));
+        assertTrue(inter9.equals(inter7.boundingUnion(inter8)));
+    }
+    
+    @Test
+    public void isUnionableWithWorks() {
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
+        Interval2D inter3 = new Interval2D(inter1D3, inter1D4);
+        
+        assertFalse(inter1.isUnionableWith(inter2));
+        assertFalse(inter2.isUnionableWith(inter3));
+        assertFalse(inter3.isUnionableWith(inter1));
     }
 
 }
