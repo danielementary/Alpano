@@ -143,8 +143,17 @@ public class Interval2DTest {
     
     @Test
     public void toStringWorks() {
-        //à compléter
+        Interval2D inter1 = new Interval2D(inter1D1, inter1D2);
+        Interval2D inter2 = new Interval2D(inter1D3, inter1D3);
+        Interval2D inter3 = new Interval2D(inter1D3, inter1D4);
+        Interval2D inter4 = new Interval2D(inter1D2, inter1D2);
+        Interval2D inter5 = new Interval2D(inter1D3, inter1D3);
+        
+        assertEquals("[1..6]x[-3..3]", inter1.toString());
+        assertEquals("[0..0]x[0..0]", inter2.toString());
+        assertEquals("[0..0]x[12..19]", inter3.toString());
+        assertEquals("[-3..3]x[-3..3]", inter4.toString());
+        assertEquals("[0..0]x[0..0]", inter5.toString());
     }
     
-
 }
