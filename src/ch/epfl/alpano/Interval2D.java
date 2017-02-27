@@ -10,8 +10,8 @@ package ch.epfl.alpano;
 import java.util.Objects;
 
 public final class Interval2D {
-    private Interval1D iX;
-    private Interval1D iY;
+    private final Interval1D iX;
+    private final Interval1D iY;
     
     /**
      * Creates an instance of a bidimensional interval
@@ -125,7 +125,7 @@ public final class Interval2D {
      */
     @Override
     public boolean equals(Object thatO) {
-        if(thatO.getClass() != this.getClass()) {
+        if(thatO == null || thatO.getClass() != this.getClass()) {
             return false;
         }
         
@@ -147,10 +147,11 @@ public final class Interval2D {
     }
     
     /**
-     * displays the instance like "[lowerBound1 .. upperBound1]x[lowerbound2 .. upperbound2]"
+     * displays the instance like 
+     * "[lowerBound1 .. upperBound1]x[lowerbound2 .. upperbound2]"
      */
     @Override
-    public final String toString() {
+    public String toString() {
         return iX().toString() + "x" + iY().toString();
     }
     

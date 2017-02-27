@@ -56,12 +56,10 @@ public final class GeoPoint {
      */
     public final double distanceTo(GeoPoint that){
         double sqrt = sqrt(Math2.haversin(this.latitude - that.latitude)
-                                    + cos(this.latitude) * cos(that.latitude) 
-                                    * Math2.haversin(this.longitude - that.longitude));
+                + cos(this.latitude) * cos(that.latitude) 
+                * Math2.haversin(this.longitude - that.longitude));
         
-        double alpha = 2*asin(sqrt);
-        
-        return Distance.toMeters(alpha);
+        return Distance.toMeters(2*asin(sqrt));
     }
     
     /**
@@ -86,8 +84,8 @@ public final class GeoPoint {
     public final String toString(){
         Locale region = null;
         
-        double degreeLatitude = latitude*180 / PI;
-        double degreeLongitude = longitude*180 / PI;
+        double degreeLatitude = latitude*180/PI;
+        double degreeLongitude = longitude*180/PI;
         
         String str = String.format(region, "(%.4f,%.4f)", degreeLongitude, degreeLatitude);
         

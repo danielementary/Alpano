@@ -74,7 +74,7 @@ public final class Interval1D {
         
         if (interTo < interFrom) {
             return 0;
-        }else{
+        } else {
             intersection = new Interval1D(interFrom, interTo);
 
             return intersection.size();
@@ -117,7 +117,8 @@ public final class Interval1D {
      * @throws IllegalArgumentException
      */
     public final Interval1D union(Interval1D that) {
-        Preconditions.checkArgument(this.isUnionableWith(that), "These 2 Interval1D are not unionable");
+        Preconditions.checkArgument(this.isUnionableWith(that),
+                "These 2 Interval1D are not unionable");
         
         return this.boundingUnion(that);
     }
@@ -127,18 +128,14 @@ public final class Interval1D {
      */
     @Override
     public final boolean equals(Object that) {
-        if (that == null){
+        if (that == null || that.getClass() != this.getClass()) {
             return false;
         }
         
-        if (that.getClass() != this.getClass()) {
-            return false;
-        }
+        Interval1D thatInter = (Interval1D)that;
         
-        Interval1D thatInter;
-        thatInter = (Interval1D)that;
-        
-        if (thatInter.includedFrom()==this.includedFrom() && thatInter.includedTo()==this.includedTo()) {
+        if (thatInter.includedFrom()==this.includedFrom() && 
+                thatInter.includedTo()==this.includedTo()) {
             return true;
         } else {
             return false;
@@ -158,7 +155,8 @@ public final class Interval1D {
      */
     @Override
     public String toString() {
-        String str = "[" + this.includedFrom() + ".." + this.includedTo() + "]";
+        String str = "[" + this.includedFrom() + ".." 
+                         + this.includedTo() + "]";
         
         return str;
     }
