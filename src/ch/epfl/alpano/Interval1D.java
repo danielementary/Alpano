@@ -166,7 +166,7 @@ public final class Interval1D {
      * @param that int to check
      * @return true if it is contained false otherwise
      */
-    public final boolean contains(int that) {
+    public boolean contains(int that) {
         return (that >= this.includedFrom && that <= this.includedTo);
     }
     

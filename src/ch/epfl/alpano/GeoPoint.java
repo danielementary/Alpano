@@ -84,10 +84,8 @@ public final class GeoPoint {
     public final String toString(){
         Locale region = null;
         
-        double degreeLatitude = latitude*180/PI;
-        double degreeLongitude = longitude*180/PI;
         
-        String str = String.format(region, "(%.4f,%.4f)", degreeLongitude, degreeLatitude);
+        String str = String.format(region, "(%.4f,%.4f)",Math.toDegrees(longitude) , Math.toDegrees(latitude));
         
         return str;
     }
