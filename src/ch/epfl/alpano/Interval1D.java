@@ -127,6 +127,10 @@ public final class Interval1D {
      */
     @Override
     public final boolean equals(Object that) {
+        if (that == null){
+            return false;
+        }
+        
         if (that.getClass() != this.getClass()) {
             return false;
         }
