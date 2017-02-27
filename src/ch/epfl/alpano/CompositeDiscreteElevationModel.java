@@ -7,10 +7,23 @@
 package ch.epfl.alpano;
 
 public class CompositeDiscreteElevationModel implements DiscreteElevationModel {
+    
+    private DiscreteElevationModel dem1;
+    private DiscreteElevationModel dem2;
+    
+    
+    CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2){
+        
+        Preconditions.checkArgumentNullPointer(dem1 == null || dem2 == null);
 
+        this.dem1 = dem1;
+        this.dem2 = dem2;
+    }
+    
     @Override
     public void close() throws Exception {
-        // TODO Auto-generated method stub
+        dem1.close();
+        dem2.close();
 
     }
 
