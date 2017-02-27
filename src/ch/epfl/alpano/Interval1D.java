@@ -136,9 +136,9 @@ public final class Interval1D {
         
         if (thatInter.includedFrom()==this.includedFrom() && thatInter.includedTo()==this.includedTo()) {
             return true;
+        } else {
+            return false;
         }
-        
-        return false;
     }
     
     /**

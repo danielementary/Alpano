@@ -71,6 +71,12 @@ public class Interval1DTest {
     
     @Test
     public void equalsTest() {
+        /** false or nullPointerException
+        Interval1D inter1Bonus = null;
+        Interval1D inter2Bonus = null;
+        
+        assertFalse(inter1Bonus.equals(inter2Bonus));
+        **/
         assertTrue(inter1.equals(inter1));
         assertFalse(inter1.equals(inter2));
         assertTrue(inter1.equals(inter6));
