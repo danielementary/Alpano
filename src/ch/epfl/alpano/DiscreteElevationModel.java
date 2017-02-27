@@ -11,6 +11,8 @@ import java.lang.AutoCloseable;
 
 public interface DiscreteElevationModel extends AutoCloseable{
     
+    public static final int SAMPLES_PER_DEGREE = 3600;
+    public static final double SAMPLES_PER_RADIAN = SAMPLES_PER_DEGREE * Math.toRadians(1);
     /**
      * gives the extend of a DEM
      * @return the extend of the DEM
