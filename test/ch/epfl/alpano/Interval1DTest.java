@@ -108,6 +108,12 @@ public class Interval1DTest {
         //that their intersection is empty
         assertTrue(inter1.isUnionableWith(inter4));
         assertTrue(inter4.isUnionableWith(inter1));
+        
+        Interval1D interBonus1 = new Interval1D(0,1);
+        Interval1D interBonus2 = new Interval1D(3,5);
+        
+        assertFalse(interBonus1.isUnionableWith(interBonus2));
+        assertFalse(interBonus2.isUnionableWith(interBonus1));
     }
     
     @Test
