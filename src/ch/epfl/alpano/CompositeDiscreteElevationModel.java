@@ -6,15 +6,18 @@
 
 package ch.epfl.alpano;
 
-public class CompositeDiscreteElevationModel implements DiscreteElevationModel {
+import static java.util.Objects.requireNonNull;
+
+public final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     
-    private DiscreteElevationModel dem1;
-    private DiscreteElevationModel dem2;
+    private final DiscreteElevationModel dem1;
+    private final DiscreteElevationModel dem2;
     
     
     CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2){
         
-        Preconditions.checkArgumentNullPointer(dem1 == null || dem2 == null);
+        requireNonNull(dem1);
+        requireNonNull(dem2);
 
         this.dem1 = dem1;
         this.dem2 = dem2;
