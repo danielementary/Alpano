@@ -107,7 +107,7 @@ public final class Interval1D {
         int interFrom = Math.max(thisFrom, thatFrom);
         int interTo = Math.min(thisTo, thatTo);
         
-        return interTo >= interFrom;
+        return interTo >= interFrom-1;
     }
     
     /**

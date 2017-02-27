@@ -103,6 +103,11 @@ public class Interval1DTest {
         assertTrue(inter4.isUnionableWith(inter4));
         
         assertFalse(inter1.isUnionableWith(inter7));
+        
+        //intervals can be unionable despite the fact 
+        //that their intersection is empty
+        assertTrue(inter1.isUnionableWith(inter4));
+        assertTrue(inter4.isUnionableWith(inter1));
     }
     
     @Test
@@ -117,4 +122,5 @@ public class Interval1DTest {
     public void unionErrorTest() {
         inter1.union(inter7);
     }
+    
 }
