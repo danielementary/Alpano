@@ -30,7 +30,7 @@ public interface DiscreteElevationModel extends AutoCloseable{
      * @param y latitude
      * @return the altitude in meters
      */ 
-    double elevationSample(int x, int y);
+    abstract double elevationSample(int x, int y);
     
     
     default DiscreteElevationModel union(DiscreteElevationModel that){
