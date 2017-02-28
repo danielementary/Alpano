@@ -6,7 +6,8 @@
 
 package ch.epfl.alpano.dem;
 
-import ch.epfl.alpano.*;
+import ch.epfl.alpano.Interval2D;
+import ch.epfl.alpano.Preconditions;
 
 import static java.util.Objects.requireNonNull;
 
