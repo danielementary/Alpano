@@ -32,7 +32,7 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
 
     @Override
     public Interval2D extent() {
-        
+          
         Interval2D inter1 = dem1.extent();
         Interval2D inter2 = dem2.extent();
         
