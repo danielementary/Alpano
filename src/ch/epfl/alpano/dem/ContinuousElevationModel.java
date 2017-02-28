@@ -4,7 +4,8 @@
  */
 
 
-package ch.epfl.alpano;
+package ch.epfl.alpano.dem;
+import ch.epfl.alpano.*;
 
 import static java.util.Objects.requireNonNull;
 
