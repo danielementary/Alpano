@@ -17,6 +17,7 @@ public final class ContinuousElevationModel {
     private final DiscreteElevationModel dem;
     private final static double D_NORTH_SUD = Math2.PI2 * Distance.EARTH_RADIUS / (Math2.PI2 * DiscreteElevationModel.SAMPLES_PER_RADIAN);
     
+    
     public ContinuousElevationModel(DiscreteElevationModel dem){
         requireNonNull(dem);
         
@@ -24,6 +25,11 @@ public final class ContinuousElevationModel {
         
     }
     
+    /**
+     * gives the elevation of a GeoPoint interpolated by the 4 points around
+     * @param p a geopoint
+     * @return the elevation
+     */
     public double elevationAt(GeoPoint p){
         
         double longitudeIndex = DiscreteElevationModel.sampleIndex(p.longitude());
@@ -69,6 +75,11 @@ public final class ContinuousElevationModel {
         return 0;
     }
     
+    /**
+     * gives the slope of the ground at the GeoPoint p interpolated by the 4 around points
+     * @param p the GeoPoint
+     * @return the slope (angle)
+     */
     public double slopeAt(GeoPoint p){
         double longitudeIndex = DiscreteElevationModel.sampleIndex(p.longitude());
         double latitudeIndex = DiscreteElevationModel.sampleIndex(p.latitude());
