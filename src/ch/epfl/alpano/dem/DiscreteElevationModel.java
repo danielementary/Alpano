@@ -16,6 +16,11 @@ public interface DiscreteElevationModel extends AutoCloseable{
     public static final int SAMPLES_PER_DEGREE = 3600;
     public static final double SAMPLES_PER_RADIAN = SAMPLES_PER_DEGREE * Math.toDegrees(1);
     
+    /**
+     * gives the index in the MNT of angle
+     * @param angle in radian
+     * @return the index in double
+     */
     public static double sampleIndex(double angle){
         return SAMPLES_PER_RADIAN * angle;
     }
@@ -34,7 +39,11 @@ public interface DiscreteElevationModel extends AutoCloseable{
      */ 
     abstract double elevationSample(int x, int y);
     
-    
+    /**
+     * gives the composite of two MNT this and that 
+     * @param that the other MNT
+     * @return a compositeElevationModel (union of this and that)
+     */
     default DiscreteElevationModel union(DiscreteElevationModel that){
         return new CompositeDiscreteElevationModel(this, that);
     }
