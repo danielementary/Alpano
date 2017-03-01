@@ -1,16 +1,16 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        27 févr. 2017
- */
-
-
 package ch.epfl.alpano.dem;
 import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
 
-
 import static java.util.Objects.requireNonNull;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
 
 public final class ContinuousElevationModel {
     

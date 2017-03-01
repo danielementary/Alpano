@@ -1,15 +1,16 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        27 févr. 2017
- */
-
-
 package ch.epfl.alpano.dem;
 
 import ch.epfl.alpano.Interval2D;
 import ch.epfl.alpano.Preconditions;
 
 import static java.util.Objects.requireNonNull;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
 
 final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     
