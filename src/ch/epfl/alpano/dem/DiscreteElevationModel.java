@@ -1,9 +1,5 @@
 package ch.epfl.alpano.dem;
 
-import ch.epfl.alpano.Interval2D;
-
-import java.lang.AutoCloseable;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -11,7 +7,10 @@ import java.lang.AutoCloseable;
  *
  */
 
-public interface DiscreteElevationModel extends AutoCloseable{
+import java.lang.AutoCloseable;
+import ch.epfl.alpano.Interval2D;
+
+public interface DiscreteElevationModel extends AutoCloseable {
     
     public static final int SAMPLES_PER_DEGREE = 3600;
     public static final double SAMPLES_PER_RADIAN = SAMPLES_PER_DEGREE * Math.toDegrees(1);
@@ -21,7 +20,7 @@ public interface DiscreteElevationModel extends AutoCloseable{
      * @param angle in radian
      * @return the index in double
      */
-    public static double sampleIndex(double angle){
+    public static double sampleIndex(double angle) {
         return SAMPLES_PER_RADIAN * angle;
     }
     
@@ -44,7 +43,7 @@ public interface DiscreteElevationModel extends AutoCloseable{
      * @param that the other MNT
      * @return a compositeElevationModel (union of this and that)
      */
-    default DiscreteElevationModel union(DiscreteElevationModel that){
+    default DiscreteElevationModel union(DiscreteElevationModel that) {
         return new CompositeDiscreteElevationModel(this, that);
     }
 }

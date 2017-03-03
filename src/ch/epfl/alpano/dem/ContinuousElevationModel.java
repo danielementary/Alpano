@@ -1,9 +1,4 @@
 package ch.epfl.alpano.dem;
-import ch.epfl.alpano.Distance;
-import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Math2;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * 
@@ -12,17 +7,22 @@ import static java.util.Objects.requireNonNull;
  *
  */
 
+import static java.util.Objects.requireNonNull;
+
+import ch.epfl.alpano.Distance;
+import ch.epfl.alpano.GeoPoint;
+import ch.epfl.alpano.Math2;
+
 public final class ContinuousElevationModel {
     
     private final DiscreteElevationModel dem;
-    private final static double D_NORTH_SUD = Math2.PI2 * Distance.EARTH_RADIUS / (Math2.PI2 * DiscreteElevationModel.SAMPLES_PER_RADIAN);
+    private final static double D_NORTH_SUD = Math2.PI2*Distance.EARTH_RADIUS
+                        /(Math2.PI2*DiscreteElevationModel.SAMPLES_PER_RADIAN);
     
-    
-    public ContinuousElevationModel(DiscreteElevationModel dem){
+    public ContinuousElevationModel(DiscreteElevationModel dem) {
         requireNonNull(dem);
         
         this.dem = dem;
-        
     }
     
     /**
@@ -30,7 +30,7 @@ public final class ContinuousElevationModel {
      * @param p a geopoint
      * @return the elevation
      */
-    public double elevationAt(GeoPoint p){
+    public double elevationAt(GeoPoint p) {
         
         double longitudeIndex = DiscreteElevationModel.sampleIndex(p.longitude());
         double latitudeIndex = DiscreteElevationModel.sampleIndex(p.latitude());
@@ -38,7 +38,6 @@ public final class ContinuousElevationModel {
         int longitudeIndexDown = (int)Math.floor(longitudeIndex);
         int longitudeIndexUp = (int)Math.ceil(longitudeIndex);
              
-        
         int latitudeIndexDown = (int)Math.floor(latitudeIndex);
         int latitudeIndexUp = (int)Math.ceil(latitudeIndex);
         
@@ -50,29 +49,30 @@ public final class ContinuousElevationModel {
         double x = longitudeIndex-longitudeIndexDown;
         double y = latitudeIndex-latitudeIndexDown;
         
-        
         double elevation = Math2.bilerp(elev00, elev10, elev10, elev11, x, y) ;
-        
         
         return elevation;
     }
     
-    private double elevationExtension(int x, int y){
-        if(dem.extent().contains(x, y)){
+    private double elevationExtension(int x, int y) {
+        if (dem.extent().contains(x, y)) {
             return dem.elevationSample(x, y);
+        } else {
+            return 0.0;
         }
-        return 0.0;
     }
     
-    private double slopeExtension(int x, int y){
-        if(dem.extent().contains(x, y)){
-            double deltaZa = elevationExtension(x+1, y) - elevationExtension(x, y);
-            double deltaZb = elevationExtension(x, y+1) - elevationExtension(x, y);
-            double slope = Math.acos(D_NORTH_SUD/(Math.sqrt(Math2.sq(deltaZa) + Math2.sq(deltaZb) + Math2.sq(D_NORTH_SUD))));
+    private double slopeExtension(int x, int y) {
+        if (dem.extent().contains(x, y)) {
+            double deltaZa = elevationExtension(x+1, y)-elevationExtension(x, y);
+            double deltaZb = elevationExtension(x, y+1)-elevationExtension(x, y);
+            double slope = Math.acos(D_NORTH_SUD/(Math.sqrt(Math2.sq(deltaZa)
+                                 +Math2.sq(deltaZb) + Math2.sq(D_NORTH_SUD))));
             
             return slope;
+        } else {
+            return 0;
         }
-        return 0;
     }
     
     /**
@@ -80,7 +80,7 @@ public final class ContinuousElevationModel {
      * @param p the GeoPoint
      * @return the slope (angle)
      */
-    public double slopeAt(GeoPoint p){
+    public double slopeAt(GeoPoint p) {
         double longitudeIndex = DiscreteElevationModel.sampleIndex(p.longitude());
         double latitudeIndex = DiscreteElevationModel.sampleIndex(p.latitude());
         
@@ -95,13 +95,10 @@ public final class ContinuousElevationModel {
         double slope01 = slopeExtension(longitudeIndexDown, latitudeIndexUp);
         double slope11 = slopeExtension(longitudeIndexUp, latitudeIndexUp);
         
-        
         double x = longitudeIndex-longitudeIndexDown;
         double y = latitudeIndex-latitudeIndexDown;
         
-        
         double slope = Math2.bilerp(slope00, slope10, slope01, slope11, x, y) ;
-        
         
         return slope;
     }

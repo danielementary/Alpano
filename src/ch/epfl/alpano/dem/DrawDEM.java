@@ -1,22 +1,16 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        28 févr. 2017
- */
-
-
 package ch.epfl.alpano.dem;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.lang.Math.*;
-import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Interval2D;
-import ch.epfl.alpano.Interval1D;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
+
+import ch.epfl.alpano.GeoPoint;
+import ch.epfl.alpano.Interval2D;
+import ch.epfl.alpano.Interval1D;
 
 public final class DrawDEM {
   @SuppressWarnings("resource")

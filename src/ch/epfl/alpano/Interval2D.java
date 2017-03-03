@@ -7,6 +7,7 @@ package ch.epfl.alpano;
  *
  */
 
+import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 
 public final class Interval2D {
@@ -20,8 +21,8 @@ public final class Interval2D {
      * @param iY second unidimensional interval
      */
     public Interval2D(Interval1D iX, Interval1D iY) {
-        Preconditions.checkArgumentNullPointer(iX != null);
-        Preconditions.checkArgumentNullPointer(iY != null);
+        requireNonNull(iX);
+        requireNonNull(iY);
         
         this.iX = iX;
         this.iY = iY;
