@@ -10,7 +10,6 @@ package ch.epfl.alpano;
 import org.junit.Test;
 
 import static ch.epfl.alpano.Preconditions.checkArgument;
-import static ch.epfl.alpano.Preconditions.checkArgumentNullPointer;
 
 public class PreconditionsTest {
     //checkArgument (1 argument)
@@ -34,27 +33,4 @@ public class PreconditionsTest {
     public void checkArgument2ThrowsForFalse() {
         checkArgument(false, "");
     }
-    
-    //checkArgumentNullPointer (1 argument)
-    @Test
-    public void checkArgumentNullPointer1SucceedsForTrue() {
-        checkArgumentNullPointer(true);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void checkArgumentNullPointer1ThrowsForFalse() {
-        checkArgumentNullPointer(false);
-    }
-
-    //checkArgumentNullPointer (2 arguments)
-    @Test
-    public void checkArgumentNullPointer2SucceedsForTrue() {
-        checkArgumentNullPointer(true, "");
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void checkArgumentNullPointer2ThrowsForFalse() {
-        checkArgumentNullPointer(false, "");
-    }
-    
 }
