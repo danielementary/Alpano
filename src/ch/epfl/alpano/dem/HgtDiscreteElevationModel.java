@@ -30,7 +30,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     
     HgtDiscreteElevationModel(File file) throws IOException{
         this.file = file;
-        long l = file.length();
+        long l = this.file.length();
         Preconditions.checkArgument(l == 25934402 );
         
         String name = file.getName();
@@ -39,7 +39,8 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         
         try{
         latitude = Integer.parseInt(name.substring(1, 3));
-        longitude = Integer.parseInt(name.substring(4, 8));
+        
+        longitude = Integer.parseInt(name.substring(4, 7));
         }
         catch (NumberFormatException e){
             throw new IllegalArgumentException();
@@ -48,13 +49,14 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         Preconditions.checkArgument(latitude >= 0 && latitude <= 90);
         Preconditions.checkArgument(longitude >= 0 && longitude <= 180);
         
-        if (name.charAt(0) == 's'){
+        if (name.charAt(0) == 'S'){
             latitude *= -1;
         }
         if (name.charAt(3) == 'W'){
             longitude *= -1;
         }
-        Preconditions.checkArgument(name.substring(7) == ".hgt");
+        String ext = name.substring(7);
+        Preconditions.checkArgument(name.substring(7).equals(".hgt"));
         
         try{
             stream = new FileInputStream(file);            
@@ -78,14 +80,13 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     public Interval2D extent() {
         Interval1D longitudeInterval = new Interval1D(longitude * SAMPLES_PER_DEGREE, (longitude+1) * SAMPLES_PER_DEGREE);
         Interval1D latitudeInterval = new Interval1D(latitude * SAMPLES_PER_DEGREE, (latitude+1) * SAMPLES_PER_DEGREE);
-        return null;
+        return new Interval2D(longitudeInterval, latitudeInterval);
     }
 
     @Override
     public double elevationSample(int x, int y) {
-//        int index = SAMPLES_PER_DEGREE*y + x;
-//        return buffer.get(index);
-        return 0;
+        int index = SAMPLES_PER_DEGREE * (y - longitude) + (x - latitude);
+        return buffer.get(index);
     }
 
 }
