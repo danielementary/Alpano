@@ -20,11 +20,12 @@ import ch.epfl.alpano.Interval1D;
 
 
 final class DrawHgtDEM {
-    final static File HGT_FILE = new File("N46E006.hgt");
+    final static File HGT_FILE = new File("res/N46E006.hgt");
     final static double ORIGIN_LON = toRadians(6.25);
     final static double ORIGIN_LAT = toRadians(46.25);
+
     final static double WIDTH = toRadians(0.5);
-    final static int IMAGE_SIZE = 300;
+    final static int IMAGE_SIZE = 500;
     final static double MIN_ELEVATION = 200;
     final static double MAX_ELEVATION = 1_500;
 
