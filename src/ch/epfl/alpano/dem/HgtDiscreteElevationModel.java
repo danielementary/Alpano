@@ -22,9 +22,9 @@ import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_DEGREE;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
-    private File file;
-    private FileInputStream stream;
-    private ShortBuffer buffer;
+    private final File file;
+    private final FileInputStream stream;
+    private final ShortBuffer buffer;
     private int latitude;
     private int longitude;
     
@@ -61,13 +61,14 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         try{
             stream = new FileInputStream(file);            
         }catch(IOException e){
-            
+            throw new IllegalArgumentException();
         }
         
         try{
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
         }catch(IOException e){
-            
+            stream.close();
+            throw new IllegalArgumentException();   
         }
     }
     @Override
@@ -85,7 +86,10 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     @Override
     public double elevationSample(int x, int y) {
-        int index = SAMPLES_PER_DEGREE * (y - longitude) + (x - latitude);
+        int nbrLines = (latitude + 1)*SAMPLES_PER_DEGREE - y;
+        int nbrColumns = x - (longitude * 3600);
+        int index = nbrLines*(SAMPLES_PER_DEGREE + 1) + nbrColumns;
+         
         return buffer.get(index);
     }
 
