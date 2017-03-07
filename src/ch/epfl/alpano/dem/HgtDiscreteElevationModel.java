@@ -1,7 +1,12 @@
-
-
-
 package ch.epfl.alpano.dem;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,13 +18,6 @@ import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
 import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_DEGREE;
 
-/**
- * 
- * @author Samuel Chassot (270955)
- * @author Daniel Filipe Nunes Silva (275197)
- *
- */
-
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     private final File file;
@@ -28,7 +26,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     private int latitude;
     private int longitude;
     
-    HgtDiscreteElevationModel(File file) throws IOException{
+    HgtDiscreteElevationModel(File file) throws IOException {
         this.file = file;
         long l = this.file.length();
         Preconditions.checkArgument(l == 25934402 );
@@ -37,50 +35,51 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         Preconditions.checkArgument(name.charAt(0) == 'N' || name.charAt(0) == 'S');
         Preconditions.checkArgument(name.charAt(3) == 'W' || name.charAt(3) == 'E');
         
-        try{
-        latitude = Integer.parseInt(name.substring(1, 3));
-        
-        longitude = Integer.parseInt(name.substring(4, 7));
-        }
-        catch (NumberFormatException e){
+        try {
+            latitude = Integer.parseInt(name.substring(1, 3));
+            
+            longitude = Integer.parseInt(name.substring(4, 7));
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException();
         }
         
         Preconditions.checkArgument(latitude >= 0 && latitude <= 90);
         Preconditions.checkArgument(longitude >= 0 && longitude <= 180);
         
-        if (name.charAt(0) == 'S'){
+        if (name.charAt(0) == 'S') {
             latitude *= -1;
         }
-        if (name.charAt(3) == 'W'){
+        if (name.charAt(3) == 'W') {
             longitude *= -1;
         }
+        
         String ext = name.substring(7);
         Preconditions.checkArgument(name.substring(7).equals(".hgt"));
         
-        try{
+        try {
             stream = new FileInputStream(file);            
-        }catch(IOException e){
+        } catch(IOException e) {
             throw new IllegalArgumentException();
         }
         
-        try{
+        try {
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
-        }catch(IOException e){
+        } catch(IOException e) {
             stream.close();
             throw new IllegalArgumentException();   
         }
     }
+    
     @Override
     public void close() throws Exception {
         stream.close();
-
     }
 
     @Override
     public Interval2D extent() {
         Interval1D longitudeInterval = new Interval1D(longitude * SAMPLES_PER_DEGREE, (longitude+1) * SAMPLES_PER_DEGREE);
         Interval1D latitudeInterval = new Interval1D(latitude * SAMPLES_PER_DEGREE, (latitude+1) * SAMPLES_PER_DEGREE);
+        
         return new Interval2D(longitudeInterval, latitudeInterval);
     }
 
@@ -92,5 +91,4 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
          
         return buffer.get(index);
     }
-
 }
