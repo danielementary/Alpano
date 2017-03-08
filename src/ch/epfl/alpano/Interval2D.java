@@ -97,11 +97,9 @@ public final class Interval2D {
      * @return boolean true if this and that are unionable, false otherwise
      */
     public final boolean isUnionableWith(Interval2D that) {
-        if (iX.isUnionableWith(that.iX()) && iY.isUnionableWith(that.iY())) {
-            return true;
-        } else {
-            return false;
-        }
+        
+        
+        return (iX.size()*iY.size() + that.iX.size()*that.iY.size() - this.sizeOfIntersectionWith(that) == this.boundingUnion(that).size());
     }
     
     /**
