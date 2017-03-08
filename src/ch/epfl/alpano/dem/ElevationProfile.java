@@ -12,6 +12,11 @@ import static java.util.Objects.requireNonNull;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Preconditions;
 import ch.epfl.alpano.Azimuth;
+import ch.epfl.alpano.Distance;
+import static java.lang.Math.sin;
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.asin;
 
 public final class ElevationProfile {
     
@@ -42,16 +47,44 @@ public final class ElevationProfile {
         
     }
     
+    private GeoPoint Point(double x) {
+        double originLatitude = origin.latitude();
+        double originLongitude = origin.longitude();
+        double radianLength = Distance.toRadians(length);
+        double toMathAzimuth = Azimuth.toMath(azimuth);
+        
+        double pointLatitude = asin(sin(originLongitude)*cos(radianLength) 
+                + cos(originLongitude)*sin(radianLength)*cos(toMathAzimuth));
+        double pointLongitude = Azimuth.canonicalize((originLatitude
+                -asin((sin(toMathAzimuth)*sin(radianLength))
+                        /cos(originLongitude))+PI))-PI;
+        
+        GeoPoint point = new GeoPoint(pointLatitude, pointLongitude);
+        
+        return point;
+    }
+    
     public double elevationAt(double x) {
-        return 0.0;
+        Preconditions.checkArgument(x <= length);
+        
+        GeoPoint point = Point(x);
+        
+        return elevMod.elevationAt(point);
     }
     
     public GeoPoint positionAt(double x) {
-        return null;
+        Preconditions.checkArgument(x <= length);
+        
+        GeoPoint point = Point(x);
+        
+        return point;
     }
     
     public double slopeAt(double x) {
-        return 0.0;
+        Preconditions.checkArgument(x <= length);
+        
+        GeoPoint point = Point(x);
+        
+        return elevMod.slopeAt(point);
     }
-
 }
