@@ -63,11 +63,11 @@ public final class ElevationProfile {
         double radianLength = Distance.toRadians(length);
         double toMathAzimuth = Azimuth.toMath(azimuth);
         
-        double pointLatitude = asin(sin(originLongitude)*cos(radianLength) 
+        double pointLongitude = asin(sin(originLongitude)*cos(radianLength) 
                 + cos(originLongitude)*sin(radianLength)*cos(toMathAzimuth));
-        double pointLongitude = Azimuth.canonicalize((originLatitude
+        double pointLatitude = Azimuth.canonicalize((originLatitude
                 -asin((sin(toMathAzimuth)*sin(radianLength))
-                        /cos(originLongitude))+PI))-PI;
+                        /cos(pointLongitude))+PI))-PI;
         
         GeoPoint point = new GeoPoint(pointLatitude, pointLongitude);
         
