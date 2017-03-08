@@ -78,7 +78,6 @@ public final class ElevationProfile {
     public double slopeAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
         
-        
         GeoPoint point = positionAt(x);
         
         return elevMod.slopeAt(point);
