@@ -20,13 +20,13 @@ import static java.lang.Math.asin;
 
 public final class ElevationProfile {
     
-    ContinuousElevationModel elevMod;
-    GeoPoint origin;
-    double azimuth;
-    double length;
+    private ContinuousElevationModel elevMod;
+    private GeoPoint origin;
+    private double azimuth;
+    private double length;
 
     /**
-     * represents an aritmetic profile corresponding to a great circle
+     * represents an altimetric profile corresponding to a great circle
      * @param elevationModel
      * @param origin
      * @param azimuth
@@ -48,7 +48,7 @@ public final class ElevationProfile {
     }
     
     public double elevationAt(double x) {
-        Preconditions.checkArgument(x <= length);
+        Preconditions.checkArgument(x <= length && x >= 0);
         
         GeoPoint point = positionAt(x);
         
@@ -63,8 +63,12 @@ public final class ElevationProfile {
         double radianLength = Distance.toRadians(length);
         double toMathAzimuth = Azimuth.toMath(azimuth);
         
-        double pointLongitude = asin(sin(originLongitude)*cos(radianLength) 
-                + cos(originLongitude)*sin(radianLength)*cos(toMathAzimuth));
+        double pointLongitude = asin((sin(originLongitude) * cos(radianLength))
+                + (cos(originLongitude) * sin(radianLength) * cos(toMathAzimuth))); 
+        
+//        double pointLongitude = asin(sin(originLongitude)*cos(radianLength) 
+//                + cos(originLongitude)*sin(radianLength)*cos(toMathAzimuth));
+        
         double pointLatitude = Azimuth.canonicalize((originLatitude
                 -asin((sin(toMathAzimuth)*sin(radianLength))
                         /cos(pointLongitude))+PI))-PI;
@@ -75,7 +79,8 @@ public final class ElevationProfile {
     }
     
     public double slopeAt(double x) {
-        Preconditions.checkArgument(x <= length);
+        Preconditions.checkArgument(x <= length && x >= 0);
+        
         
         GeoPoint point = positionAt(x);
         

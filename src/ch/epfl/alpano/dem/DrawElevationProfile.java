@@ -1,23 +1,25 @@
+
 package ch.epfl.alpano.dem;
+
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+import static java.lang.Math.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-
+import java.io.IOException;
 import javax.imageio.ImageIO;
 
-import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
-
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
-
+import ch.epfl.alpano.Interval2D;
+import ch.epfl.alpano.Interval1D;
 
 final class DrawElevationProfile {
-    final static File HGT_FILE = new File("res/N46E006.hgt");
+    final static File HGT_FILE = new File("N46E006.hgt");
     final static double MAX_ELEVATION = 1_500;
     final static int LENGTH = 111_000;
-    final static double AZIMUTH = Distance.toRadians(27.97);
-    final static double LONGITUDE = Distance.toRadians(6.15432);
-    final static double LATITUDE = Distance.toRadians(46.20562);
+    final static double AZIMUTH = toRadians(27.97);
+    final static double LONGITUDE = toRadians(6.15432);
+    final static double LATITUDE = toRadians(46.20562);
     final static int WIDTH = 800, HEIGHT = 100;
 
     public static void main(String[] as) throws Exception {
