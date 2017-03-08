@@ -47,7 +47,17 @@ public final class ElevationProfile {
         
     }
     
-    private GeoPoint Point(double x) {
+    public double elevationAt(double x) {
+        Preconditions.checkArgument(x <= length);
+        
+        GeoPoint point = positionAt(x);
+        
+        return elevMod.elevationAt(point);
+    }
+    
+    public GeoPoint positionAt(double x) {
+        Preconditions.checkArgument(x <= length);
+        
         double originLatitude = origin.latitude();
         double originLongitude = origin.longitude();
         double radianLength = Distance.toRadians(length);
@@ -64,26 +74,10 @@ public final class ElevationProfile {
         return point;
     }
     
-    public double elevationAt(double x) {
-        Preconditions.checkArgument(x <= length);
-        
-        GeoPoint point = Point(x);
-        
-        return elevMod.elevationAt(point);
-    }
-    
-    public GeoPoint positionAt(double x) {
-        Preconditions.checkArgument(x <= length);
-        
-        GeoPoint point = Point(x);
-        
-        return point;
-    }
-    
     public double slopeAt(double x) {
         Preconditions.checkArgument(x <= length);
         
-        GeoPoint point = Point(x);
+        GeoPoint point = positionAt(x);
         
         return elevMod.slopeAt(point);
     }
