@@ -26,6 +26,11 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     private int latitude;
     private int longitude;
     
+    /**
+     * create a hgtDiscreteElevationModel instance. It opens the HGT file <file> and throw a IllegalArgumentException if file is not a valid hgt file
+     * @param file hgt file
+     * @throws IOException
+     */
     HgtDiscreteElevationModel(File file) throws IOException {
         this.file = file;
         long l = this.file.length();
