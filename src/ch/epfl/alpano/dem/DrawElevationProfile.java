@@ -37,6 +37,8 @@ final class DrawElevationProfile {
       BufferedImage i =
         new BufferedImage(WIDTH, HEIGHT, TYPE_INT_RGB);
       for (int x = 0; x < WIDTH; ++x) {
+          
+          
         double pX = x * (double) LENGTH / (WIDTH - 1);
         double pY = p.elevationAt(pX);
         int yL = (int)((pY / MAX_ELEVATION) * (HEIGHT - 1));
