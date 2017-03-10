@@ -24,6 +24,8 @@ public final class ElevationProfile {
     private GeoPoint origin;
     private double azimuth;
     private double length;
+    
+    private double[][] positions;
 
     /**
      * represents an altimetric profile corresponding to a great circle
@@ -44,8 +46,29 @@ public final class ElevationProfile {
         this.origin = origin;
         this.azimuth = azimuth;
         this.length = length;
+
+        int difference = 4096;
+        int precision = (int)Math.ceil(length/difference);
+        positions = new double[precision+1][3];
         
+        double initLength = 0; 
+        for (int i = 0; i < precision; ++i) {
+            positions[i] = coordinatesAt(initLength);
+            initLength += difference;
+        }
+        
+        positions[precision] = coordinatesAt(length);
     }
+    
+    /*
+    public double elevationAt(double x) {
+        Preconditions.checkArgument(x <= length && x >= 0);
+        
+        GeoPoint point = positionAt(x);
+        
+        return elevMod.elevationAt(point);
+    }
+    */
     
     public double elevationAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
@@ -81,5 +104,25 @@ public final class ElevationProfile {
         GeoPoint point = positionAt(x);
         
         return elevMod.slopeAt(point);
+    }
+    
+    private double[] coordinatesAt(double x) {
+        Preconditions.checkArgument(x <= length);
+        
+        double originLatitude = origin.latitude();
+        double originLongitude = origin.longitude();
+        double radianLength = Distance.toRadians(x);
+        double toMathAzimuth = Azimuth.toMath(azimuth);
+        
+        double pointLatitude = asin((sin(originLatitude) * cos(radianLength))
+                + (cos(originLatitude) * sin(radianLength) * cos(toMathAzimuth)));
+        
+        double pointLongitude = Azimuth.canonicalize((originLongitude
+                -asin((sin(toMathAzimuth)*sin(radianLength))
+                        /cos(pointLatitude))+PI))-PI;
+        
+        double[] point = new double[] {x, pointLongitude, pointLatitude};
+        
+        return point;
     }
 }
