@@ -21,8 +21,7 @@ import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_DEGREE;
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     private final File file;
-    private final FileInputStream stream;
-    private final ShortBuffer buffer;
+    private ShortBuffer buffer;
     private int latitude;
     private int longitude;
     
@@ -61,23 +60,17 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         String ext = name.substring(7);
         Preconditions.checkArgument(name.substring(7).equals(".hgt"));
         
-        try {
-            stream = new FileInputStream(file);            
-        } catch(IOException e) {
-            throw new IllegalArgumentException();
-        }
-        
-        try {
+        try (FileInputStream stream = new FileInputStream(file)){
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
-        } catch(IOException e) {
-            stream.close();
-            throw new IllegalArgumentException();   
-        }
+        }catch(IOException e) {
+          throw new IllegalArgumentException();   
+      }
+        
     }
     
     @Override
-    public void close() throws IOException {
-        stream.close();
+    public void close(){
+        buffer = null;
     }
 
     @Override
