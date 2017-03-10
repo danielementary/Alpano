@@ -13,6 +13,7 @@ import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Preconditions;
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Distance;
+import ch.epfl.alpano.Math2;
 import static java.lang.Math.sin;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
@@ -47,7 +48,7 @@ public final class ElevationProfile {
         this.azimuth = azimuth;
         this.length = length;
 
-        int difference = 4096;
+        int difference = 512;
         int precision = (int)Math.ceil(length/difference);
         positions = new double[precision+1][3];
         
@@ -73,7 +74,31 @@ public final class ElevationProfile {
     public double elevationAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
         
-        GeoPoint point = positionAt(x);
+        double[] lowerBound = new double[]{0, 0, 0};
+        double[] upperBound = new double[]{length, Math2.PI2, Math2.PI2};
+        
+        for (double[] tuple : positions) {
+            if (tuple[0] <= x && tuple[0] >= lowerBound[0]) {
+                lowerBound = tuple;
+            }
+            if (tuple[0] >= x && tuple[0] <= upperBound[0]) {
+                upperBound = tuple;
+            }
+        }
+
+        double pointLongitude = (lowerBound[1]+upperBound[1])/2;
+        double pointLatitude = (lowerBound[2]+upperBound[2])/2;
+        
+        /*
+        System.out.println(pointLongitude*360/Math2.PI2);
+        System.out.println("...");
+        System.out.println(pointLatitude*360/Math2.PI2);
+        System.out.println();
+        
+        System.out.println(elevMod.elevationAt(point));
+        */
+        
+        GeoPoint point = new GeoPoint(pointLongitude, pointLatitude);
         
         return elevMod.elevationAt(point);
     }
