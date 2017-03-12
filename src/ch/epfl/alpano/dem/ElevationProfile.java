@@ -48,7 +48,7 @@ public final class ElevationProfile {
         this.azimuth = azimuth;
         this.length = length;
 
-        int difference = 512;
+        int difference = 4096;
         int precision = (int)Math.ceil(length/difference);
         positions = new double[precision+1][3];
         
@@ -81,22 +81,22 @@ public final class ElevationProfile {
             if (tuple[0] <= x && tuple[0] >= lowerBound[0]) {
                 lowerBound = tuple;
             }
+            
             if (tuple[0] >= x && tuple[0] <= upperBound[0]) {
                 upperBound = tuple;
             }
         }
+        
+        double xPoint;
+        
+        if (upperBound[0]-lowerBound[0] == 0) {
+            xPoint = 1;
+        } else {
+            xPoint = (x-lowerBound[0])/(upperBound[0]-lowerBound[0]);
+        }
 
-        double pointLongitude = (lowerBound[1]+upperBound[1])/2;
-        double pointLatitude = (lowerBound[2]+upperBound[2])/2;
-        
-        /*
-        System.out.println(pointLongitude*360/Math2.PI2);
-        System.out.println("...");
-        System.out.println(pointLatitude*360/Math2.PI2);
-        System.out.println();
-        
-        System.out.println(elevMod.elevationAt(point));
-        */
+        double pointLongitude = Math2.lerp(lowerBound[1], upperBound[1], xPoint);
+        double pointLatitude = Math2.lerp(lowerBound[2], upperBound[2], xPoint);
         
         GeoPoint point = new GeoPoint(pointLongitude, pointLatitude);
         
