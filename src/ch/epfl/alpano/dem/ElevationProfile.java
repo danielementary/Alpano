@@ -55,11 +55,14 @@ public final class ElevationProfile {
         
         double initLength = 0; 
         for (int i = 0; i < precision; ++i) {
-            positions[i] = coordinatesAt(initLength);
+            GeoPoint nextPoint = positionAt(initLength);
+            double[] nextArray = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
+            positions[i] = nextArray;
             initLength += difference;
         }
         
-        positions[precision] = coordinatesAt(length);
+        GeoPoint nextPoint = positionAt(length);
+        positions[precision] = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
     }
     
     /*
@@ -131,25 +134,5 @@ public final class ElevationProfile {
         GeoPoint point = positionAt(x);
         
         return elevMod.slopeAt(point);
-    }
-    
-    private double[] coordinatesAt(double x) {
-        Preconditions.checkArgument(x <= length);
-        
-        double originLatitude = origin.latitude();
-        double originLongitude = origin.longitude();
-        double radianLength = Distance.toRadians(x);
-        double toMathAzimuth = Azimuth.toMath(azimuth);
-        
-        double pointLatitude = asin((sin(originLatitude) * cos(radianLength))
-                + (cos(originLatitude) * sin(radianLength) * cos(toMathAzimuth)));
-        
-        double pointLongitude = Azimuth.canonicalize((originLongitude
-                -asin((sin(toMathAzimuth)*sin(radianLength))
-                        /cos(pointLatitude))+PI))-PI;
-        
-        double[] point = new double[] {x, pointLongitude, pointLatitude};
-        
-        return point;
     }
 }
