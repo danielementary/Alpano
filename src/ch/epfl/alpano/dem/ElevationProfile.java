@@ -25,6 +25,7 @@ public final class ElevationProfile {
     private GeoPoint origin;
     private double azimuth;
     private double length;
+    private int difference;
     
     private double[][] positions;
 
@@ -48,7 +49,7 @@ public final class ElevationProfile {
         this.azimuth = azimuth;
         this.length = length;
 
-        int difference = 4096;
+        difference = 4096;
         int precision = (int)Math.ceil(length/difference);
         positions = new double[precision+1][3];
         
@@ -74,20 +75,21 @@ public final class ElevationProfile {
     public double elevationAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
         
-        double[] lowerBound = new double[]{0, 0, 0};
-        double[] upperBound = new double[]{length, Math2.PI2, Math2.PI2};
-        
-        for (double[] tuple : positions) {
-            if (tuple[0] <= x && tuple[0] >= lowerBound[0]) {
-                lowerBound = tuple;
-            }
-            
-            if (tuple[0] >= x && tuple[0] <= upperBound[0]) {
-                upperBound = tuple;
-            }
-        }
+        double[] lowerBound;
+        double[] upperBound;
         
         double xPoint;
+        
+        int indexLowBound = (int)Math.ceil(x/difference);
+        
+        lowerBound = positions[indexLowBound];
+        
+        if (indexLowBound+1 > positions.length-1) {
+            lowerBound = positions[indexLowBound-1];
+            upperBound = positions[indexLowBound];
+        } else {
+            upperBound = positions[indexLowBound+1];
+        }
         
         if (upperBound[0]-lowerBound[0] == 0) {
             xPoint = 1;
