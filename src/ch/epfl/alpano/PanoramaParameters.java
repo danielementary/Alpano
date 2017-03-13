@@ -103,8 +103,8 @@ public class PanoramaParameters {
     public double azimuthForX(double x) {
         Preconditions.checkArgument(x >= 0 && x < width);
         
-        //a completer
+        double aziPerUnit = horizontalFieldOfView/width;
         
-        return 0.0;
+        return centerAzimuth*x*aziPerUnit;
     }
 }
