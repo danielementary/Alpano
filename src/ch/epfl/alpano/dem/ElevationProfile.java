@@ -53,15 +53,28 @@ public final class ElevationProfile {
         positions = new double[positionLength+1][3];
         
         double initLength = 0; 
-        for (int i = 0; i < positionLength; ++i) {
-            GeoPoint nextPoint = positionAt(initLength);
-            double[] nextArray = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
+        for (int i = 0; i <= positionLength; ++i) {
+           
+            
+            double originLatitude = origin.latitude();
+            double originLongitude = origin.longitude();
+            double radianLength = Distance.toRadians(initLength);
+            double toMathAzimuth = Azimuth.toMath(azimuth);
+            
+            double pointLatitude = asin((sin(originLatitude) * cos(radianLength))
+                    + (cos(originLatitude) * sin(radianLength) * cos(toMathAzimuth)));
+            
+            double pointLongitude = Azimuth.canonicalize((originLongitude
+                    -asin((sin(toMathAzimuth)*sin(radianLength))
+                            /cos(pointLatitude))+PI))-PI;
+            
+            double[] nextArray = new double[] {initLength, pointLongitude, pointLatitude};
             positions[i] = nextArray;
             initLength += DIFFERENCE;
         }
         
-        GeoPoint nextPoint = positionAt(length);
-        positions[positionLength] = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
+//        GeoPoint nextPoint = positionAt(initLength);
+//        positions[positionLength] = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
     }
     
     /*
@@ -77,50 +90,31 @@ public final class ElevationProfile {
     public double elevationAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
         
-        double[] lowerBound;
-        double[] upperBound;
-        
-        double xPoint;
-        
-        int indexLowBound = (int)Math.ceil(x/DIFFERENCE);
-        
-        lowerBound = positions[indexLowBound];
-        
-        if (indexLowBound+1 > positions.length-1) {
-            lowerBound = positions[indexLowBound-1];
-            upperBound = positions[indexLowBound];
-        } else {
-            upperBound = positions[indexLowBound+1];
-        }
-        
-        if (upperBound[0]-lowerBound[0] == 0) {
-            xPoint = 1;
-        } else {
-            xPoint = (x-lowerBound[0])/(upperBound[0]-lowerBound[0]);
-        }
-
-        double pointLongitude = Math2.lerp(lowerBound[1], upperBound[1], xPoint);
-        double pointLatitude = Math2.lerp(lowerBound[2], upperBound[2], xPoint);
-        
-        GeoPoint point = new GeoPoint(pointLongitude, pointLatitude);
+        GeoPoint point = positionAt(x);
         
         return elevMod.elevationAt(point);
     }
     
     public GeoPoint positionAt(double x) {
-        Preconditions.checkArgument(x <= length);
+        Preconditions.checkArgument(x <= length && x >= 0);
         
-        double originLatitude = origin.latitude();
-        double originLongitude = origin.longitude();
-        double radianLength = Distance.toRadians(x);
-        double toMathAzimuth = Azimuth.toMath(azimuth);
+        double[] lowerBound;
+        double[] upperBound;
         
-        double pointLatitude = asin((sin(originLatitude) * cos(radianLength))
-                + (cos(originLatitude) * sin(radianLength) * cos(toMathAzimuth)));
+        double xPoint;
         
-        double pointLongitude = Azimuth.canonicalize((originLongitude
-                -asin((sin(toMathAzimuth)*sin(radianLength))
-                        /cos(pointLatitude))+PI))-PI;
+        int indexLowBound = (int)Math.floor(x/DIFFERENCE);
+        int indexUpBound = indexLowBound+1;
+        if(indexUpBound > positions.length -1){indexUpBound -=1;
+            }
+        
+        lowerBound = positions[indexLowBound];
+        upperBound = positions[indexUpBound];
+        
+        xPoint = (x/DIFFERENCE-indexLowBound);
+        
+        double pointLongitude = Math2.lerp(lowerBound[1], upperBound[1], xPoint);
+        double pointLatitude = Math2.lerp(lowerBound[2], upperBound[2], xPoint);
         
         GeoPoint point = new GeoPoint(pointLongitude, pointLatitude);
         
