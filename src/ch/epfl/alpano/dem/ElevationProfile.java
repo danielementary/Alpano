@@ -25,9 +25,11 @@ public final class ElevationProfile {
     private GeoPoint origin;
     private double azimuth;
     private double length;
-    private final int DIFFERENCE = 4096;
     
-    private double[][] positions;
+    //distance between points we really calculate the altitude
+    private final int DELTA = 4096;
+    //array for saving calculated points
+    private double[][] points;
 
     /**
      * represents an altimetric profile corresponding to a great circle
@@ -48,17 +50,17 @@ public final class ElevationProfile {
         this.origin = origin;
         this.azimuth = azimuth;
         this.length = length;
-
-        int positionLength = (int)Math.ceil(length/DIFFERENCE);
-        positions = new double[positionLength+1][3];
         
-        double initLength = 0; 
+        //length of array containing all points
+        int positionLength = (int)Math.ceil(length/DELTA);
+        points = new double[positionLength][3];
+        
+        //calculating and filling the array
+        double interLength = 0; 
         for (int i = 0; i <= positionLength; ++i) {
-           
-            
             double originLatitude = origin.latitude();
             double originLongitude = origin.longitude();
-            double radianLength = Distance.toRadians(initLength);
+            double radianLength = Distance.toRadians(interLength);
             double toMathAzimuth = Azimuth.toMath(azimuth);
             
             double pointLatitude = asin((sin(originLatitude) * cos(radianLength))
@@ -68,25 +70,18 @@ public final class ElevationProfile {
                     -asin((sin(toMathAzimuth)*sin(radianLength))
                             /cos(pointLatitude))+PI))-PI;
             
-            double[] nextArray = new double[] {initLength, pointLongitude, pointLatitude};
-            positions[i] = nextArray;
-            initLength += DIFFERENCE;
+            double[] nextArray = new double[] {interLength, pointLongitude, pointLatitude};
+            points[i] = nextArray;
+            
+            interLength += DELTA;
         }
-        
-//        GeoPoint nextPoint = positionAt(initLength);
-//        positions[positionLength] = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
     }
     
-    /*
-    public double elevationAt(double x) {
-        Preconditions.checkArgument(x <= length && x >= 0);
-        
-        GeoPoint point = positionAt(x);
-        
-        return elevMod.elevationAt(point);
-    }
-    */
-    
+    /**
+     * calculating the elevation at length x
+     * @param x distance in meter to origin
+     * @return the elevation as a double
+     */
     public double elevationAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
         
@@ -95,6 +90,11 @@ public final class ElevationProfile {
         return elevMod.elevationAt(point);
     }
     
+    /**
+     * calculates a GeoPoint situated at distance x of origin
+     * @param x distance in meter to origin
+     * @return corresponding GeoPoint
+     */
     public GeoPoint positionAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
         
@@ -103,15 +103,17 @@ public final class ElevationProfile {
         
         double xPoint;
         
-        int indexLowBound = (int)Math.floor(x/DIFFERENCE);
+        int indexLowBound = (int)Math.floor(x/DELTA);
         int indexUpBound = indexLowBound+1;
-        if(indexUpBound > positions.length -1){indexUpBound -=1;
-            }
         
-        lowerBound = positions[indexLowBound];
-        upperBound = positions[indexUpBound];
+        if(indexUpBound > points.length-1){
+            indexUpBound -= 1;
+        }
         
-        xPoint = (x/DIFFERENCE-indexLowBound);
+        lowerBound = points[indexLowBound];
+        upperBound = points[indexUpBound];
+        
+        xPoint = (x/DELTA-indexLowBound);
         
         double pointLongitude = Math2.lerp(lowerBound[1], upperBound[1], xPoint);
         double pointLatitude = Math2.lerp(lowerBound[2], upperBound[2], xPoint);
@@ -121,6 +123,11 @@ public final class ElevationProfile {
         return point;
     }
     
+    /**
+     * calculating the slope at length x
+     * @param x distance in meter to origin
+     * @return the slope as a double
+     */
     public double slopeAt(double x) {
         Preconditions.checkArgument(x <= length && x >= 0);
         
