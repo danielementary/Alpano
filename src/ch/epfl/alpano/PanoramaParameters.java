@@ -89,4 +89,22 @@ public class PanoramaParameters {
     public int height() {
         return height;
     }
+    
+    /**
+     * @return the verticalFieldOfView
+     */
+    public double verticalFieldOfView() {
+        double verticalFieldOfView = (height-1)/(width-1);
+        verticalFieldOfView *= horizontalFieldOfView;
+        
+        return verticalFieldOfView;
+    }
+    
+    public double azimuthForX(double x) {
+        Preconditions.checkArgument(x >= 0 && x < width);
+        
+        //a completer
+        
+        return 0.0;
+    }
 }
