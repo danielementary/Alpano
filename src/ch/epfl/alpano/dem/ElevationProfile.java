@@ -38,7 +38,7 @@ public final class ElevationProfile {
      * @param azimuth
      * @param length
      */
-    ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin,
+    public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin,
                                               double azimuth, double length) {
         requireNonNull(elevationModel);
         requireNonNull(origin);
