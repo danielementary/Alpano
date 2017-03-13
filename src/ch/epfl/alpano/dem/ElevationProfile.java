@@ -25,7 +25,7 @@ public final class ElevationProfile {
     private GeoPoint origin;
     private double azimuth;
     private double length;
-    private int difference;
+    private final int DIFFERENCE = 4096;
     
     private double[][] positions;
 
@@ -49,20 +49,19 @@ public final class ElevationProfile {
         this.azimuth = azimuth;
         this.length = length;
 
-        difference = 4096;
-        int precision = (int)Math.ceil(length/difference);
-        positions = new double[precision+1][3];
+        int positionLength = (int)Math.ceil(length/DIFFERENCE);
+        positions = new double[positionLength+1][3];
         
         double initLength = 0; 
-        for (int i = 0; i < precision; ++i) {
+        for (int i = 0; i < positionLength; ++i) {
             GeoPoint nextPoint = positionAt(initLength);
             double[] nextArray = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
             positions[i] = nextArray;
-            initLength += difference;
+            initLength += DIFFERENCE;
         }
         
         GeoPoint nextPoint = positionAt(length);
-        positions[precision] = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
+        positions[positionLength] = new double[] {initLength, nextPoint.longitude(), nextPoint.latitude()};
     }
     
     /*
@@ -83,7 +82,7 @@ public final class ElevationProfile {
         
         double xPoint;
         
-        int indexLowBound = (int)Math.ceil(x/difference);
+        int indexLowBound = (int)Math.ceil(x/DIFFERENCE);
         
         lowerBound = positions[indexLowBound];
         
