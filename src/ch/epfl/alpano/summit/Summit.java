@@ -41,4 +41,9 @@ public final class Summit {
     public int getElevation() {
         return elevation;
     }
+    
+    @Override
+    public String toString(){
+        return String.format(name + " " + position.toString() + " " + elevation);
+    }
 }
