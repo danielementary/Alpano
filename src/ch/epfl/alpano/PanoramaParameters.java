@@ -137,4 +137,11 @@ public class PanoramaParameters {
         }
         
     }
+    
+    public double yForAltitude(double a){
+        double unitsPerAzi = height/verticalFieldOfView();
+        
+        return (height/2) - a*unitsPerAzi;
+        
+    }
 }
