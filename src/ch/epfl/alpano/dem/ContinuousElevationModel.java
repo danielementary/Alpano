@@ -49,7 +49,7 @@ public final class ContinuousElevationModel {
         double x = longitudeIndex-longitudeIndexDown;
         double y = latitudeIndex-latitudeIndexDown;
         
-        double elevation = Math2.bilerp(elev00, elev10, elev10, elev11, x, y) ;
+        double elevation = Math2.bilerp(elev00, elev10, elev01, elev11, x, y) ;
         
         return elevation;
     }

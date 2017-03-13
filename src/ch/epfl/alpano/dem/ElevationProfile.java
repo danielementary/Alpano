@@ -101,11 +101,7 @@ public final class ElevationProfile {
         double xPoint;
         
         int indexLowBound = (int)Math.floor(x/DELTA);
-        int indexUpBound = indexLowBound+1;
-        
-        if(indexUpBound > points.length-1){
-            indexUpBound -= 1;
-        }
+        int indexUpBound = (int)Math.ceil(x/DELTA);
         
         lowerBound = points[indexLowBound];
         upperBound = points[indexUpBound];
