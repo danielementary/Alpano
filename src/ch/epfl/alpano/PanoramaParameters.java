@@ -105,6 +105,6 @@ public class PanoramaParameters {
         
         double aziPerUnit = horizontalFieldOfView/width;
         
-        return centerAzimuth*x*aziPerUnit;
+        return centerAzimuth-x*aziPerUnit;
     }
 }
