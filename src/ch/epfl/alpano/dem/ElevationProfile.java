@@ -53,14 +53,13 @@ public final class ElevationProfile {
         
         //length of array containing all points
         int positionLength = (int)Math.ceil(length/DELTA);
-        points = new double[positionLength][3];
+        points = new double[positionLength+1][3];
         
         //calculating and filling the array
-        double interLength = 0; 
         for (int i = 0; i <= positionLength; ++i) {
             double originLatitude = origin.latitude();
             double originLongitude = origin.longitude();
-            double radianLength = Distance.toRadians(interLength);
+            double radianLength = Distance.toRadians(DELTA*i);
             double toMathAzimuth = Azimuth.toMath(azimuth);
             
             double pointLatitude = asin((sin(originLatitude) * cos(radianLength))
@@ -70,10 +69,8 @@ public final class ElevationProfile {
                     -asin((sin(toMathAzimuth)*sin(radianLength))
                             /cos(pointLatitude))+PI))-PI;
             
-            double[] nextArray = new double[] {interLength, pointLongitude, pointLatitude};
+            double[] nextArray = new double[] {pointLongitude, pointLatitude};
             points[i] = nextArray;
-            
-            interLength += DELTA;
         }
     }
     
@@ -115,8 +112,8 @@ public final class ElevationProfile {
         
         xPoint = (x/DELTA-indexLowBound);
         
-        double pointLongitude = Math2.lerp(lowerBound[1], upperBound[1], xPoint);
-        double pointLatitude = Math2.lerp(lowerBound[2], upperBound[2], xPoint);
+        double pointLongitude = Math2.lerp(lowerBound[0], upperBound[0], xPoint);
+        double pointLatitude = Math2.lerp(lowerBound[1], upperBound[1], xPoint);
         
         GeoPoint point = new GeoPoint(pointLongitude, pointLatitude);
         
