@@ -19,9 +19,13 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
         requireNonNull(dem1);
         requireNonNull(dem2);
-
-        this.dem1 = dem1;
-        this.dem2 = dem2;
+        
+        if (dem1.extent().isUnionableWith(dem2.extent())){
+            this.dem1 = dem1;
+            this.dem2 = dem2;
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
     
     @Override
