@@ -94,7 +94,6 @@ public class PanoramaParameters {
      * @return the verticalFieldOfView
      */
     public double verticalFieldOfView() {
-       Preconditions.checkArgument(width>1, "Really Bro' !! ? 1 pixel for width ?!");
         
         double verticalFieldOfView = (height-1)/(width-1);
         verticalFieldOfView *= horizontalFieldOfView;
