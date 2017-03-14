@@ -124,7 +124,7 @@ public class PanoramaParameters {
     }
     
     public double altitudeForY(double y){
-        Preconditions.checkArgument(y >= 0 && y < height/2 + observerElevation);
+        Preconditions.checkArgument(y >= 0 && y < height);
         
         double aziPerUnits = verticalFieldOfView()/height;
         
@@ -143,5 +143,17 @@ public class PanoramaParameters {
         
         return (height/2) - a*unitsPerAzi;
         
+    }
+    
+    boolean isValidSampleIndex(int x, int y){
+        if ((x>=0 && x < width) && (y >= 0 && y < height)){
+            return true;
+        }
+        return false;
+    }
+    
+    int linearSampleIndex(int x, int y){
+        
+        return y*width + x;
     }
 }
