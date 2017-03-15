@@ -108,18 +108,22 @@ public class PanoramaParameters {
     public double azimuthForX(double x) {
         Preconditions.checkArgument(x >= 0 && x < width);
         
-        double aziPerUnit = horizontalFieldOfView/width;
+        double aziPerUnit = horizontalFieldOfView/(width-1);
         
         
         return Azimuth.canonicalize((centerAzimuth - (horizontalFieldOfView/2)) + x*aziPerUnit);
     }
     
     public double xForAzimuth(double a){
-        Preconditions.checkArgument(Azimuth.isCanonical(a));
+        double az = Azimuth.canonicalize(a);
         
-        double uniPerAzimuth = width/horizontalFieldOfView;
+        Preconditions.checkArgument(Math.abs(Math2.angularDistance(az, centerAzimuth)) <=
+                Math.abs(Math2.angularDistance(centerAzimuth, centerAzimuth-(horizontalFieldOfView/2)))); 
         
-        double angle = a - (centerAzimuth - (horizontalFieldOfView/2));
+        
+        double uniPerAzimuth = (width-1)/horizontalFieldOfView;
+        
+        double angle = az - (centerAzimuth - (horizontalFieldOfView/2));
         
         return uniPerAzimuth * angle;
     }
@@ -140,6 +144,9 @@ public class PanoramaParameters {
     }
     
     public double yForAltitude(double a){
+        
+        Preconditions.checkArgument(a>=(-1)*verticalFieldOfView()/2 && a<= verticalFieldOfView()/2);
+        
         double unitsPerAzi = height/verticalFieldOfView();
         
         return (height/2) - a*unitsPerAzi;
