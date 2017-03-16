@@ -26,7 +26,13 @@ public class PanoramaParametersTest {
 
     @Test
     public void testXForAzimuth() {
-       PanoramaParameters pano = new PanoramaParameters(new GeoPoint(0,0),0, Math.PI, Math2.PI2, 100, 361, 360);
+        PanoramaParameters pano = new PanoramaParameters(new GeoPoint(0,0),0, Math.PI, Math2.PI2, 100, 361, 360);  
+        PanoramaParameters pano2 = new PanoramaParameters(new GeoPoint(0,0),0, Math.PI/2, Math.PI, 100, 181, 360);
+        PanoramaParameters pano3 = new PanoramaParameters(new GeoPoint(0,0),0, Math.PI/4, Math.PI, 100, 181, 360);
+        
+        assertEquals(90, pano.xForAzimuth(Math.PI/2), 0.0);
+        assertEquals(45, pano2.xForAzimuth(Math.PI/4), 0.0);
+        assertEquals(46, pano3.xForAzimuth(Math2.PI2/360), 0.0);
     }
 
     @Test
