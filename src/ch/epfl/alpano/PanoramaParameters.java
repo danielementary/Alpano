@@ -95,11 +95,13 @@ public class PanoramaParameters {
      */
     public double verticalFieldOfView() {
         
-        double verticalFieldOfView = (height-1)/(width-1);
+        double verticalFieldOfView = (double)(height-1)/(width-1);
         verticalFieldOfView *= horizontalFieldOfView;
         
         return verticalFieldOfView;
     }
+    
+    
     /**
      * give the azimuth for a given pixel x
      * @param x pixel of the image
@@ -113,6 +115,8 @@ public class PanoramaParameters {
         
         return Azimuth.canonicalize((centerAzimuth - (horizontalFieldOfView/2)) + x*aziPerUnit);
     }
+    
+    
     
     public double xForAzimuth(double a){
         double az = Azimuth.canonicalize(a);
@@ -131,15 +135,9 @@ public class PanoramaParameters {
     public double altitudeForY(double y){
         Preconditions.checkArgument(y >= 0 && y < height);
         
-        double aziPerUnits = verticalFieldOfView()/height;
-        
-        if (y >= height/2){
-            double delta = y- (height/2);
-            return delta*aziPerUnits*(-1);
-        }else{
-            double delta = (height/2)-y;
-            return delta*aziPerUnits;
-        }
+        double aziPerUnits = verticalFieldOfView()/(height-1);
+
+        return ((height-1)/2)*aziPerUnits -y*aziPerUnits;
         
     }
     
@@ -147,9 +145,9 @@ public class PanoramaParameters {
         
         Preconditions.checkArgument(a>=(-1)*verticalFieldOfView()/2 && a<= verticalFieldOfView()/2);
         
-        double unitsPerAzi = height/verticalFieldOfView();
+        double unitsPerAzi = (height-1)/verticalFieldOfView();
         
-        return (height/2) - a*unitsPerAzi;
+        return ((height-1)/2) - a*unitsPerAzi;
         
     }
     
