@@ -27,7 +27,7 @@ public class PanoramaParameters {
         
         requireNonNull(observerPosition);
         Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth));
-        Preconditions.checkArgument(horizontalFieldOfView > 0 && horizontalFieldOfView < Math2.PI2);
+        Preconditions.checkArgument(horizontalFieldOfView > 0 && horizontalFieldOfView <= Math2.PI2);
         Preconditions.checkArgument(maxDistance > 0);
         Preconditions.checkArgument(width > 0);
         Preconditions.checkArgument(height > 0);
