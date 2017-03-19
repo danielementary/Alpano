@@ -1,10 +1,11 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        13 mars 2017
- */
-
-
 package ch.epfl.alpano.summit;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
 
 import java.io.BufferedReader;
 import java.io.File;

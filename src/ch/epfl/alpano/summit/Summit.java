@@ -15,6 +15,12 @@ public final class Summit {
     private GeoPoint position;
     private int elevation;
     
+    /**
+     * Creates an instance of a Summit with a name, a position and an elevation
+     * @param name
+     * @param position
+     * @param elevation
+     */
     public Summit(String name, GeoPoint position, int elevation) {
         this.name = name;
         this.position = position;
@@ -42,6 +48,10 @@ public final class Summit {
         return elevation;
     }
     
+    /**
+     * display the summit as "EIGER (8.0053,46.5775) 3970"
+     * name (position) elevation
+     */
     @Override
     public String toString(){
         return String.format(name + " " + position.toString() + " " + elevation);
