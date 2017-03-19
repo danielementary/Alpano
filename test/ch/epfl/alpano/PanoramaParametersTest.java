@@ -1,10 +1,11 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        15 mars 2017
- */
-
-
 package ch.epfl.alpano;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
 
 import static org.junit.Assert.*;
 

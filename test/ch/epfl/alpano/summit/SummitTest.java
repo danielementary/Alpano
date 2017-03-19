@@ -22,6 +22,7 @@ public class SummitTest {
         Summit summit = new Summit("EIGER", point, 3970);
         
         assertEquals("EIGER (8.0053,46.5775) 3970", summit.toString());
+        
     }
 
 }

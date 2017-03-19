@@ -18,14 +18,17 @@ import org.junit.Test;
 public class GazetteerParserTest{
 
     File file = new File("alps.txt");
+    
     @Test
-    public void test() throws IOException{
+    public void test() throws IOException {
+        List<Summit> summitsList = GazetteerParser.readSummitsFrom(file);
         
-        List<Summit> list = GazetteerParser.readSummitsFrom(file);
-        assertEquals("MONTE CURT (7.4200,45.1403) 1325", list.get(0).toString());
-        assertEquals("LE MOLESON (7.0172,46.5489) 2002", list.get(6203).toString());
+        assertEquals("MONTE CURT (7.4200,45.1403) 1325", summitsList.get(0).toString());
+        assertEquals("LE MOLESON (7.0172,46.5489) 2002", summitsList.get(6203).toString());
         
-        assertEquals("LE MOLESON", list.get(6203).name());
+        for (Summit sum : summitsList) {
+            System.out.println(sum.toString());
+        }
         
     }
 
