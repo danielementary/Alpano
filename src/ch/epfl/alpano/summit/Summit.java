@@ -24,21 +24,21 @@ public final class Summit {
     /**
      * @return the name
      */
-    public String getName() {
+    public String name() {
         return name;
     }
 
     /**
      * @return the position
      */
-    public GeoPoint getPosition() {
+    public GeoPoint position() {
         return position;
     }
 
     /**
      * @return the elevation
      */
-    public int getElevation() {
+    public int elevation() {
         return elevation;
     }
     
