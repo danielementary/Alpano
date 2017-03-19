@@ -9,7 +9,7 @@ package ch.epfl.alpano;
 
 import static java.util.Objects.requireNonNull;
 
-public class PanoramaParameters {
+public final class PanoramaParameters {
     GeoPoint observerPosition;
     //meters
     int observerElevation;
@@ -21,6 +21,16 @@ public class PanoramaParameters {
     int width;
     int height;
     
+    /**
+     * instantiate a panorama
+     * @param observerPosition
+     * @param observerElevation 
+     * @param centerAzimuth
+     * @param horizontalFieldOfView
+     * @param maxDistance
+     * @param width
+     * @param height
+     */
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation,
             double centerAzimuth, double horizontalFieldOfView, int maxDistance,
             int width, int height) {
@@ -116,14 +126,15 @@ public class PanoramaParameters {
         return Azimuth.canonicalize((centerAzimuth - (horizontalFieldOfView/2)) + x*aziPerUnit);
     }
     
-    
-    
-    public double xForAzimuth(double a){
+    /**
+     * @param a horizontal azimuth of pixel
+     * @return horizontal corresponding angle
+     */
+    public double xForAzimuth(double a) {
         double az = Azimuth.canonicalize(a);
         
         Preconditions.checkArgument(Math.abs(Math2.angularDistance(az, centerAzimuth)) <=
                 Math.abs(Math2.angularDistance(centerAzimuth, centerAzimuth-(horizontalFieldOfView/2)))); 
-        
         
         double uniPerAzimuth = (width-1)/horizontalFieldOfView;
         
@@ -132,7 +143,12 @@ public class PanoramaParameters {
         return uniPerAzimuth * angle;
     }
     
-    public double altitudeForY(double y){
+    /**
+     * give the azimuth for a given pixel y
+     * @param y pixel of the image
+     * @return the elevation
+     */
+    public double altitudeForY(double y) {
         Preconditions.checkArgument(y >= 0 && y < height);
         
         double aziPerUnits = verticalFieldOfView()/(height-1);
@@ -141,8 +157,11 @@ public class PanoramaParameters {
         
     }
     
-    public double yForAltitude(double a){
-        
+    /**
+     * @param an elevation of pixel
+     * @return vertical corresponding angle
+     */
+    public double yForAltitude(double a) {
         Preconditions.checkArgument(a>=(-1)*verticalFieldOfView()/2 && a<= verticalFieldOfView()/2);
         
         double unitsPerAzi = (height-1)/verticalFieldOfView();
@@ -151,15 +170,27 @@ public class PanoramaParameters {
         
     }
     
-    boolean isValidSampleIndex(int x, int y){
-        if ((x>=0 && x < width) && (y >= 0 && y < height)){
+    /**
+     * checks if horizontal index x and vertical index y are in the bounds
+     * @param x horizontal index
+     * @param y vertical index
+     * @return boolean if yes
+     */
+    protected boolean isValidSampleIndex(int x, int y) {
+        if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
     
-    int linearSampleIndex(int x, int y){
-        
+    /**
+     * one-dimension index
+     * @param x horizontal index
+     * @param y vertical index
+     * @return int
+     */
+    protected int linearSampleIndex(int x, int y) {
         return y*width + x;
     }
 }
