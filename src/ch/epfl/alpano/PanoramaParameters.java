@@ -176,7 +176,8 @@ public final class PanoramaParameters {
      * @param y vertical index
      * @return boolean if yes
      */
-    protected boolean isValidSampleIndex(int x, int y) {
+    //visibility by defaut -> only in the package
+    boolean isValidSampleIndex(int x, int y) {
         if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
             return true;
         } else {
@@ -190,7 +191,8 @@ public final class PanoramaParameters {
      * @param y vertical index
      * @return int
      */
-    protected int linearSampleIndex(int x, int y) {
+  //visibility by defaut -> only in the package
+    int linearSampleIndex(int x, int y) {
         return y*width + x;
     }
 }
