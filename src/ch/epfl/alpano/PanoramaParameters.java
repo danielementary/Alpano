@@ -10,16 +10,16 @@ package ch.epfl.alpano;
 import static java.util.Objects.requireNonNull;
 
 public final class PanoramaParameters {
-    GeoPoint observerPosition;
+    private GeoPoint observerPosition;
     //meters
-    int observerElevation;
+    private int observerElevation;
     //radians
-    double centerAzimuth;
-    double horizontalFieldOfView;
+    private double centerAzimuth;
+    private double horizontalFieldOfView;
     //meters
-    int maxDistance;
-    int width;
-    int height;
+    private int maxDistance;
+    private int width;
+    private int height;
     
     /**
      * instantiate a panorama
