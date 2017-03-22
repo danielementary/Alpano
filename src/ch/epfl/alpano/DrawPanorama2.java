@@ -1,10 +1,4 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        21 mars 2017
- */
-
-
-package ch.epfl.alpano.dem;
+package ch.epfl.alpano;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -29,16 +23,19 @@ import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 
 final class DrawPanorama2 {
     final static File HGT_FILE = new File("N46E007.hgt");
+    final static File HGT_FILE2 = new File("N46E006.hgt");
+    final static File HGT_FILE3 = new File("N45E007.hgt");
+    final static File HGT_FILE4 = new File("N45E006.hgt");
 
     final static int IMAGE_WIDTH = 3000;
     final static int IMAGE_HEIGHT = 1200;
 
-    final static double ORIGIN_LON = Math.toRadians(7.05097);
-    final static double ORIGIN_LAT = Math.toRadians(46.62305);
-    final static int ELEVATION = 800;
-    final static double CENTER_AZIMUTH = Math.toRadians(174.95);
+    final static double ORIGIN_LON = Math.toRadians(6.88440);
+    final static double ORIGIN_LAT = Math.toRadians(46.56642);
+    final static int ELEVATION = 950;
+    final static double CENTER_AZIMUTH = Math.toRadians(178.18);
     final static double HORIZONTAL_FOV = Math.toRadians(80);
-    final static int MAX_DISTANCE = 100_000;
+    final static int MAX_DISTANCE = 150_000;
 
     final static PanoramaParameters PARAMS =
       new PanoramaParameters(new GeoPoint(ORIGIN_LON,
@@ -53,10 +50,27 @@ final class DrawPanorama2 {
     public static void main(String[] as) throws Exception {
         try (DiscreteElevationModel dDEM =
                 new HgtDiscreteElevationModel(HGT_FILE)) {
-             ContinuousElevationModel cDEM =
-               new ContinuousElevationModel(dDEM);
-             Panorama p = new PanoramaComputer(cDEM)
-               .computePanorama(PARAMS);
+//             ContinuousElevationModel cDEM =
+//               new ContinuousElevationModel(dDEM);
+//             Panorama p = new PanoramaComputer(cDEM)
+//               .computePanorama(PARAMS);
+             try{
+                 DiscreteElevationModel dDEM2 =
+                         new HgtDiscreteElevationModel(HGT_FILE2);
+                 DiscreteElevationModel dDEM3 =
+                         new HgtDiscreteElevationModel(HGT_FILE3);
+                 DiscreteElevationModel dDEM4 =
+                         new HgtDiscreteElevationModel(HGT_FILE4);
+                 DiscreteElevationModel dDEM12 = dDEM.union(dDEM2);
+                 DiscreteElevationModel dDEM34 = dDEM3.union(dDEM4);
+                 
+                 DiscreteElevationModel dDEM_final = dDEM12.union(dDEM34);
+                 
+                 ContinuousElevationModel cDEM =
+                       new ContinuousElevationModel(dDEM_final);
+                     Panorama p = new PanoramaComputer(cDEM)
+                       .computePanorama(PARAMS);
+             
 
              BufferedImage i =
                new BufferedImage(IMAGE_WIDTH,
@@ -72,9 +86,19 @@ final class DrawPanorama2 {
                  i.setRGB(x, y, c);
                }
              }
+             
 
         ImageIO.write(i, "png", new File("test.png"));
+        
+        dDEM2.close();
+        dDEM3.close();
+        dDEM4.close();
+        dDEM12.close();
+        dDEM34.close();
+      }finally{
+        
       }
+        }
     }
     
     private static int gray(double v) {
