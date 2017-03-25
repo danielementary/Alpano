@@ -1,4 +1,4 @@
-package ch.epfl.test;
+package ch.epfl.alpano.ownTest;
 
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;

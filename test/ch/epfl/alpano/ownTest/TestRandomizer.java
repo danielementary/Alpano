@@ -1,4 +1,4 @@
-package ch.epfl.test;
+package ch.epfl.alpano.ownTest;
 
 import java.util.Random;
 

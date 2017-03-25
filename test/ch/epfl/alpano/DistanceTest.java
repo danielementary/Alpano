@@ -1,14 +1,7 @@
 package ch.epfl.alpano;
 
-/**
- * 
- * @author Samuel Chassot (270955)
- * @author Daniel Filipe Nunes Silva (275197)
- *
- */
-
-import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.test.TestRandomizer.newRandom;
+import static ch.epfl.alpano.ownTest.TestRandomizer.RANDOM_ITERATIONS;
+import static ch.epfl.alpano.ownTest.TestRandomizer.newRandom;
 import static java.lang.Math.PI;
 import static java.lang.Math.scalb;
 import static org.junit.Assert.assertEquals;

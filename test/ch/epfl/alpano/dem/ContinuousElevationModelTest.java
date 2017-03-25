@@ -1,7 +1,7 @@
 package ch.epfl.alpano.dem;
 
-import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.test.TestRandomizer.newRandom;
+import static ch.epfl.alpano.ownTest.TestRandomizer.RANDOM_ITERATIONS;
+import static ch.epfl.alpano.ownTest.TestRandomizer.newRandom;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;

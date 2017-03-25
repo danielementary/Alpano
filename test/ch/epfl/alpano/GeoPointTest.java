@@ -43,22 +43,22 @@ public class GeoPointTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void constructorFailsOnBiggerOutOfBoundsValues() {
-        GeoPoint fake1 = new GeoPoint(PI+1, PI/2+1);
+        new GeoPoint(PI+1, PI/2+1);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void constructorFailsOnLowerOutOfBoundsValues() {
-        GeoPoint fake2 = new GeoPoint(-PI-1, -PI/2-1);
+        new GeoPoint(-PI-1, -PI/2-1);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void constructorFailsOnLongitudeLowerOutOfBoundsValues() {
-        GeoPoint fake3 = new GeoPoint(PI+1, PI/2);
+        new GeoPoint(PI+1, PI/2);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void constructorFailsOnLatitudeLowerOutOfBoundsValues() {
-        GeoPoint fake4 = new GeoPoint(PI, PI/2+1);
+        new GeoPoint(PI, PI/2+1);
     }
     
     @Test
