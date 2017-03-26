@@ -108,16 +108,16 @@ public interface Math2 {
         double currentMaxX = minX + dX;
         
         do{
-            if (currentMaxX > maxX){
+            if (currentMaxX > maxX) {
                 currentMaxX = maxX;
             }
-            if(f.applyAsDouble(currentMinX) * f.applyAsDouble(currentMaxX) <= 0){
+            if (f.applyAsDouble(currentMinX) * f.applyAsDouble(currentMaxX) <= 0) {
                 return currentMaxX - dX;
             }
             
             currentMinX = currentMaxX;
             currentMaxX = currentMaxX + dX;
-        }while (currentMinX < maxX);
+        } while (currentMinX < maxX);
         
         return Double.POSITIVE_INFINITY;
     }

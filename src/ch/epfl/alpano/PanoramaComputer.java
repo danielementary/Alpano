@@ -28,17 +28,25 @@ public final class PanoramaComputer {
         double step = Math.scalb(1, 6);
         double delta = Math.scalb(1, 2);
         
+        double x;
+        double lowerBoundRoot;
+        
+        float distance;
+        float latitude;
+        float longitude;
+        float elevation;
+        float slope;
+        
         for (int i = 0 ; i < parameters.width() ; ++i) {
             int j = parameters.height()-1;
             
             ElevationProfile profile = new ElevationProfile(dem, parameters.observerPosition(),
                     parameters.azimuthForX(i), parameters.maxDistance());
             
-            double x = 0;
-            
+            x = 0;
             while (j >= 0 && x < Double.POSITIVE_INFINITY) {
                 
-               double lowerBoundRoot = Math2.firstIntervalContainingRoot(
+               lowerBoundRoot = Math2.firstIntervalContainingRoot(
                         rayToGroundDistance(profile, parameters.observerElevation(), 
                                 parameters.altitudeForY(j)),
                                 x, parameters.maxDistance(), step);
@@ -53,11 +61,11 @@ public final class PanoramaComputer {
                 }
                 
                 if (x < Double.POSITIVE_INFINITY) {
-                    float distance = (float) (x/(Math.cos(Math.abs(parameters.altitudeForY(j)))));
-                    float latitude = (float) profile.positionAt(x).latitude();
-                    float longitude = (float) profile.positionAt(x).longitude();
-                    float elevation = (float) profile.elevationAt(x);
-                    float slope = (float) profile.slopeAt(x);
+                    distance = (float) (x/(Math.cos(Math.abs(parameters.altitudeForY(j)))));
+                    latitude = (float) profile.positionAt(x).latitude();
+                    longitude = (float) profile.positionAt(x).longitude();
+                    elevation = (float) profile.elevationAt(x);
+                    slope = (float) profile.slopeAt(x);
                     
                     builder.setDistanceAt(i, j, distance);
                     builder.setLatitudeAt(i, j, latitude);
