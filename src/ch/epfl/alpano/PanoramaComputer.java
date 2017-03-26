@@ -40,7 +40,7 @@ public final class PanoramaComputer {
                 
                double lowerBoundRoot = Math2.firstIntervalContainingRoot(
                         rayToGroundDistance(profile, parameters.observerElevation(), 
-                                Math.tan(parameters.altitudeForY(j))),
+                                parameters.altitudeForY(j)),
                                 x, parameters.maxDistance(), step);
                
                 if (lowerBoundRoot < Double.POSITIVE_INFINITY) {
@@ -75,7 +75,7 @@ public final class PanoramaComputer {
     
     public static DoubleUnaryOperator rayToGroundDistance(ElevationProfile profile, double ray0, double raySlope) {
         return x -> {
-            return ray0 + x*raySlope - profile.elevationAt(x) + ((1-0.13)/(2*Distance.EARTH_RADIUS))*Math2.sq(x);
+            return ray0 + x*Math.tan(raySlope) - profile.elevationAt(x) + ((1-0.13)/(2*Distance.EARTH_RADIUS))*Math2.sq(x);
         };
     }
 }
