@@ -126,9 +126,6 @@ public final class PanoramaParameters {
         return Azimuth.canonicalize((centerAzimuth - (horizontalFieldOfView/2)) + x*aziPerUnit);
     }
 
-// changer ces 3 méthodes !!!
-    
-    
     /**
      * @param a horizontal azimuth of pixel
      * @return horizontal corresponding angle
@@ -143,7 +140,7 @@ public final class PanoramaParameters {
         
         double angle = az - (centerAzimuth - (horizontalFieldOfView/2));
         
-        return uniPerAzimuth * angle;
+        return uniPerAzimuth * Azimuth.canonicalize(Math2.angularDistance(angle, az));
     }
     
     /**
@@ -156,7 +153,7 @@ public final class PanoramaParameters {
         
         double aziPerUnits = verticalFieldOfView()/(height-1);
 
-        return ((height-1)/2)*aziPerUnits -y*aziPerUnits;
+        return verticalFieldOfView()/2 -y*aziPerUnits;
         
     }
     
@@ -169,7 +166,7 @@ public final class PanoramaParameters {
         
         double unitsPerAzi = (height-1)/verticalFieldOfView();
         
-        return ((height-1)/2) - a*unitsPerAzi;
+        return ((verticalFieldOfView()/2)-a)*unitsPerAzi;
         
     }
     
