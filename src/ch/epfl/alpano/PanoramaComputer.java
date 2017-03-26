@@ -46,7 +46,7 @@ public final class PanoramaComputer {
                 if (lowerBoundRoot < Double.POSITIVE_INFINITY) {
                     x = Math2.improveRoot(rayToGroundDistance(profile, 
                                     parameters.observerElevation(),
-                                    Math.tan(parameters.altitudeForY(j))),
+                                    parameters.altitudeForY(j)),
                                     lowerBoundRoot, lowerBoundRoot + step, delta);
                 } else {
                     x = lowerBoundRoot;
