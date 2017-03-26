@@ -62,10 +62,10 @@ public final class PanoramaComputer {
                 
                 if (x < Double.POSITIVE_INFINITY) {
                     distance = (float) (x/(Math.cos(Math.abs(parameters.altitudeForY(j)))));
-                    latitude = (float) profile.positionAt(distance).latitude();
-                    longitude = (float) profile.positionAt(distance).longitude();
-                    elevation = (float) profile.elevationAt(distance);
-                    slope = (float) profile.slopeAt(distance);
+                    latitude = (float) profile.positionAt(x).latitude();
+                    longitude = (float) profile.positionAt(x).longitude();
+                    elevation = (float) profile.elevationAt(x);
+                    slope = (float) profile.slopeAt(x);
                     
                     builder.setDistanceAt(i, j, distance);
                     builder.setLatitudeAt(i, j, latitude);
