@@ -28,7 +28,6 @@ final class DrawPanorama {
 
     final static int IMAGE_WIDTH = 500;
     final static int IMAGE_HEIGHT = 200;
-    
 
     final static double ORIGIN_LON = toRadians(7.65);
     final static double ORIGIN_LAT = toRadians(46.73);
@@ -73,10 +72,10 @@ final class DrawPanorama {
         ImageIO.write(i, "png", new File("niesen.png"));
       }
     }
-    
+
     private static int gray(double v) {
         double clampedV = max(0, min(v, 1));
         int gray = (int) (255.9999 * clampedV);
-       return (gray << 16) | (gray << 8) | gray;
+        return (gray << 16) | (gray << 8) | gray;
       }
   }
