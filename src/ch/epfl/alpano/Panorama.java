@@ -44,14 +44,20 @@ public final class Panorama {
         this.slope = slope;
     }
     
+    /**
+     * gives the parameters
+     * @return the parameters in a PanoramaParameters instance
+     */
     public PanoramaParameters parameters() {
         return parameters;
     }
     
-    /*
-     * the following methods evaluate the index with a
-     * linearSampledIndex(x,y) and return the corresponding
-     * value 
+    
+    /**
+     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * @param x
+     * @param y
+     * @return the for x,y or throw IndexOutOfBoundException if x,y are not in the array's bounds
      */
     public float distanceAt(int x, int y) {
     	if(!parameters.isValidSampleIndex(x,y)) {
@@ -63,6 +69,13 @@ public final class Panorama {
         return distance[index];
     }
     
+    /**
+     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * @param x
+     * @param y
+     * @param d what is returned if x,y are not in the array's bounds
+     * @return the distance for x,y
+     */
     public float distanceAt(int x, int y, float d) {
         if(!parameters.isValidSampleIndex(x,y)) {
             return d;
@@ -73,6 +86,12 @@ public final class Panorama {
         return distance[index];
     }
     
+    /**
+     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * @param x
+     * @param y
+     * @return the longitude for x,y 
+     */
     public float longitudeAt(int x, int y) {
     	if(!parameters.isValidSampleIndex(x,y)) {
     		throw new IndexOutOfBoundsException();
@@ -83,6 +102,12 @@ public final class Panorama {
         return longitude[index];
     }
 
+    /**
+     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * @param x
+     * @param y
+     * @return the latitude for x,y 
+     */
     public float latitudeAt(int x, int y) {
     	if(!parameters.isValidSampleIndex(x,y)) {
     		throw new IndexOutOfBoundsException();
@@ -93,6 +118,12 @@ public final class Panorama {
         return latitude[index];
     }
 
+    /**
+     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * @param x
+     * @param y
+     * @return the elevation for x,y 
+     */
     public float elevationAt(int x, int y) {
     	if(!parameters.isValidSampleIndex(x,y)) {
     		throw new IndexOutOfBoundsException();
@@ -103,6 +134,12 @@ public final class Panorama {
     	return elevation[index];
     }
 
+    /**
+     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * @param x
+     * @param y
+     * @return the slope for x,y 
+     */
     public float slopeAt(int x, int y) {
     	if(!parameters.isValidSampleIndex(x,y)) {
     		throw new IndexOutOfBoundsException();
@@ -124,6 +161,10 @@ public final class Panorama {
 
         private boolean flag = false;
         
+        /**
+         * create a Builder instance to build a parorama
+         * @param parameters
+         */
         public Builder(PanoramaParameters parameters) {
             
             requireNonNull(parameters);
@@ -143,6 +184,13 @@ public final class Panorama {
          * only act if the <flag> is false.
          * <flag> becomes true when we call the build() method
          */
+        /**
+         * put distance in the array for position x,y in linearIndex if flag is false
+         * @param x
+         * @param y
+         * @param distance
+         * @return the builder with distance in the array
+         */
         public Builder setDistanceAt(int x, int y, float distance) {
         	if(flag) {
         		throw new IllegalStateException();
@@ -153,6 +201,13 @@ public final class Panorama {
         	return this;
         }
         
+        /**
+         * put longitude in the array for position x,y in linearIndex if flag is false
+         * @param x
+         * @param y
+         * @param longitude
+         * @return the builder with longitude in the array
+         */
         public Builder setLongitudeAt(int x, int y, float longitude) {
         	if(flag) {
         		throw new IllegalStateException();
@@ -163,6 +218,13 @@ public final class Panorama {
         	return this;
         }
         
+        /**
+         * put latitude in the array for position x,y in linearIndex if flag is false
+         * @param x
+         * @param y
+         * @param latitude
+         * @return the builder with latitude in the array
+         */
         public Builder setLatitudeAt(int x, int y, float latitude) {
         	if(flag) {
         		throw new IllegalStateException();
@@ -172,6 +234,14 @@ public final class Panorama {
 
         	return this;
         }
+        
+        /**
+         * put elevation in the array for position x,y in linearIndex if flag is false
+         * @param x
+         * @param y
+         * @param elevation
+         * @return the builder with elevation in the array
+         */
         
         public Builder setElevationAt(int x, int y, float elevation) {
         	if(flag) {
@@ -183,6 +253,14 @@ public final class Panorama {
         	return this;
         }
         
+        /**
+         * put slope in the array for position x,y in linearIndex if flag is false
+         * @param x
+         * @param y
+         * @param slope
+         * @return the builder with slope in the array
+         */
+        
         public Builder setSlopeAt(int x, int y, float slope) {
         	if(flag) {
         		throw new IllegalStateException();
@@ -193,6 +271,10 @@ public final class Panorama {
         	return this;
         }
         
+        /**
+         * create a panorama instance with the attributs of the builder (can be done only one time)
+         * @return a panorama instance
+         */
         public Panorama build() {
             if (flag) {
                 throw new IllegalStateException();
