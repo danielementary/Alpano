@@ -125,6 +125,9 @@ public final class PanoramaParameters {
         
         return Azimuth.canonicalize((centerAzimuth - (horizontalFieldOfView/2)) + x*aziPerUnit);
     }
+
+// changer ces 3 méthodes !!!
+    
     
     /**
      * @param a horizontal azimuth of pixel
