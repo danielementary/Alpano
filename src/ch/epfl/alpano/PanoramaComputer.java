@@ -17,10 +17,19 @@ public final class PanoramaComputer {
     
     private final ContinuousElevationModel dem;
     
+    /**
+     * create a instance of panoramaComputer with Continuous elevation model dem. throw nullpointerExcetion if dem == null
+     * @param dem Continuous elevation model
+     */
     public PanoramaComputer(ContinuousElevationModel dem) {
         this.dem = requireNonNull(dem);
     }
     
+    /**
+     * compute the panorama with the paramaters 
+     * @param parameters parameters for panorama
+     * @return intance of Panorama
+     */
     public Panorama computePanorama(PanoramaParameters parameters) {
         
         Panorama.Builder builder = new Panorama.Builder(parameters);
@@ -46,15 +55,15 @@ public final class PanoramaComputer {
             x = 0;
             while (j >= 0 && x < Double.POSITIVE_INFINITY) {
                 
+                DoubleUnaryOperator distanceFunction = rayToGroundDistance(profile, parameters.observerElevation(), 
+                        Math.tan(parameters.altitudeForY(j)));
+                
                lowerBoundRoot = Math2.firstIntervalContainingRoot(
-                        rayToGroundDistance(profile, parameters.observerElevation(), 
-                                parameters.altitudeForY(j)),
+                        distanceFunction,
                                 x, parameters.maxDistance(), step);
                
                 if (lowerBoundRoot < Double.POSITIVE_INFINITY) {
-                    x = Math2.improveRoot(rayToGroundDistance(profile, 
-                                    parameters.observerElevation(),
-                                    parameters.altitudeForY(j)),
+                    x = Math2.improveRoot(distanceFunction,
                                     lowerBoundRoot, lowerBoundRoot + step, delta);
                 } else {
                     x = lowerBoundRoot;
@@ -80,10 +89,17 @@ public final class PanoramaComputer {
 
         return builder.build();
     }
-    
+   
+    /**
+     * gives the distance between the ray from the observer and the ground
+     * @param profile elevation profile
+     * @param ray0 
+     * @param raySlope tan(a) where a is the angle between the horizontal and the ray
+     * @return
+     */
     public static DoubleUnaryOperator rayToGroundDistance(ElevationProfile profile, double ray0, double raySlope) {
         return x -> {
-            return ray0 + x*Math.tan(raySlope) - profile.elevationAt(x) + ((1-0.13)/(2*Distance.EARTH_RADIUS))*Math2.sq(x);
+            return ray0 + x*raySlope - profile.elevationAt(x) + ((1-0.13)/(2*Distance.EARTH_RADIUS))*Math2.sq(x);
         };
     }
 }

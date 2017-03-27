@@ -22,6 +22,9 @@ public final class Summit {
      * @param elevation
      */
     public Summit(String name, GeoPoint position, int elevation) {
+        if(name ==null || position == null){
+            throw new NullPointerException();
+        }
         this.name = name;
         this.position = position;
         this.elevation = elevation;
