@@ -138,7 +138,7 @@ public final class PanoramaParameters {
         
         double uniPerAzimuth = (width-1)/horizontalFieldOfView;
         
-        double angle = az - (centerAzimuth - (horizontalFieldOfView/2));
+        double angle = (centerAzimuth - (horizontalFieldOfView/2));
         
         return uniPerAzimuth * Azimuth.canonicalize(Math2.angularDistance(angle, az));
     }
