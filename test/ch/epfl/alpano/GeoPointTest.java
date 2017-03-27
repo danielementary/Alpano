@@ -1,81 +1,31 @@
 package ch.epfl.alpano;
 
-/**
- * 
- * @author Samuel Chassot (270955)
- * @author Daniel Filipe Nunes Silva (275197)
- *
- */
-
-import static java.lang.Math.PI;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 public class GeoPointTest {
+    private static GeoPoint CORNAVIN = new GeoPoint(toRadians(6.14308), toRadians(46.21023));
+    private static GeoPoint M1_EPFL = new GeoPoint(toRadians(6.56599), toRadians(46.52224));
+    private static GeoPoint FEDERAL_PALACE = new GeoPoint(toRadians(7.44428), toRadians(46.94652));
+    private static GeoPoint SAENTIS = new GeoPoint(toRadians(9.34324), toRadians(47.24942));
+    private static GeoPoint MONTE_TAMARO = new GeoPoint(toRadians(8.86598), toRadians(46.10386));
 
     @Test
-    public void distanceToWorks(){
-        GeoPoint tokyo = new GeoPoint(2.4379160417585, 0.6227072971728);
-        GeoPoint zurich = new GeoPoint(0.12999386801779, 0.8193971772263);
-        GeoPoint sydney = new GeoPoint(2.6390617473923, -0.59112381902871);
-        
-        //on trivial values
-        assertEquals(9666799.915, zurich.distanceTo(tokyo), 1e-3);
-        assertEquals(9666799.915, tokyo.distanceTo(zurich), 1e-3);
-        assertEquals(16658577.436, zurich.distanceTo(sydney), 1e-3);
-        //on simple values
-        assertEquals(0.0, zurich.distanceTo(zurich), 1e-5);
+    public void distanceToWorksOnKnownPoints() {
+        assertEquals(226_000, M1_EPFL.distanceTo(SAENTIS), 10);
+        assertEquals( 81_890, M1_EPFL.distanceTo(FEDERAL_PALACE), 10);
+        assertEquals(143_560, FEDERAL_PALACE.distanceTo(MONTE_TAMARO), 10);
+        assertEquals(269_870, SAENTIS.distanceTo(CORNAVIN), 10);
     }
-    
-    @Test
-    public void toStringToWorks(){
-        GeoPoint zurich = new GeoPoint(0.12999386801779, 0.8193971772263);
-        GeoPoint pole = new GeoPoint(0.0, Math.PI/2);
-        GeoPoint tokyo = new GeoPoint(2.4379160417585, 0.6227072971728);
-        
-        //on trivial values
-        assertEquals("(139.6823,35.6785)", tokyo.toString());
-        assertEquals("(7.4481,46.9480)", zurich.toString());
-        //on simple values
-        assertEquals("(0.0000,90.0000)", pole.toString());
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorFailsOnBiggerOutOfBoundsValues() {
-        new GeoPoint(PI+1, PI/2+1);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorFailsOnLowerOutOfBoundsValues() {
-        new GeoPoint(-PI-1, -PI/2-1);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorFailsOnLongitudeLowerOutOfBoundsValues() {
-        new GeoPoint(PI+1, PI/2);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorFailsOnLatitudeLowerOutOfBoundsValues() {
-        new GeoPoint(PI, PI/2+1);
-    }
-    
-    @Test
-    public void azimuthToWorks() {
-        GeoPoint tokyo = new GeoPoint(2.4379160417585, 0.6227072971728);
-        GeoPoint zurich = new GeoPoint(0.12999386801779, 0.8193971772263);
-        GeoPoint sydney = new GeoPoint(2.6390617473923, -0.59112381902871);
 
-        
-        //on trivial values
-        assertEquals(5.747268040636002, tokyo.azimuthTo(zurich), 1e-1);
-        assertEquals(2.9496064358631000069, tokyo.azimuthTo(sydney), 1e-1);
-        assertEquals(0.64577182323630000216, zurich.azimuthTo(tokyo), 1e-1);
-        assertEquals(1.3439035240323000675, zurich.azimuthTo(sydney), 1e-1);
-        //on simple values
-        assertEquals(0.0, tokyo.azimuthTo(tokyo), 0);
-        assertEquals(0.0, zurich.azimuthTo(zurich), 0);
-        assertEquals(0.0, sydney.azimuthTo(sydney), 0);
+    @Test
+    public void azimuthToWorksOnKnownPoints() {
+        assertEquals( 68.03, toDegrees(M1_EPFL.azimuthTo(SAENTIS)), 0.01);
+        assertEquals( 54.50, toDegrees(M1_EPFL.azimuthTo(FEDERAL_PALACE)), 0.01);
+        assertEquals(130.23, toDegrees(FEDERAL_PALACE.azimuthTo(MONTE_TAMARO)), 0.01);
+        assertEquals(245.82, toDegrees(SAENTIS.azimuthTo(CORNAVIN)), 0.01);
     }
 }

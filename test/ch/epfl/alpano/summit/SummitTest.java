@@ -1,12 +1,6 @@
 package ch.epfl.alpano.summit;
 
-/**
- * 
- * @author Samuel Chassot (270955)
- * @author Daniel Filipe Nunes Silva (275197)
- *
- */
-
+import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -14,14 +8,34 @@ import org.junit.Test;
 import ch.epfl.alpano.GeoPoint;
 
 public class SummitTest {
-    
-    @Test
-    public void toStringWorks() {
-        GeoPoint point = new GeoPoint(0.139718, 0.812931);
-        Summit summit = new Summit("EIGER", point, 3970);
-        
-        assertEquals("EIGER (8.0053,46.5775) 3970", summit.toString());
-        
+    @Test(expected = NullPointerException.class)
+    public void constructorFailsWithNullName() {
+        new Summit(null, new GeoPoint(0, 0), 1);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void constructorFailsWithNullPosition() {
+        new Summit("sommet", null, 1);
+    }
+
+    @Test
+    public void nameReturnsName() {
+        String n = "sommet";
+        Summit s = new Summit(n, new GeoPoint(0,0), 1);
+        assertEquals(n, s.name());
+    }
+
+    @Test
+    public void positionReturnsPosition() {
+        GeoPoint p = new GeoPoint(toRadians(3), toRadians(5));
+        Summit s = new Summit("sommet", p, 1);
+        assertEquals(p, s.position());
+    }
+
+    @Test
+    public void elevationReturnsElevation() {
+        int e = 1234;
+        Summit s = new Summit("sommet", new GeoPoint(0, 0), e);
+        assertEquals(e, s.elevation());
+    }
 }
