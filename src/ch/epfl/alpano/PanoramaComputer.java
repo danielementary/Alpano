@@ -89,7 +89,7 @@ public final class PanoramaComputer {
             
            
         }
-        System.out.println("Progression : " + 100.00 + "%");
+     
         return builder.build();
     }
    
