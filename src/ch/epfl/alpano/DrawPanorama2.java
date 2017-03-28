@@ -36,12 +36,12 @@ final class DrawPanorama2 {
     final static File HGT_FILE9 = new File("N47E008.hgt");
 
 
-    final static int IMAGE_WIDTH = 9000;
-    final static int IMAGE_HEIGHT = 4000;
+    final static int IMAGE_WIDTH = 5000;
+    final static int IMAGE_HEIGHT = 1900;
 
     final static double ORIGIN_LON = Math.toRadians(6.88440);
     final static double ORIGIN_LAT = Math.toRadians(46.56642 );
-    final static int ELEVATION = 2005;
+    final static int ELEVATION = 860;
     final static double CENTER_AZIMUTH = Math.toRadians(175.00);
     final static double HORIZONTAL_FOV = Math.toRadians(120);
     final static int MAX_DISTANCE = 175_000;
@@ -111,7 +111,7 @@ final class DrawPanorama2 {
              }
              
 
-        ImageIO.write(i, "png", new File("Zenias_view_newColors.png"));
+        ImageIO.write(i, "png", new File("Zenias_view_newColors_860m.png"));
         
         dDEM1.close();
         dDEM2.close();
