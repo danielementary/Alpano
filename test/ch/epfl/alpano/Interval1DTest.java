@@ -1,6 +1,6 @@
 package ch.epfl.alpano;
 
-import static ch.epfl.test.ObjectTest.hashCodeIsCompatibleWithEquals;
+import static ch.epfl.alpano.ownTest.ObjectTest.hashCodeIsCompatibleWithEquals;
 import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
 import static ch.epfl.test.TestRandomizer.newRandom;
 import static java.lang.Math.ceil;
