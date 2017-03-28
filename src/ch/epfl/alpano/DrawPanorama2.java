@@ -36,14 +36,14 @@ final class DrawPanorama2 {
     final static File HGT_FILE9 = new File("N47E008.hgt");
 
 
-    final static int IMAGE_WIDTH = 36000;
-    final static int IMAGE_HEIGHT = 2500;
+    final static int IMAGE_WIDTH = 9000;
+    final static int IMAGE_HEIGHT = 4000;
 
-    final static double ORIGIN_LON = Math.toRadians(7.01716);
-    final static double ORIGIN_LAT = Math.toRadians(46.54879 );
+    final static double ORIGIN_LON = Math.toRadians(6.88440);
+    final static double ORIGIN_LAT = Math.toRadians(46.56642 );
     final static int ELEVATION = 2005;
-    final static double CENTER_AZIMUTH = Math.toRadians(0.00);
-    final static double HORIZONTAL_FOV = Math.toRadians(360);
+    final static double CENTER_AZIMUTH = Math.toRadians(175.00);
+    final static double HORIZONTAL_FOV = Math.toRadians(120);
     final static int MAX_DISTANCE = 175_000;
 
     final static PanoramaParameters PARAMS =
@@ -111,7 +111,7 @@ final class DrawPanorama2 {
              }
              
 
-        ImageIO.write(i, "png", new File("From_moleson_360.png"));
+        ImageIO.write(i, "png", new File("Zenias_view_newColors.png"));
         
         dDEM1.close();
         dDEM2.close();
