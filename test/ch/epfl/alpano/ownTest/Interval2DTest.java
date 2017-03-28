@@ -1,8 +1,8 @@
 package ch.epfl.alpano.ownTest;
 
 import static ch.epfl.alpano.ownTest.ObjectTest.hashCodeIsCompatibleWithEquals;
-import static ch.epfl.alpano.ownTest.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.alpano.ownTest.TestRandomizer.newRandom;
+import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
+import static ch.epfl.test.TestRandomizer.newRandom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

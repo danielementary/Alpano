@@ -71,8 +71,9 @@ public final class PanoramaComputer {
                 
                 if (x < Double.POSITIVE_INFINITY) {
                     distance = (float) (x/(Math.cos(Math.abs(parameters.altitudeForY(j)))));
-                    latitude = (float) profile.positionAt(x).latitude();
-                    longitude = (float) profile.positionAt(x).longitude();
+                    GeoPoint position = profile.positionAt(x);
+                    latitude = (float) position.latitude();
+                    longitude = (float) position.longitude();
                     elevation = (float) profile.elevationAt(x);
                     slope = (float) profile.slopeAt(x);
                     
@@ -85,8 +86,10 @@ public final class PanoramaComputer {
                 
                 --j;
             }
+            
+           
         }
-
+        System.out.println("Progression : " + 100.00 + "%");
         return builder.build();
     }
    

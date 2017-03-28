@@ -39,17 +39,38 @@ public class GazetteerParser {
             
             while ((line = buffer.readLine()) != null) {
                 
+                double longitude;
+                double latitude;
                 //read the differents informations about the summit
-                double longitude = angle(line.substring(0, 9).trim());
-                double latitude = angle(line.substring(10, 18).trim());
+                try{
+                    longitude = angle(line.substring(0, 9).trim());
+                    latitude = angle(line.substring(10, 18).trim());
+                }catch(NumberFormatException e){
+                    throw new IOException();
+                }catch(StringIndexOutOfBoundsException e){
+                    throw new IOException();
+                }
+               
                 String name = toSummit(line);
                 
-                int elevation = Integer.parseInt(line.substring(20,24).trim());
+                int elevation;
+                
+                try{
+                    elevation = Integer.parseInt(line.substring(20,24).trim());
+                }catch(NumberFormatException e){
+                    throw new IOException();
+                }catch(StringIndexOutOfBoundsException e){
+                    throw new IOException();
+                }
+                
                 //instansiating the GeoPoint corresponding to the coordinates
+                
                 GeoPoint localisation = new GeoPoint(longitude, latitude);
                 //instantiating the Summit corresponding to all informations
+                
                 Summit summit = new Summit(name, localisation, elevation);
                 //add the Summit to the list
+                
                 summits.add(summit);
             }
         }

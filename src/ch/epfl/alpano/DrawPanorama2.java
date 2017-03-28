@@ -23,20 +23,28 @@ import ch.epfl.alpano.dem.DiscreteElevationModel;
 import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 
 final class DrawPanorama2 {
-    final static File HGT_FILE = new File("N46E007.hgt");
-    final static File HGT_FILE2 = new File("N46E006.hgt");
-    final static File HGT_FILE3 = new File("N45E007.hgt");
+    final static File HGT_FILE1 = new File("N46E006.hgt");
+    final static File HGT_FILE2 = new File("N46E007.hgt");
+    final static File HGT_FILE3 = new File("N46E008.hgt");
+    
     final static File HGT_FILE4 = new File("N45E006.hgt");
+    final static File HGT_FILE5 = new File("N45E007.hgt");
+    final static File HGT_FILE6 = new File("N45E008.hgt");
+    
+    final static File HGT_FILE7 = new File("N47E006.hgt");
+    final static File HGT_FILE8 = new File("N47E007.hgt");
+    final static File HGT_FILE9 = new File("N47E008.hgt");
 
-    final static int IMAGE_WIDTH = 4000;
-    final static int IMAGE_HEIGHT = 1500;
 
-    final static double ORIGIN_LON = Math.toRadians(6.88440);
-    final static double ORIGIN_LAT = Math.toRadians(46.56642 );
-    final static int ELEVATION = 900;
-    final static double CENTER_AZIMUTH = Math.toRadians(178.18);
-    final static double HORIZONTAL_FOV = Math.toRadians(100);
-    final static int MAX_DISTANCE = 150_000;
+    final static int IMAGE_WIDTH = 36000;
+    final static int IMAGE_HEIGHT = 2500;
+
+    final static double ORIGIN_LON = Math.toRadians(7.01716);
+    final static double ORIGIN_LAT = Math.toRadians(46.54879 );
+    final static int ELEVATION = 2005;
+    final static double CENTER_AZIMUTH = Math.toRadians(0.00);
+    final static double HORIZONTAL_FOV = Math.toRadians(360);
+    final static int MAX_DISTANCE = 175_000;
 
     final static PanoramaParameters PARAMS =
       new PanoramaParameters(new GeoPoint(ORIGIN_LON,
@@ -52,19 +60,31 @@ final class DrawPanorama2 {
         
              try{
                  DiscreteElevationModel dDEM1 =
-                         new HgtDiscreteElevationModel(HGT_FILE);
+                         new HgtDiscreteElevationModel(HGT_FILE1);
                  DiscreteElevationModel dDEM2 =
                          new HgtDiscreteElevationModel(HGT_FILE2);
                  DiscreteElevationModel dDEM3 =
                          new HgtDiscreteElevationModel(HGT_FILE3);
                  DiscreteElevationModel dDEM4 =
                          new HgtDiscreteElevationModel(HGT_FILE4);
+                 DiscreteElevationModel dDEM5 =
+                         new HgtDiscreteElevationModel(HGT_FILE5);
+                 DiscreteElevationModel dDEM6 =
+                         new HgtDiscreteElevationModel(HGT_FILE6);
+                 DiscreteElevationModel dDEM7 =
+                         new HgtDiscreteElevationModel(HGT_FILE7);
+                 DiscreteElevationModel dDEM8 =
+                         new HgtDiscreteElevationModel(HGT_FILE8);
+                 DiscreteElevationModel dDEM9 =
+                         new HgtDiscreteElevationModel(HGT_FILE9);
                  
                  
-                 DiscreteElevationModel dDEM12 = dDEM1.union(dDEM2);
-                 DiscreteElevationModel dDEM34 = dDEM3.union(dDEM4);
                  
-                 DiscreteElevationModel dDEM_final = dDEM12.union(dDEM34);
+                 DiscreteElevationModel dDEM123 = dDEM1.union(dDEM2).union(dDEM3);
+                 DiscreteElevationModel dDEM456 = dDEM4.union(dDEM5).union(dDEM6);
+                 DiscreteElevationModel dDEM789 = dDEM7.union(dDEM8).union(dDEM9);
+                 
+                 DiscreteElevationModel dDEM_final = dDEM123.union(dDEM456).union(dDEM789);
                  
                  ContinuousElevationModel cDEM =
                        new ContinuousElevationModel(dDEM_final);
@@ -84,21 +104,28 @@ final class DrawPanorama2 {
                  int c = (d == Float.POSITIVE_INFINITY)
                    ? 0x87_CE_EB
 //                   : gray((d - 2_000) / 40_000);
-                   :color(d,s);
+                   :color2(d,s);
                  
                  i.setRGB(x, y, c);
                }
              }
              
 
-        ImageIO.write(i, "png", new File("Zenias_view.png"));
+        ImageIO.write(i, "png", new File("From_moleson_360.png"));
         
         dDEM1.close();
         dDEM2.close();
         dDEM3.close();
         dDEM4.close();
-        dDEM12.close();
-        dDEM34.close();
+        dDEM5.close();
+        dDEM6.close();
+        dDEM7.close();
+        dDEM8.close();
+        dDEM9.close();
+        
+        dDEM123.close();
+        dDEM456.close();
+        dDEM789.close();
       }finally{
         
       }
@@ -122,6 +149,8 @@ final class DrawPanorama2 {
             color = new Color(255,150,100);
         }else if (d < 50_000){
             color = new Color(0,255,255);
+        }else if (d < 120_000){
+            color = new Color(255,0,0);
         }else{
             color = new Color(0,175,180);
         }
@@ -130,6 +159,16 @@ final class DrawPanorama2 {
                 Math.max(0, color.getGreen() - (int) (s*230)),
                 Math.max(0, color.getBlue() - (int) (s*230)));
         
+        return color.getRGB();
+    }
+    
+    private static int color2(double d, double s){
+        Color color;
+        color = Color.getHSBColor((float)(d/MAX_DISTANCE), 0.6f, (float)(1-s/(Math.PI/2)));
+
+       
+
+
         return color.getRGB();
     }
   }

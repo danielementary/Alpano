@@ -195,6 +195,11 @@ public final class Panorama {
         	if(flag) {
         		throw new IllegalStateException();
         	}
+        	if (!parameters.isValidSampleIndex(x, y)){
+        	    throw new IndexOutOfBoundsException();
+        	}
+        	
+        	
         	
         	this.distance[parameters.linearSampleIndex(x,y)] = distance;
 
@@ -213,6 +218,10 @@ public final class Panorama {
         		throw new IllegalStateException();
         	}
         	
+        	if (!parameters.isValidSampleIndex(x, y)){
+                throw new IndexOutOfBoundsException();
+            }
+        	
         	this.longitude[parameters.linearSampleIndex(x,y)] = longitude;
 
         	return this;
@@ -229,6 +238,10 @@ public final class Panorama {
         	if(flag) {
         		throw new IllegalStateException();
         	}
+        	
+        	if (!parameters.isValidSampleIndex(x, y)){
+                throw new IndexOutOfBoundsException();
+            }
         	
         	this.latitude[parameters.linearSampleIndex(x,y)] = latitude;
 
@@ -248,6 +261,10 @@ public final class Panorama {
         		throw new IllegalStateException();
         	}
         	
+        	if (!parameters.isValidSampleIndex(x, y)){
+                throw new IndexOutOfBoundsException();
+            }
+        	
         	this.elevation[parameters.linearSampleIndex(x,y)] = elevation;
 
         	return this;
@@ -265,6 +282,10 @@ public final class Panorama {
         	if(flag) {
         		throw new IllegalStateException();
         	}
+        	
+        	if (!parameters.isValidSampleIndex(x, y)){
+                throw new IndexOutOfBoundsException();
+            }
         	
         	this.slope[parameters.linearSampleIndex(x,y)] = slope;
 

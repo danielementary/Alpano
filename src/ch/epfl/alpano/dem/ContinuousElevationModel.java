@@ -76,7 +76,8 @@ public final class ContinuousElevationModel {
     }
     
     /**
-     * gives the slope of the ground at the GeoPoint p interpolated by the 4 around points
+     * gives the slope of the ground at the GeoPoint p interpolated by the 4 around points 
+     * (angle between normal vector to surface and the vertical vector)
      * @param p the GeoPoint
      * @return the slope (angle)
      */

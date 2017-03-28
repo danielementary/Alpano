@@ -1,8 +1,8 @@
 package ch.epfl.alpano;
 
 import static ch.epfl.alpano.ownTest.ObjectTest.hashCodeIsCompatibleWithEquals;
-import static ch.epfl.alpano.ownTest.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.alpano.ownTest.TestRandomizer.newRandom;
+import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
+import static ch.epfl.test.TestRandomizer.newRandom;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 import static java.lang.Math.min;

@@ -36,11 +36,11 @@ public final class PanoramaParameters {
             int width, int height) {
         
         requireNonNull(observerPosition);
-        Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth));
-        Preconditions.checkArgument(horizontalFieldOfView > 0 && horizontalFieldOfView <= Math2.PI2);
-        Preconditions.checkArgument(maxDistance > 0);
-        Preconditions.checkArgument(width > 0);
-        Preconditions.checkArgument(height > 0);
+        Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth), "azimuth not canonical");
+        Preconditions.checkArgument(horizontalFieldOfView > 0 && horizontalFieldOfView <= Math2.PI2, "HFOV not in [0, 2pi]");
+        Preconditions.checkArgument(maxDistance > 0, "maxDistance < 0");
+        Preconditions.checkArgument(width > 0, "width < 0");
+        Preconditions.checkArgument(height > 0, "height < 0");
         
         this.observerPosition = observerPosition;
         this.observerElevation = observerElevation;
@@ -178,11 +178,7 @@ public final class PanoramaParameters {
      */
     //visibility by defaut -> only in the package
     boolean isValidSampleIndex(int x, int y) {
-        if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (x >= 0 && x < width) && (y >= 0 && y < height); 
     }
     
     /**
@@ -193,6 +189,7 @@ public final class PanoramaParameters {
      */
   //visibility by defaut -> only in the package
     int linearSampleIndex(int x, int y) {
+        
         return y*width + x;
     }
 }
