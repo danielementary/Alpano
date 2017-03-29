@@ -41,7 +41,7 @@ final class DrawPanorama2 {
 
     final static double ORIGIN_LON = Math.toRadians(6.88440);
     final static double ORIGIN_LAT = Math.toRadians(46.56642 );
-    final static int ELEVATION = 860;
+    final static int ELEVATION = 870;
     final static double CENTER_AZIMUTH = Math.toRadians(175.00);
     final static double HORIZONTAL_FOV = Math.toRadians(120);
     final static int MAX_DISTANCE = 175_000;
