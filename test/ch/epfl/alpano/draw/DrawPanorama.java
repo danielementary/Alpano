@@ -5,7 +5,6 @@ import java.io.File;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
-
 import javax.imageio.ImageIO;
 
 import ch.epfl.alpano.GeoPoint;

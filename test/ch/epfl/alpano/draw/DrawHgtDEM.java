@@ -1,6 +1,7 @@
 package ch.epfl.alpano.draw;
 
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
@@ -17,8 +18,9 @@ final class DrawHgtDEM {
     final static File HGT_FILE = new File("N46E006.hgt");
     final static double ORIGIN_LON = Distance.toRadians(6.25);
     final static double ORIGIN_LAT = Distance.toRadians(46.25);
+
     final static double WIDTH = Distance.toRadians(0.5);
-    final static int IMAGE_SIZE = 300;
+    final static int IMAGE_SIZE = 500;
     final static double MIN_ELEVATION = 200;
     final static double MAX_ELEVATION = 1_500;
 
