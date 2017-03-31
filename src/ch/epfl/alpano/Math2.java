@@ -63,7 +63,7 @@ public interface Math2 {
      * @return angular distance
      */
     public static double angularDistance(double a1, double a2) {
-        return floorMod((a2 - a1 + PI), PI2) - PI;
+        return floorMod((a2-a1 + PI), PI2) - PI;
     }
     
     /**
@@ -74,9 +74,7 @@ public interface Math2 {
      * @return the value of x in the function found with interpolation
      */
     public static double lerp(double y0, double y1, double x) {
-        double slope = y1-y0;
-        
-        return slope*x + y0;
+        return (y1-y0)*x + y0;
     }
     /**
      * make a bilinear interpolation with 4 point
@@ -103,7 +101,7 @@ public interface Math2 {
      * @param dX the size of the the interval we want
      * @return the lower bound of the interval of size dX containing the root
      */
-    public static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
+    public static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX) {
         double currentMinX = minX;
         double currentMaxX = minX + dX;
         
@@ -111,7 +109,8 @@ public interface Math2 {
             if (currentMaxX > maxX) {
                 currentMaxX = maxX;
             }
-            if (f.applyAsDouble(currentMinX) * f.applyAsDouble(currentMaxX) <= 0) {
+            
+            if (f.applyAsDouble(currentMinX)*f.applyAsDouble(currentMaxX) <= 0) {
                 return currentMaxX - dX;
             }
             
@@ -130,29 +129,26 @@ public interface Math2 {
      * @param epsilon precision we want
      * @return the lower bound of the interval smaller or equal to epsilon containing the root
      */
-    public static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
-        
+    public static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon) {
         Preconditions.checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
         
-        if (x1 > x2){
+        if (x1 > x2) {
             double temp = x1;
+            
             x1 = x2;
             x2 = temp;
         }
-        double middle;
         
+        double middle;
         do{
-            middle = (x1 + x2)/2;
-            if (f.applyAsDouble(middle) * f.applyAsDouble(x1) <= 0){
+            middle = (x1+x2)/2;
+            if (f.applyAsDouble(middle) * f.applyAsDouble(x1) <= 0) {
                 x2 = middle;
-            }else{
+            } else {
                 x1 = middle;
             }
-        }while (x2 - x1 > epsilon);
+        } while (x2-x1 > epsilon);
         
         return x1;
-    }
-    
-    
-    
+    } 
 }
