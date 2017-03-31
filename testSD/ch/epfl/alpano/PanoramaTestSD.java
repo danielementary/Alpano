@@ -13,7 +13,7 @@ import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Panorama;
 import ch.epfl.alpano.PanoramaParameters;
 
-public class PanoramaTest {
+public class PanoramaTestSD {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testExceptionSetDist() {
