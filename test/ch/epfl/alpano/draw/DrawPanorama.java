@@ -1,14 +1,19 @@
 package ch.epfl.alpano.draw;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import java.awt.image.BufferedImage;
-import java.io.File;
+
+import static java.lang.Math.*;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+
+import java.io.File;
 
 import javax.imageio.ImageIO;
 
 import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.Panorama;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
@@ -22,11 +27,11 @@ final class DrawPanorama {
     final static int IMAGE_WIDTH = 500;
     final static int IMAGE_HEIGHT = 200;
 
-    final static double ORIGIN_LON = Distance.toRadians(7.65);
-    final static double ORIGIN_LAT = Distance.toRadians(46.73);
+    final static double ORIGIN_LON = toRadians(7.65);
+    final static double ORIGIN_LAT = toRadians(46.73);
     final static int ELEVATION = 600;
-    final static double CENTER_AZIMUTH = Distance.toRadians(180);
-    final static double HORIZONTAL_FOV = Distance.toRadians(60);
+    final static double CENTER_AZIMUTH = toRadians(180);
+    final static double HORIZONTAL_FOV = toRadians(60);
     final static int MAX_DISTANCE = 100_000;
 
     final static PanoramaParameters PARAMS =
@@ -57,7 +62,7 @@ final class DrawPanorama {
             float d = p.distanceAt(x, y);
             int c = (d == Float.POSITIVE_INFINITY)
               ? 0x87_CE_EB
-              : DrawDEM.gray((d - 2_000) / 15_000);
+              : gray((d - 2_000) / 15_000);
             i.setRGB(x, y, c);
           }
         }
@@ -65,4 +70,10 @@ final class DrawPanorama {
         ImageIO.write(i, "png", new File("niesen.png"));
       }
     }
+
+    private static int gray(double v) {
+        double clampedV = max(0, min(v, 1));
+        int gray = (int) (255.9999 * clampedV);
+        return (gray << 16) | (gray << 8) | gray;
+      }
   }
