@@ -1,5 +1,12 @@
 package ch.epfl.alpano;
 
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -8,7 +15,7 @@ public class PanoramaComputerTestSD {
 
     @Test
     public void test() {
-        fail("Not yet implemented");
+        fail("Try given tests");
     }
 
 }

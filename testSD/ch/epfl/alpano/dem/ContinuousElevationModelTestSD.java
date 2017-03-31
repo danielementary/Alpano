@@ -8,7 +8,7 @@ public class ContinuousElevationModelTestSD {
 
     @Test
     public void test() {
-        fail("Not yet implemented");
+        fail("Try given tests");
     }
 
 }
