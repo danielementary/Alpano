@@ -1,11 +1,17 @@
-package provisoireDeMerde.copy;
+package ch.epfl.alpano;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
 
 import org.junit.Test;
 
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Panorama;
 import ch.epfl.alpano.PanoramaParameters;
-import ch.epfl.alpano.Panorama.Builder;
 
 public class PanoramaTest {
 
