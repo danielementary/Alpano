@@ -1,10 +1,5 @@
 package ch.epfl.alpano;
 
-/**
- * Given Tests
- * Status : OK
- */
-
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;
