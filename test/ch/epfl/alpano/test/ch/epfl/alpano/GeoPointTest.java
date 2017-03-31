@@ -1,10 +1,8 @@
-package ch.epfl.alpano.ownTest;
+package ch.epfl.alpano;
 
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;
-
-import ch.epfl.alpano.*;
 
 import org.junit.Test;
 

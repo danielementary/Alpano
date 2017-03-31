@@ -1,15 +1,12 @@
-package ch.epfl.alpano;
-
-/**
- * Given Tests
- * Status : OK
- */
+package provDeDemer;
 
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import ch.epfl.alpano.GeoPoint;
 
 public class GeoPointTest {
     private static GeoPoint CORNAVIN = new GeoPoint(toRadians(6.14308), toRadians(46.21023));

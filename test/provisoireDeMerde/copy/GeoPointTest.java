@@ -1,12 +1,14 @@
-package ch.epfl.alpano;
+package provisoireDeMerde.copy;
 
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;
 
+import ch.epfl.alpano.*;
+
 import org.junit.Test;
 
-public class GivenGeoPointTest {
+public class GeoPointTest {
     private static GeoPoint CORNAVIN = new GeoPoint(toRadians(6.14308), toRadians(46.21023));
     private static GeoPoint M1_EPFL = new GeoPoint(toRadians(6.56599), toRadians(46.52224));
     private static GeoPoint FEDERAL_PALACE = new GeoPoint(toRadians(7.44428), toRadians(46.94652));

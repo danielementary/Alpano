@@ -1,12 +1,11 @@
-package ch.epfl.alpano.dem;
+package provisoireDeMerde.copy;
 
-import static ch.epfl.alpano.Preconditions.checkArgument;
-import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.test.TestRandomizer.newRandom;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static provisoireDeMerde.copy.TestRandomizer.RANDOM_ITERATIONS;
+import static provisoireDeMerde.copy.TestRandomizer.newRandom;
 
 import java.util.Random;
 
@@ -15,6 +14,8 @@ import org.junit.Test;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
+import ch.epfl.alpano.dem.ContinuousElevationModel;
+import ch.epfl.alpano.dem.DiscreteElevationModel;
 
 public class ContinuousElevationModelTest {
     private final static Interval2D EXT_100_100 = new Interval2D(
@@ -141,7 +142,6 @@ class RandomElevationDEM implements DiscreteElevationModel {
 
     @Override
     public double elevationSample(int x, int y) {
-        checkArgument(extent.contains(x, y));
         return elevations[x][y];
     }
 
@@ -164,7 +164,6 @@ class ConstantSlopeDEM implements DiscreteElevationModel {
 
     @Override
     public double elevationSample(int x, int y) {
-        checkArgument(extent.contains(x, y));
         return (x + y) * INTER_SAMPLE_DISTANCE;
     }
 

@@ -1,12 +1,11 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        28 mars 2017
- */
-
-
-package ch.epfl.alpano;
+package provisoireDeMerde.copy;
 
 import org.junit.Test;
+
+import ch.epfl.alpano.GeoPoint;
+import ch.epfl.alpano.Panorama;
+import ch.epfl.alpano.PanoramaParameters;
+import ch.epfl.alpano.Panorama.Builder;
 
 public class PanoramaTest {
 

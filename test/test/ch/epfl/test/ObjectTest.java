@@ -1,4 +1,4 @@
-package ch.epfl.alpano.ownTest;
+package ch.epfl.test;
 
 public interface ObjectTest {
     public static boolean hashCodeIsCompatibleWithEquals(Object o1, Object o2) {

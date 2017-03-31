@@ -1,17 +1,20 @@
-package ch.epfl.alpano;
+package provisoireDeMerde.copy;
 
-import static ch.epfl.test.ObjectTest.hashCodeIsCompatibleWithEquals;
-import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.test.TestRandomizer.newRandom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static provisoireDeMerde.copy.ObjectTest.hashCodeIsCompatibleWithEquals;
+import static provisoireDeMerde.copy.TestRandomizer.RANDOM_ITERATIONS;
+import static provisoireDeMerde.copy.TestRandomizer.newRandom;
 
 import java.util.Random;
 
 import org.junit.Test;
 
-public class Interval2DTest {
+import ch.epfl.alpano.Interval1D;
+import ch.epfl.alpano.Interval2D;
+
+public class GivenInterval2DTest {
     private static Interval2D newInterval2D(int x1, int x2, int y1, int y2) {
         return new Interval2D(new Interval1D(x1, x2), new Interval1D(y1, y2));
     }
@@ -113,6 +116,7 @@ public class Interval2DTest {
     public void isUnionableWorksOnKnownNonUnionableIntervals() {
         assertFalse(i_2_2_2_2().isUnionableWith(i_11_20_0_10()));
         assertFalse(i_11_20_0_10().isUnionableWith(i_2_2_2_2()));
+        //ces 2 tests ne passent pas
         assertFalse(i_0_9_0_11().isUnionableWith(i_0_10_0_10()));
         assertFalse(i_0_10_0_10().isUnionableWith(i_0_9_0_11()));
     }

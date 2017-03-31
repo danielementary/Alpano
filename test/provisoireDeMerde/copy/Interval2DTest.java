@@ -1,11 +1,12 @@
-package ch.epfl.alpano.ownTest;
+package provisoireDeMerde.copy;
 
-import static ch.epfl.alpano.ownTest.ObjectTest.hashCodeIsCompatibleWithEquals;
-import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.test.TestRandomizer.newRandom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static provisoireDeMerde.copy.ObjectTest.hashCodeIsCompatibleWithEquals;
+import static provisoireDeMerde.copy.TestRandomizer.RANDOM_ITERATIONS;
+import static provisoireDeMerde.copy.TestRandomizer.newRandom;
+
 import ch.epfl.alpano.*;
 
 import java.util.Random;

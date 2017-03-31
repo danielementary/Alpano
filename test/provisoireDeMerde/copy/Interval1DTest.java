@@ -1,8 +1,5 @@
-package ch.epfl.alpano.ownTest;
+package provisoireDeMerde.copy;
 
-import static ch.epfl.alpano.ownTest.ObjectTest.hashCodeIsCompatibleWithEquals;
-import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
-import static ch.epfl.test.TestRandomizer.newRandom;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -10,6 +7,9 @@ import static java.lang.Math.sqrt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static provisoireDeMerde.copy.ObjectTest.hashCodeIsCompatibleWithEquals;
+import static provisoireDeMerde.copy.TestRandomizer.RANDOM_ITERATIONS;
+import static provisoireDeMerde.copy.TestRandomizer.newRandom;
 
 import ch.epfl.alpano.*;
 
