@@ -7,7 +7,6 @@ package ch.epfl.alpano;
  *
  */
 
-import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 
 public final class Interval2D {
@@ -21,8 +20,8 @@ public final class Interval2D {
      * @param iY second unidimensional interval
      */
     public Interval2D(Interval1D iX, Interval1D iY) {
-        requireNonNull(iX);
-        requireNonNull(iY);
+        Preconditions.checkArgumentNullPointerEx(iX != null);
+        Preconditions.checkArgumentNullPointerEx(iY != null);
         
         this.iX = iX;
         this.iY = iY;
@@ -97,9 +96,9 @@ public final class Interval2D {
      * @return boolean true if this and that are unionable, false otherwise
      */
     public final boolean isUnionableWith(Interval2D that) {
-        
-        
-        return (iX.size()*iY.size() + that.iX.size()*that.iY.size() - this.sizeOfIntersectionWith(that) == this.boundingUnion(that).size());
+        return (iX.size()*iY.size() + that.iX.size()*that.iY.size()
+                -this.sizeOfIntersectionWith(that)
+                ==this.boundingUnion(that).size());
     }
     
     /**
