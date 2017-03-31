@@ -21,9 +21,9 @@ public final class Interval1D {
     private final int includedTo;
     
     /**
-     * Creates an instance of an interval
-     * @param includedFrom lower bound
-     * @param includedTo upper bound
+     * Creates an instance of an 1 dimension interval
+     * @param includedFrom lower bound included
+     * @param includedTo upper bound included
      */
     public Interval1D(int includedFrom, int includedTo) {
         Preconditions.checkArgument(includedTo >= includedFrom);
@@ -62,20 +62,13 @@ public final class Interval1D {
      * @return the size of intersection
      */
     public final int sizeOfIntersectionWith(Interval1D that) {
-        int thisFrom = this.includedFrom();
-        int thisTo = this.includedTo();
-        int thatFrom = that.includedFrom();
-        int thatTo = that.includedTo();
-        
-        int interFrom = Math.max(thisFrom, thatFrom);
-        int interTo = Math.min(thisTo, thatTo);
-        
-        Interval1D intersection;
+        int interFrom = Math.max(this.includedFrom(), that.includedFrom());
+        int interTo = Math.min(this.includedTo(), that.includedTo());
         
         if (interTo < interFrom) {
             return 0;
         } else {
-            intersection = new Interval1D(interFrom, interTo);
+            Interval1D intersection = new Interval1D(interFrom, interTo);
 
             return intersection.size();
         }
@@ -99,13 +92,8 @@ public final class Interval1D {
      * @return boolean true if unionable
      */
     public final boolean isUnionableWith(Interval1D that) {
-        int thisFrom = this.includedFrom();
-        int thisTo = this.includedTo();
-        int thatFrom = that.includedFrom();
-        int thatTo = that.includedTo();
-        
-        int interFrom = Math.max(thisFrom, thatFrom);
-        int interTo = Math.min(thisTo, thatTo);
+        int interFrom = Math.max(this.includedFrom(), that.includedFrom());
+        int interTo = Math.min(this.includedTo(), that.includedTo());
         
         return interTo >= interFrom-1;
     }
@@ -134,8 +122,8 @@ public final class Interval1D {
         
         Interval1D thatInter = (Interval1D)that;
         
-        if (thatInter.includedFrom()==this.includedFrom() && 
-                thatInter.includedTo()==this.includedTo()) {
+        if (thatInter.includedFrom() == this.includedFrom() && 
+                thatInter.includedTo() == this.includedTo()) {
             return true;
         } else {
             return false;
@@ -155,8 +143,10 @@ public final class Interval1D {
      */
     @Override
     public String toString() {
-        String str = "[" + this.includedFrom() + ".." 
-                         + this.includedTo() + "]";
+        String str = "[" + this.includedFrom() 
+                         + ".." 
+                         + this.includedTo()
+                         + "]";
         
         return str;
     }
@@ -169,5 +159,4 @@ public final class Interval1D {
     public boolean contains(int that) {
         return (that >= this.includedFrom && that <= this.includedTo);
     }
-    
 }
