@@ -1,14 +1,14 @@
-package ch.epfl.alpano;
+package ch.epfl.alpano.summit;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class Math2TestSD {
+public class SummitTestSD {
 
     @Test
     public void test() {
-        fail("Try given tests");
+        fail("Not yet implemented");
     }
 
 }
