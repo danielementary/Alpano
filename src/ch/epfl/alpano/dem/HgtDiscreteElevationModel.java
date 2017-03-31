@@ -62,9 +62,9 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         
         try (FileInputStream stream = new FileInputStream(file)){
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
-        }catch(IOException e) {
+        } catch(IOException e) {
           throw new IllegalArgumentException();   
-      }
+        } 
         
     }
     
