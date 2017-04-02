@@ -25,7 +25,7 @@ public final class GeoPoint {
      * @param longitude in radians
      * @param latitude in radians
      */
-    public GeoPoint(double longitude, double latitude){
+    public GeoPoint(double longitude, double latitude) {
         Preconditions.checkArgument(longitude <= PI && longitude >= -PI);
         Preconditions.checkArgument(latitude <= PI/2 && latitude >= -PI/2);
         
@@ -37,7 +37,7 @@ public final class GeoPoint {
      * gives the longitude of the point
      * @return longitude in double
      */
-    public final double longitude(){
+    public final double longitude() {
         return longitude;
     }
     
@@ -45,7 +45,7 @@ public final class GeoPoint {
      * gives the latitude of the point
      * @return latitude in double
      */
-    public final double latitude(){
+    public final double latitude() {
         return latitude;
     }
     
@@ -54,7 +54,7 @@ public final class GeoPoint {
      * @param that other GeoPoint
      * @return the distance between these points in double
      */
-    public final double distanceTo(GeoPoint that){
+    public final double distanceTo(GeoPoint that) {
         double sqrt = sqrt(Math2.haversin(this.latitude - that.latitude)
                 + cos(this.latitude) * cos(that.latitude) 
                 * Math2.haversin(this.longitude - that.longitude));
@@ -67,7 +67,7 @@ public final class GeoPoint {
      * @param that other GeoPoint
      * @return azimuth in radians
      */
-    public final double azimuthTo(GeoPoint that){
+    public final double azimuthTo(GeoPoint that) {
         double beta = atan2(sin(this.longitude - that.longitude)
                 * cos(that.latitude), cos(this.latitude) 
                 * sin(that.latitude) - sin(this.latitude)
@@ -81,13 +81,11 @@ public final class GeoPoint {
      * with 4 decimals precision between brackets
      */
     @Override
-    public final String toString(){
+    public final String toString() {
         Locale region = null;
-        
         
         String str = String.format(region, "(%.4f,%.4f)",Math.toDegrees(longitude) , Math.toDegrees(latitude));
         
         return str;
-    }
-       
+    }   
 }

@@ -86,8 +86,6 @@ public final class PanoramaComputer {
                 
                 --j;
             }
-            
-           
         }
      
         return builder.build();
@@ -98,7 +96,7 @@ public final class PanoramaComputer {
      * @param profile elevation profile
      * @param ray0 
      * @param raySlope tan(a) where a is the angle between the horizontal and the ray
-     * @return
+     * @return DoubleUnaryOperator distance between the ray from the observer and the ground
      */
     public static DoubleUnaryOperator rayToGroundDistance(ElevationProfile profile, double ray0, double raySlope) {
         return x -> {

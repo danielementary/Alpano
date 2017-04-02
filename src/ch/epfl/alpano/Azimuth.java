@@ -23,9 +23,9 @@ public interface Azimuth {
     public static boolean isCanonical(double azimuth) {
         if (azimuth >= 0 && azimuth < PI2) {
             return true;
+        } else {
+            return false;
         }
-        
-        return false;
     }
     
     /**
@@ -61,7 +61,6 @@ public interface Azimuth {
         double azimuth = PI2 - radianAngle;
         
         return canonicalize(azimuth);
-        
     }
 
     /**

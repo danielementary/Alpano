@@ -16,7 +16,6 @@ import java.nio.channels.FileChannel.MapMode;
 import ch.epfl.alpano.Preconditions;
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
-import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_DEGREE;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
@@ -33,7 +32,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     public HgtDiscreteElevationModel(File file) {
         this.file = file;
         long l = this.file.length();
-        Preconditions.checkArgument(l == 25934402 );
+        Preconditions.checkArgument(l == 25934402);
         
         String name = file.getName();
         Preconditions.checkArgument(name.charAt(0) == 'N' || name.charAt(0) == 'S');
