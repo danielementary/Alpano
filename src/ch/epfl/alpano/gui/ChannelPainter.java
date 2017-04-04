@@ -8,4 +8,7 @@ package ch.epfl.alpano.gui;
 
 public interface ChannelPainter {
 
+    public abstract float valueAt(int x, int y);
+    
+    public static
 }
