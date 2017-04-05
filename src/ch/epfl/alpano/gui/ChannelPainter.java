@@ -6,6 +6,8 @@
 
 package ch.epfl.alpano.gui;
 
+import java.util.function.DoubleUnaryOperator;
+
 import ch.epfl.alpano.Panorama;
 
 @FunctionalInterface
@@ -37,5 +39,20 @@ public interface ChannelPainter {
         return (x,y)-> valueAt(x,y)  / constant;  
     }
     
+    public default ChannelPainter map(DoubleUnaryOperator op){
+        return (x,y)-> (float) op.applyAsDouble(valueAt(x,y));
+    }
     
+    public default ChannelPainter clamp(){
+        return (x,y)-> Math.max(0, Math.min(valueAt(x,y), 1));
+    }
+    
+    public default ChannelPainter revert(){
+        return (x,y)-> 1 - valueAt(x,y);
+    }
+    
+    
+    public default ChannelPainter cycling(){
+        return (x,y)->valueAt(x,y) % 1;
+    }
 }
