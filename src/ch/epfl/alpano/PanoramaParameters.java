@@ -25,11 +25,11 @@ public final class PanoramaParameters {
      * instantiate a panorama
      * @param observerPosition
      * @param observerElevation 
-     * @param centerAzimuth
-     * @param horizontalFieldOfView
-     * @param maxDistance
-     * @param width
-     * @param height
+     * @param centerAzimuth direction of the look
+     * @param horizontalFieldOfView in radian : the size of the observer's field of view
+     * @param maxDistance the max distance the observer see
+     * @param width of the panorama in pixels
+     * @param height of the panorama in pixels
      */
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation,
             double centerAzimuth, double horizontalFieldOfView, int maxDistance,
@@ -101,7 +101,8 @@ public final class PanoramaParameters {
     }
     
     /**
-     * @return the verticalFieldOfView
+     * @return the verticalFieldOfView : the size of the observer's field of view in vertical (depending of the height and the 
+     * horizontal field of view) in radians
      */
     public double verticalFieldOfView() {
         
