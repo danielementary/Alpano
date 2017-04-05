@@ -87,7 +87,8 @@ public interface Math2 {
      * @param y
      * @return the bilinear interpolation
      */
-    public static double bilerp(double z00, double z10, double z01, double z11, double x, double y) {
+    public static double bilerp(double z00, double z10, 
+                                double z01, double z11, double x, double y) {
         double lerp1 = lerp(z00, z10, x);
         double lerp2 = lerp(z01, z11, x);
  
@@ -95,14 +96,16 @@ public interface Math2 {
     }
     
     /**
-     * return the lower bound of the smallest interval of size dX containing a root of the function f, between maxX and minX
+     * return the lower bound of the smallest interval of size dX 
+     * containing a root of the function f, between maxX and minX
      * @param f the function for which we are seeking a root
      * @param minX the lower bound of interval in which we are seeking
      * @param maxX the upper bound of interval in which we are seeking
      * @param dX the size of the the interval we want
      * @return the lower bound of the interval of size dX containing the root
      */
-    public static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX) {
+    public static double firstIntervalContainingRoot(DoubleUnaryOperator f, 
+                                         double minX, double maxX, double dX) {
         double currentMinX = minX;
         double currentMaxX = minX + dX;
         
@@ -111,7 +114,9 @@ public interface Math2 {
                 currentMaxX = maxX;
             }
             
-            if (f.applyAsDouble(currentMinX)*f.applyAsDouble(currentMaxX) <= 0) {
+            if (f.applyAsDouble(currentMinX)
+                    *f.applyAsDouble(currentMaxX) <= 0) {
+                
                 return currentMaxX - dX;
             }
             
@@ -128,10 +133,14 @@ public interface Math2 {
      * @param x1 first bound
      * @param x2 second bound
      * @param epsilon precision we want
-     * @return the lower bound of the interval smaller or equal to epsilon containing the root
+     * @return the lower bound of the interval smaller 
+     * or equal to epsilon containing the root
      */
-    public static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon) {
-        Preconditions.checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
+    public static double improveRoot(DoubleUnaryOperator f, 
+                                        double x1, double x2, double epsilon) {
+        
+        Preconditions.checkArgument(f.applyAsDouble(x1)
+                                        *f.applyAsDouble(x2) <= 0);
         
         if (x1 > x2) {
             double temp = x1;

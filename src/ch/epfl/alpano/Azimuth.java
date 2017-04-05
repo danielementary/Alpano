@@ -73,7 +73,9 @@ public interface Azimuth {
      * @param w West String
      * @return string which represents the cardinal direction corresponding to the azimuth
      */
-    public static String toOctantString(double azimuth, String n, String e, String s, String w) {
+    public static String toOctantString(double azimuth, 
+                                            String n, String e,
+                                            String s, String w) {
         checkArgument(isCanonical(azimuth));
         
         String cardinalDirection = "";

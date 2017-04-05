@@ -53,10 +53,12 @@ public final class Panorama {
     
     
     /**
-     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * evaluate the index with a linearSampledIndex(x,y) 
+     * and return the corresponding value in the array
      * @param x
      * @param y
-     * @return the for x,y or throw IndexOutOfBoundException if x,y are not in the array's bounds
+     * @return the for x,y or throw IndexOutOfBoundException 
+     * if x,y are not in the array's bounds
      */
     public float distanceAt(int x, int y) {
     	if (!parameters.isValidSampleIndex(x,y)) {
@@ -69,7 +71,8 @@ public final class Panorama {
     }
     
     /**
-     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * evaluate the index with a linearSampledIndex(x,y) 
+     * and return the corresponding value in the array
      * @param x
      * @param y
      * @param d what is returned if x,y are not in the array's bounds
@@ -86,7 +89,8 @@ public final class Panorama {
     }
     
     /**
-     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * evaluate the index with a linearSampledIndex(x,y) 
+     * and return the corresponding value in the array
      * @param x
      * @param y
      * @return the longitude for x,y 
@@ -102,7 +106,8 @@ public final class Panorama {
     }
 
     /**
-     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * evaluate the index with a linearSampledIndex(x,y)
+     * and return the corresponding value in the array
      * @param x
      * @param y
      * @return the latitude for x,y 
@@ -118,7 +123,8 @@ public final class Panorama {
     }
 
     /**
-     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * evaluate the index with a linearSampledIndex(x,y)
+     * and return the corresponding value in the array
      * @param x
      * @param y
      * @return the elevation for x,y 
@@ -134,7 +140,8 @@ public final class Panorama {
     }
 
     /**
-     * evaluate the index with a linearSampledIndex(x,y) and return the corresponding value in the array
+     * evaluate the index with a linearSampledIndex(x,y) 
+     * and return the corresponding value in the array
      * @param x
      * @param y
      * @return the slope for x,y 
@@ -187,7 +194,8 @@ public final class Panorama {
          * <flag> becomes true when we call the build() method
          */
         /**
-         * put distance in the array for position x,y in linearIndex if flag is false
+         * put distance in the array for position x,y in linearIndex 
+         * if flag is false
          * @param x
          * @param y
          * @param distance
@@ -208,7 +216,8 @@ public final class Panorama {
         }
         
         /**
-         * put longitude in the array for position x,y in linearIndex if flag is false
+         * put longitude in the array for position x,y in linearIndex 
+         * if flag is false
          * @param x
          * @param y
          * @param longitude
@@ -229,7 +238,8 @@ public final class Panorama {
         }
         
         /**
-         * put latitude in the array for position x,y in linearIndex if flag is false
+         * put latitude in the array for position x,y in linearIndex 
+         * if flag is false
          * @param x
          * @param y
          * @param latitude
@@ -250,7 +260,8 @@ public final class Panorama {
         }
         
         /**
-         * put elevation in the array for position x,y in linearIndex if flag is false
+         * put elevation in the array for position x,y in linearIndex 
+         * if flag is false
          * @param x
          * @param y
          * @param elevation
@@ -271,7 +282,8 @@ public final class Panorama {
         }
         
         /**
-         * put slope in the array for position x,y in linearIndex if flag is false
+         * put slope in the array for position x,y in linearIndex 
+         * if flag is false
          * @param x
          * @param y
          * @param slope
@@ -292,7 +304,8 @@ public final class Panorama {
         }
         
         /**
-         * create a panorama instance with the attributs of the builder (can be done only one time)
+         * create a panorama instance 
+         * with the attributs of the builder (can be done only one time)
          * @return a panorama instance
          */
         public Panorama build() {
@@ -302,7 +315,8 @@ public final class Panorama {
             
             flag = true;
             
-            return new Panorama(parameters, distance, longitude, latitude, elevation, slope);
+            return new Panorama(parameters, distance, longitude, 
+                                            latitude, elevation, slope);
         }  
     }
 }
