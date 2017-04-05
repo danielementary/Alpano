@@ -13,9 +13,20 @@ public interface PanoramaRenderer {
 
     @SuppressWarnings("restriction")
     public static Image renderPanorama(ImagePainter painter, Panorama pano){
-        WritableImage img = new WritableImage(pano.parameters().width(), pano.parameters().height());
+        int width = pano.parameters().width();
+        int height = pano.parameters().height();
+        
+        WritableImage img = new WritableImage(width, height);
+        
         PixelWriter writer = img.getPixelWriter();
         
-        return null;
+        for(int x = 0 ; x < width ; ++x){
+            for(int y = 0 ; y < height ; ++y){
+                writer.setColor(x, y, painter.colorAt(x, y));
+            }
+        }
+        
+        
+        return img;
     }
 }
