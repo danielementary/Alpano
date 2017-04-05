@@ -1,5 +1,3 @@
-package ch.epfl.alpano.dem;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,17 +5,17 @@ package ch.epfl.alpano.dem;
  *
  */
 
-import static java.util.Objects.requireNonNull;
+package ch.epfl.alpano.dem;
 
-import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Preconditions;
+import static java.lang.Math.PI;
+import static java.lang.Math.asin;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Distance;
+import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
-import static java.lang.Math.sin;
-import static java.lang.Math.PI;
-import static java.lang.Math.cos;
-import static java.lang.Math.asin;
+import ch.epfl.alpano.Preconditions;
 
 public final class ElevationProfile {
     
@@ -40,8 +38,9 @@ public final class ElevationProfile {
      */
     public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin,
                                               double azimuth, double length) {
-        requireNonNull(elevationModel);
-        requireNonNull(origin);
+        
+        Preconditions.checkArgumentNullPointerEx(elevationModel);
+        Preconditions.checkArgumentNullPointerEx(origin);
         
         Preconditions.checkArgument(Azimuth.isCanonical(azimuth));
         Preconditions.checkArgument(length > 0);
@@ -57,6 +56,7 @@ public final class ElevationProfile {
         
         //calculating and filling the array
         for (int i = 0; i <= positionLength; ++i) {
+            
             double originLatitude = origin.latitude();
             double originLongitude = origin.longitude();
             double radianLength = Distance.toRadians(DELTA*i);
@@ -70,6 +70,7 @@ public final class ElevationProfile {
                             /cos(pointLatitude))+PI))-PI;
             
             double[] nextArray = new double[] {pointLongitude, pointLatitude};
+            
             points[i] = nextArray;
         }
     }

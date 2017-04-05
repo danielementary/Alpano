@@ -1,5 +1,3 @@
-package ch.epfl.alpano.summit;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,7 +5,10 @@ package ch.epfl.alpano.summit;
  *
  */
 
+package ch.epfl.alpano.summit;
+
 import ch.epfl.alpano.GeoPoint;
+import ch.epfl.alpano.Preconditions;
 
 public final class Summit {
     
@@ -22,9 +23,9 @@ public final class Summit {
      * @param elevation
      */
     public Summit(String name, GeoPoint position, int elevation) {
-        if(name ==null || position == null){
-            throw new NullPointerException();
-        }
+        Preconditions.checkArgumentNullPointerEx(name);
+        Preconditions.checkArgumentNullPointerEx(position);
+        
         this.name = name;
         this.position = position;
         this.elevation = elevation;

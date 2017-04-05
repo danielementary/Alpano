@@ -1,5 +1,3 @@
-package ch.epfl.alpano.dem;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,7 +5,8 @@ package ch.epfl.alpano.dem;
  *
  */
 
-import java.lang.AutoCloseable;
+package ch.epfl.alpano.dem;
+
 import ch.epfl.alpano.Interval2D;
 
 public interface DiscreteElevationModel extends AutoCloseable {

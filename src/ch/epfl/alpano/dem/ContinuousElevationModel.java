@@ -1,5 +1,3 @@
-package ch.epfl.alpano.dem;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,11 +5,12 @@ package ch.epfl.alpano.dem;
  *
  */
 
-import static java.util.Objects.requireNonNull;
+package ch.epfl.alpano.dem;
 
 import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
+import ch.epfl.alpano.Preconditions;
 
 public final class ContinuousElevationModel {
     
@@ -20,7 +19,7 @@ public final class ContinuousElevationModel {
                         /(Math2.PI2*DiscreteElevationModel.SAMPLES_PER_RADIAN);
     
     public ContinuousElevationModel(DiscreteElevationModel dem) {
-        requireNonNull(dem);
+        Preconditions.checkArgumentNullPointerEx(dem);
         
         this.dem = dem;
     }
@@ -57,9 +56,9 @@ public final class ContinuousElevationModel {
     private double elevationExtension(int x, int y) {
         if (dem.extent().contains(x, y)) {
             return dem.elevationSample(x, y);
-        } else {
-            return 0.0;
         }
+        
+        return 0.0;
     }
     
     private double slopeExtension(int x, int y) {
@@ -70,9 +69,9 @@ public final class ContinuousElevationModel {
                                  +Math2.sq(deltaZb) + Math2.sq(D_NORTH_SUD))));
             
             return slope;
-        } else {
-            return 0;
         }
+        
+        return 0;
     }
     
     /**

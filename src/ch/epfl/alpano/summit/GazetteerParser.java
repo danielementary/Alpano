@@ -1,11 +1,11 @@
-package ch.epfl.alpano.summit;
-
 /**
  * 
  * @author Samuel Chassot (270955)
  * @author Daniel Filipe Nunes Silva (275197)
  *
  */
+
+package ch.epfl.alpano.summit;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +21,7 @@ import ch.epfl.alpano.GeoPoint;
 public class GazetteerParser {
     
     //non instantiable class
-    private GazetteerParser(){ }
+    private GazetteerParser() { }
     
     /**
      * reads all the summits in file and return an unmodifiable list of summits
@@ -41,13 +41,14 @@ public class GazetteerParser {
                 
                 double longitude;
                 double latitude;
+                
                 //read the differents informations about the summit
                 try{
                     longitude = angle(line.substring(0, 9).trim());
                     latitude = angle(line.substring(10, 18).trim());
-                }catch(NumberFormatException e){
+                } catch(NumberFormatException e) {
                     throw new IOException();
-                }catch(StringIndexOutOfBoundsException e){
+                } catch(StringIndexOutOfBoundsException e) {
                     throw new IOException();
                 }
                
@@ -57,9 +58,9 @@ public class GazetteerParser {
                 
                 try{
                     elevation = Integer.parseInt(line.substring(20,24).trim());
-                }catch(NumberFormatException e){
+                } catch(NumberFormatException e) {
                     throw new IOException();
-                }catch(StringIndexOutOfBoundsException e){
+                } catch(StringIndexOutOfBoundsException e) {
                     throw new IOException();
                 }
                 
