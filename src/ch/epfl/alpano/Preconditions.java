@@ -31,7 +31,7 @@ public interface Preconditions {
     }
     
     /**
-     * throw an NullPointerException without an message if b is false 
+     * throw a NullPointerException without an message if b is false 
      * @param b condition boolean
      */
     public static void checkArgumentNullPointerEx(boolean b) {
@@ -41,7 +41,7 @@ public interface Preconditions {
     }
     
     /**
-     * throw an NullPointerException with message if b is false
+     * throw a NullPointerException with message if b is false
      * @param b condition boolean
      * @param message message string
      */
