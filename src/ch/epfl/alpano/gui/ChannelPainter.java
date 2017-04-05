@@ -32,8 +32,8 @@ public interface ChannelPainter {
     public static ChannelPainter maxDistanceToNeighbors(Panorama pano){
         
         return (x,y)->
-            Math.max(Math.max(pano.distanceAt(x, y-1), pano.distanceAt(x, y+1)),
-                    Math.max(pano.distanceAt(x+1, y), pano.distanceAt(x-1, y))) - pano.distanceAt(x, y);
+            Math.max(Math.max(pano.distanceAt(x, y-1, Float.POSITIVE_INFINITY), pano.distanceAt(x, y+1, Float.POSITIVE_INFINITY)),
+                    Math.max(pano.distanceAt(x+1, y, Float.POSITIVE_INFINITY), pano.distanceAt(x-1, y, Float.POSITIVE_INFINITY))) - pano.distanceAt(x, y);
         
     }
     
@@ -86,7 +86,7 @@ public interface ChannelPainter {
      * gives the max between 0 and the minimum of the valueAt(x,y) and 1
      * @return a new ChannelPainter
      */
-    public default ChannelPainter clamp(){
+    public default ChannelPainter clamped(){
         return (x,y)-> Math.max(0, Math.min(valueAt(x,y), 1));
     }
     
