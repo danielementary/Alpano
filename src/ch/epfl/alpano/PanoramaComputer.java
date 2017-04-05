@@ -77,14 +77,11 @@ public final class PanoramaComputer {
                     elevation = (float) profile.elevationAt(x);
                     slope = (float) profile.slopeAt(x);
                     
-                    builder.setDistanceAt(i, j, distance).setLatitudeAt(i, j, latitude).
-                    setLongitudeAt(i, j, longitude).setElevationAt(i, j, elevation).setSlopeAt(i, j, slope);
-                    
-//                    builder.setLongitudeAt(i,j,longitude);
-//                    builder.setLatitudeAt(i, j, latitude);
-//                    builder.setLongitudeAt(i, j, longitude);
-//                    builder.setElevationAt(i, j, elevation);
-//                    builder.setSlopeAt(i, j, slope);
+                    builder.setDistanceAt(i, j, distance)
+                            .setLatitudeAt(i, j,latitude)
+                            .setLongitudeAt(i, j, longitude)
+                            .setElevationAt(i, j, elevation)
+                            .setSlopeAt(i, j, slope);
                 }
                 
                 --j;
