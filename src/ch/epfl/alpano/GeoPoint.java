@@ -22,7 +22,8 @@ public final class GeoPoint {
     private final double latitude;
     
     /**
-     * Creates an instance of GeoPoint representing a Point on the Earth's surface by its longitude and latitude
+     * Creates an instance of GeoPoint representing a Point on the Earth's 
+     * surface by its longitude and latitude
      * @param longitude in radians
      * @param latitude in radians
      */
@@ -85,7 +86,8 @@ public final class GeoPoint {
     public final String toString() {
         Locale region = null;
         
-        String str = String.format(region, "(%.4f,%.4f)",Math.toDegrees(longitude) , Math.toDegrees(latitude));
+        String str = String.format(region, "(%.4f,%.4f)",
+                Math.toDegrees(longitude) , Math.toDegrees(latitude));
         
         return str;
     }   

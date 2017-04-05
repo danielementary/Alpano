@@ -1,5 +1,3 @@
-package ch.epfl.alpano;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,16 +5,17 @@ package ch.epfl.alpano;
  *
  */
 
+package ch.epfl.alpano;
+
 import static java.util.Objects.requireNonNull;
 
 public final class PanoramaParameters {
+    
     private GeoPoint observerPosition;
-    //meters
+    
     private int observerElevation;
-    //radians
     private double centerAzimuth;
     private double horizontalFieldOfView;
-    //meters
     private int maxDistance;
     private int width;
     private int height;
@@ -36,8 +35,13 @@ public final class PanoramaParameters {
             int width, int height) {
         
         requireNonNull(observerPosition);
-        Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth), "azimuth not canonical");
-        Preconditions.checkArgument(horizontalFieldOfView > 0 && horizontalFieldOfView <= Math2.PI2, "HFOV not in [0, 2pi]");
+        Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth),
+                                                    "azimuth not canonical");
+        
+        Preconditions.checkArgument(horizontalFieldOfView > 0
+                                    && horizontalFieldOfView <= Math2.PI2,
+                                    "HFOV not in [0, 2pi]");
+        
         Preconditions.checkArgument(maxDistance > 0, "maxDistance < 0");
         Preconditions.checkArgument(width > 0, "width < 0");
         Preconditions.checkArgument(height > 0, "height < 0");
@@ -101,7 +105,9 @@ public final class PanoramaParameters {
     }
     
     /**
-     * @return the verticalFieldOfView : the size of the observer's field of view in vertical (depending of the height and the 
+     * @return the verticalFieldOfView
+     * the size of the observer's field of view in vertical 
+     * (depending of the height and the 
      * horizontal field of view) in radians
      */
     public double verticalFieldOfView() {
@@ -111,7 +117,6 @@ public final class PanoramaParameters {
         
         return verticalFieldOfView;
     }
-    
     
     /**
      * give the azimuth for a given pixel x
@@ -123,7 +128,6 @@ public final class PanoramaParameters {
         
         double aziPerUnit = horizontalFieldOfView/(width-1);
         
-        
         return Azimuth.canonicalize((centerAzimuth - (horizontalFieldOfView/2)) + x*aziPerUnit);
     }
 
@@ -132,10 +136,12 @@ public final class PanoramaParameters {
      * @return horizontal corresponding angle
      */
     public double xForAzimuth(double a) {
+        
         double az = Azimuth.canonicalize(a);
         
-        Preconditions.checkArgument(Math.abs(Math2.angularDistance(az, centerAzimuth)) <=
-                Math.abs(Math2.angularDistance(centerAzimuth, centerAzimuth-(horizontalFieldOfView/2)))); 
+        Preconditions.checkArgument(Math.abs(Math2.angularDistance(az, centerAzimuth))
+                <= Math.abs(Math2.angularDistance(centerAzimuth, 
+                                    centerAzimuth-(horizontalFieldOfView/2)))); 
         
         double uniPerAzimuth = (width-1)/horizontalFieldOfView;
         
@@ -163,7 +169,8 @@ public final class PanoramaParameters {
      * @return vertical corresponding angle
      */
     public double yForAltitude(double a) {
-        Preconditions.checkArgument(a>=(-1)*verticalFieldOfView()/2 && a<= verticalFieldOfView()/2);
+        Preconditions.checkArgument(a>=(-1)*verticalFieldOfView()/2 
+                                            && a<= verticalFieldOfView()/2);
         
         double unitsPerAzi = (height-1)/verticalFieldOfView();
         
