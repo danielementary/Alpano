@@ -26,10 +26,6 @@ public class GazetteerParserTestSD {
         assertEquals("MONTE CURT (7.4200,45.1403) 1325", summitsList.get(0).toString());
         assertEquals("LE MOLESON (7.0172,46.5489) 2002", summitsList.get(6203).toString());
         
-        for (Summit sum : summitsList) {
-            System.out.println(sum.toString());
-        }
-        
     }
 
 }
