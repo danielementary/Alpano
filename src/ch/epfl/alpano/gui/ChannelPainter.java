@@ -17,7 +17,7 @@ public interface ChannelPainter {
      * return the value of the channel at the position x,y  
      * @param x coordinate x
      * @param y coordinate y
-     * @return the value at (x,y)
+     * @return the value at (x,y) 
      */
     public abstract float valueAt(int x, int y);
     
