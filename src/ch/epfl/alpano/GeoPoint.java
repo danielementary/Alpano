@@ -1,5 +1,3 @@
-package ch.epfl.alpano;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,12 +5,15 @@ package ch.epfl.alpano;
  *
  */
 
+package ch.epfl.alpano;
+
 import static java.lang.Math.PI;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
-import static java.lang.Math.asin;
-import static java.lang.Math.atan2;
+
 import java.util.Locale;
 
 public final class GeoPoint {

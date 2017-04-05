@@ -1,5 +1,3 @@
-package ch.epfl.alpano;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,7 +5,10 @@ package ch.epfl.alpano;
  *
  */
 
+package ch.epfl.alpano;
+
 public interface Distance {
+    
     /**
      * earth's radius in meters
      */

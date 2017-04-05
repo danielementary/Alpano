@@ -1,5 +1,3 @@
-package ch.epfl.alpano;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,11 +5,14 @@ package ch.epfl.alpano;
  *
  */
 
-import static java.lang.Math.PI;
+package ch.epfl.alpano;
+
 import static ch.epfl.alpano.Math2.PI2;
 import static ch.epfl.alpano.Math2.PI_OVER8;
 import static ch.epfl.alpano.Math2.floorMod;
 import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.lang.Math.PI;
+
 
 public interface Azimuth {
     

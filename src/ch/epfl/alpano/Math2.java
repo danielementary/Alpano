@@ -1,5 +1,3 @@
-package ch.epfl.alpano;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,9 +5,12 @@ package ch.epfl.alpano;
  *
  */
 
+package ch.epfl.alpano;
+
 import static java.lang.Math.PI;
-import static java.lang.Math.sin;
 import static java.lang.Math.floor;
+import static java.lang.Math.sin;
+
 import java.util.function.DoubleUnaryOperator;
 
 public interface Math2 {
@@ -105,7 +106,7 @@ public interface Math2 {
         double currentMinX = minX;
         double currentMaxX = minX + dX;
         
-        do{
+        do {
             if (currentMaxX > maxX) {
                 currentMaxX = maxX;
             }
@@ -140,8 +141,9 @@ public interface Math2 {
         }
         
         double middle;
-        do{
+        do {
             middle = (x1+x2)/2;
+            
             if (f.applyAsDouble(middle) * f.applyAsDouble(x1) <= 0) {
                 x2 = middle;
             } else {

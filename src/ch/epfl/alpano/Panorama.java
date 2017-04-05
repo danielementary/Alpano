@@ -1,5 +1,3 @@
-package ch.epfl.alpano;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,10 +5,12 @@ package ch.epfl.alpano;
  *
  */
 
+package ch.epfl.alpano;
+
 import java.util.Arrays;
-import static java.util.Objects.requireNonNull;
 
 public final class Panorama {
+    
     private PanoramaParameters parameters;
 
     private float[] distance;
@@ -92,7 +92,7 @@ public final class Panorama {
      * @return the longitude for x,y 
      */
     public float longitudeAt(int x, int y) {
-    	if(!parameters.isValidSampleIndex(x,y)) {
+    	if (!parameters.isValidSampleIndex(x,y)) {
     		throw new IndexOutOfBoundsException();
     	}
     	
@@ -108,7 +108,7 @@ public final class Panorama {
      * @return the latitude for x,y 
      */
     public float latitudeAt(int x, int y) {
-    	if(!parameters.isValidSampleIndex(x,y)) {
+    	if (!parameters.isValidSampleIndex(x,y)) {
     		throw new IndexOutOfBoundsException();
     	}
     	
@@ -124,7 +124,7 @@ public final class Panorama {
      * @return the elevation for x,y 
      */
     public float elevationAt(int x, int y) {
-    	if(!parameters.isValidSampleIndex(x,y)) {
+    	if (!parameters.isValidSampleIndex(x,y)) {
     		throw new IndexOutOfBoundsException();
     	}
         
@@ -150,6 +150,7 @@ public final class Panorama {
     }
 
     public static final class Builder {
+        
         private PanoramaParameters parameters;
         
         private float[] distance;
@@ -166,14 +167,16 @@ public final class Panorama {
          */
         public Builder(PanoramaParameters parameters) {
             
-            requireNonNull(parameters);
+            Preconditions.checkArgumentNullPointerEx(parameters);
             this.parameters = parameters;
             
-            distance = new float[parameters.width()*parameters.height()];
-            longitude = new float[parameters.width()*parameters.height()];
-            latitude = new float[parameters.width()*parameters.height()];
-            elevation = new float[parameters.width()*parameters.height()];
-            slope = new float[parameters.width()*parameters.height()];
+            int listsLength = parameters.width()*parameters.height();
+            
+            distance = new float[listsLength];
+            longitude = new float[listsLength];
+            latitude = new float[listsLength];
+            elevation = new float[listsLength];
+            slope = new float[listsLength];
             
             Arrays.fill(distance, Float.POSITIVE_INFINITY);
         }
@@ -253,7 +256,6 @@ public final class Panorama {
          * @param elevation
          * @return the builder with elevation in the array
          */
-        
         public Builder setElevationAt(int x, int y, float elevation) {
         	if (flag) {
         		throw new IllegalStateException();
@@ -275,7 +277,6 @@ public final class Panorama {
          * @param slope
          * @return the builder with slope in the array
          */
-        
         public Builder setSlopeAt(int x, int y, float slope) {
         	if (flag) {
         		throw new IllegalStateException();

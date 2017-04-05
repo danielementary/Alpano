@@ -1,5 +1,3 @@
-package ch.epfl.alpano;
-
 /**
  * 
  * @author Samuel Chassot (270955)
@@ -7,9 +5,12 @@ package ch.epfl.alpano;
  *
  */
 
+package ch.epfl.alpano;
+
 import java.util.Objects;
 
 public final class Interval2D {
+    
     private final Interval1D iX;
     private final Interval1D iY;
     
