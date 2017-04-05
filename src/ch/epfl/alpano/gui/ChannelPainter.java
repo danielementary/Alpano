@@ -1,14 +1,17 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        4 avr. 2017
- */
-
 
 package ch.epfl.alpano.gui;
 
 import java.util.function.DoubleUnaryOperator;
 
 import ch.epfl.alpano.Panorama;
+
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
+
 
 @FunctionalInterface
 public interface ChannelPainter {
