@@ -156,11 +156,7 @@ public final class Panorama {
         
         private PanoramaParameters parameters;
         
-        private float[] distance;
-        private float[] longitude;
-        private float[] latitude;
-        private float[] elevation;
-        private float[] slope;
+        private float[] distance, longitude, latitude, elevation, slope;
 
         private boolean flag = false;
         
@@ -170,7 +166,7 @@ public final class Panorama {
          */
         public Builder(PanoramaParameters parameters) {
 //            
-//            Preconditions.checkArgumentNullPointerEx(parameters);
+//            checkArgumentNullPointerEx(parameters);
 //            
             if (parameters == null) {
                 throw new NullPointerException();

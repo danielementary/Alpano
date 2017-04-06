@@ -7,6 +7,9 @@
 
 package ch.epfl.alpano;
 
+
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
 import static java.lang.Math.atan2;
@@ -27,8 +30,8 @@ public final class GeoPoint {
      * @param latitude in radians
      */
     public GeoPoint(double longitude, double latitude) {
-        Preconditions.checkArgument(longitude <= PI && longitude >= -PI);
-        Preconditions.checkArgument(latitude <= PI/2 && latitude >= -PI/2);
+        checkArgument(longitude <= PI && longitude >= -PI);
+        checkArgument(latitude <= PI/2 && latitude >= -PI/2);
         
         this.latitude = latitude;
         this.longitude = longitude;

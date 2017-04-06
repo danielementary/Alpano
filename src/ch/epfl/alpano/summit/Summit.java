@@ -8,7 +8,6 @@
 package ch.epfl.alpano.summit;
 
 import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Preconditions;
 
 public final class Summit {
     
@@ -24,8 +23,8 @@ public final class Summit {
      */
     public Summit(String name, GeoPoint position, int elevation) {
 //        
-//        Preconditions.checkArgumentNullPointerEx(name);
-//        Preconditions.checkArgumentNullPointerEx(position);
+//        checkArgumentNullPointerEx(name);
+//        checkArgumentNullPointerEx(position);
 //        
         
         if (name == null) {

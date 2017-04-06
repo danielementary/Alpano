@@ -7,6 +7,8 @@
 
 package ch.epfl.alpano;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.floor;
 import static java.lang.Math.sin;
@@ -139,7 +141,7 @@ public interface Math2 {
     public static double improveRoot(DoubleUnaryOperator f, 
                                         double x1, double x2, double epsilon) {
         
-        Preconditions.checkArgument(f.applyAsDouble(x1)
+        checkArgument(f.applyAsDouble(x1)
                                         *f.applyAsDouble(x2) <= 0);
         
         if (x1 > x2) {

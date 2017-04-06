@@ -14,7 +14,8 @@ import java.nio.ShortBuffer;
 import java.nio.channels.FileChannel.MapMode;
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
-import ch.epfl.alpano.Preconditions;
+
+import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
@@ -32,12 +33,12 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         this.file = file;
         long l = this.file.length();
         
-        Preconditions.checkArgument(l == 25934402);
+        checkArgument(l == 25934402);
         
         String name = file.getName();
         
-        Preconditions.checkArgument(name.charAt(0) == 'N' || name.charAt(0) == 'S');
-        Preconditions.checkArgument(name.charAt(3) == 'W' || name.charAt(3) == 'E');
+        checkArgument(name.charAt(0) == 'N' || name.charAt(0) == 'S');
+        checkArgument(name.charAt(3) == 'W' || name.charAt(3) == 'E');
         
         try {
             latitude = Integer.parseInt(name.substring(1, 3));
@@ -46,8 +47,8 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
             throw new IllegalArgumentException();
         }
         
-        Preconditions.checkArgument(latitude >= 0 && latitude <= 90);
-        Preconditions.checkArgument(longitude >= 0 && longitude <= 180);
+        checkArgument(latitude >= 0 && latitude <= 90);
+        checkArgument(longitude >= 0 && longitude <= 180);
         
         if (name.charAt(0) == 'S') {
             latitude *= -1;
@@ -57,7 +58,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
             longitude *= -1;
         }
         
-        Preconditions.checkArgument(name.substring(7).equals(".hgt"));
+        checkArgument(name.substring(7).equals(".hgt"));
         
         try (FileInputStream stream = new FileInputStream(file)) {
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
@@ -84,7 +85,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     @Override
     public double elevationSample(int x, int y) {
-        Preconditions.checkArgument(extent().contains(x, y));
+        checkArgument(extent().contains(x, y));
         int nbrLines = (latitude + 1)*SAMPLES_PER_DEGREE - y;
         int nbrColumns = x - (longitude * 3600);
         int index = nbrLines*(SAMPLES_PER_DEGREE + 1) + nbrColumns;

@@ -10,7 +10,6 @@ package ch.epfl.alpano.dem;
 import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
-import ch.epfl.alpano.Preconditions;
 
 public final class ContinuousElevationModel {
     
@@ -21,7 +20,7 @@ public final class ContinuousElevationModel {
     
     public ContinuousElevationModel(DiscreteElevationModel dem) {
 //        
-//        Preconditions.checkArgumentNullPointerEx(dem);
+//        checkArgumentNullPointerEx(dem);
 //        
         if (dem == null) {
             throw new NullPointerException();

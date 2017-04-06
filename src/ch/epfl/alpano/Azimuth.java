@@ -24,9 +24,9 @@ public interface Azimuth {
     public static boolean isCanonical(double azimuth) {
         if (azimuth >= 0 && azimuth < PI2) {
             return true;
-        } else {
-            return false;
         }
+        
+        return false;
     }
     
     /**
@@ -76,23 +76,24 @@ public interface Azimuth {
     public static String toOctantString(double azimuth, 
                                             String n, String e,
                                             String s, String w) {
+        
         checkArgument(isCanonical(azimuth));
         
-        String cardinalDirection = "";
+        StringBuilder cardDir = new StringBuilder();
         
         if (azimuth > PI2-3*PI_OVER8 || azimuth < 3*PI_OVER8) {
-            cardinalDirection += n;
+            cardDir.append(n);
         } else if (azimuth <= PI+3*PI_OVER8 && azimuth >= PI-3*PI_OVER8) {
-            cardinalDirection += s;
+            cardDir.append(s);
         }
         
         if (azimuth > PI_OVER8 && azimuth < PI-PI_OVER8) {
-            cardinalDirection += e;
+            cardDir.append(e);
         } else if (azimuth > PI+PI_OVER8 && azimuth < PI2-PI_OVER8) {
-            cardinalDirection += w;
+            cardDir.append(w);
         }
 
-        return cardinalDirection;
+        return cardDir.toString();
     }
 
 }

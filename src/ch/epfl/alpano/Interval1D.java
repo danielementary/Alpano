@@ -7,6 +7,8 @@
 
 package ch.epfl.alpano;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import java.util.Objects;
 
 public final class Interval1D {
@@ -23,7 +25,7 @@ public final class Interval1D {
      * @param includedTo upper bound included
      */
     public Interval1D(int includedFrom, int includedTo) {
-        Preconditions.checkArgument(includedTo >= includedFrom);
+        checkArgument(includedTo >= includedFrom);
         
         this.includedFrom = includedFrom;
         this.includedTo = includedTo;
@@ -62,13 +64,13 @@ public final class Interval1D {
         int interFrom = Math.max(this.includedFrom(), that.includedFrom());
         int interTo = Math.min(this.includedTo(), that.includedTo());
         
-        if (interTo < interFrom) {
-            return 0;
-        } else {
+        if (interTo >= interFrom) {
             Interval1D intersection = new Interval1D(interFrom, interTo);
 
             return intersection.size();
         }
+        
+        return 0;     
     }
     
     /**
@@ -102,7 +104,7 @@ public final class Interval1D {
      * @throws IllegalArgumentException
      */
     public final Interval1D union(Interval1D that) {
-        Preconditions.checkArgument(this.isUnionableWith(that),
+        checkArgument(this.isUnionableWith(that),
                 "These 2 Interval1D are not unionable");
         
         return this.boundingUnion(that);
@@ -122,9 +124,9 @@ public final class Interval1D {
         if (thatInter.includedFrom() == this.includedFrom() && 
                 thatInter.includedTo() == this.includedTo()) {
             return true;
-        } else {
-            return false;
         }
+        
+        return false;
     }
     
     /**
@@ -140,12 +142,14 @@ public final class Interval1D {
      */
     @Override
     public String toString() {
-        String str = "[" + this.includedFrom() 
-                         + ".." 
-                         + this.includedTo()
-                         + "]";
+        StringBuilder str = new StringBuilder();
         
-        return str;
+        return str.append("[")
+                  .append(this.includedFrom())
+                  .append("..")
+                  .append(this.includedTo())
+                  .append("]")
+                  .toString();
     }
     
     /**

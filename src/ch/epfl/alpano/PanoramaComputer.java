@@ -22,7 +22,7 @@ public final class PanoramaComputer {
      */
     public PanoramaComputer(ContinuousElevationModel dem) {
 //        
-//        Preconditions.checkArgumentNullPointerEx(dem);
+//        checkArgumentNullPointerEx(dem);
 //        
         
         if (dem == null) {

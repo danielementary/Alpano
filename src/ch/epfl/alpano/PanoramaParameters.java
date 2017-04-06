@@ -7,6 +7,8 @@
 
 package ch.epfl.alpano;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 public final class PanoramaParameters {
     
     private GeoPoint observerPosition;
@@ -28,22 +30,22 @@ public final class PanoramaParameters {
             double centerAzimuth, double horizontalFieldOfView, int maxDistance,
             int width, int height) {
 //        
-//        Preconditions.checkArgumentNullPointerEx(observerPosition);
+//        checkArgumentNullPointerEx(observerPosition);
 //        
         if (observerPosition == null) {
             throw new NullPointerException();
         }
         
-        Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth),
+        checkArgument(Azimuth.isCanonical(centerAzimuth),
                                                     "azimuth not canonical");
         
-        Preconditions.checkArgument(horizontalFieldOfView > 0
+        checkArgument(horizontalFieldOfView > 0
                                     && horizontalFieldOfView <= Math2.PI2,
                                     "HFOV not in [0, 2pi]");
         
-        Preconditions.checkArgument(maxDistance > 0, "maxDistance < 0");
-        Preconditions.checkArgument(width > 0, "width < 0");
-        Preconditions.checkArgument(height > 0, "height < 0");
+        checkArgument(maxDistance > 0, "maxDistance < 0");
+        checkArgument(width > 0, "width < 0");
+        checkArgument(height > 0, "height < 0");
         
         this.observerPosition = observerPosition;
         this.observerElevation = observerElevation;
@@ -123,7 +125,7 @@ public final class PanoramaParameters {
      * @return the azimuth
      */
     public double azimuthForX(double x) {
-        Preconditions.checkArgument(x >= 0 && x < width);
+        checkArgument(x >= 0 && x < width);
         
         double aziPerUnit = horizontalFieldOfView/(width-1);
         
@@ -138,7 +140,7 @@ public final class PanoramaParameters {
         
         double az = Azimuth.canonicalize(a);
         
-        Preconditions.checkArgument(Math.abs(Math2.angularDistance(az, centerAzimuth))
+        checkArgument(Math.abs(Math2.angularDistance(az, centerAzimuth))
                 <= Math.abs(Math2.angularDistance(centerAzimuth, 
                                     centerAzimuth-(horizontalFieldOfView/2)))); 
         
@@ -155,7 +157,7 @@ public final class PanoramaParameters {
      * @return the elevation
      */
     public double altitudeForY(double y) {
-        Preconditions.checkArgument(y >= 0 && y < height);
+        checkArgument(y >= 0 && y < height);
         
         double aziPerUnits = verticalFieldOfView()/(height-1);
 
@@ -168,7 +170,7 @@ public final class PanoramaParameters {
      * @return vertical corresponding angle
      */
     public double yForAltitude(double a) {
-        Preconditions.checkArgument(a>=(-1)*verticalFieldOfView()/2 
+        checkArgument(a>=(-1)*verticalFieldOfView()/2 
                                             && a<= verticalFieldOfView()/2);
         
         double unitsPerAzi = (height-1)/verticalFieldOfView();

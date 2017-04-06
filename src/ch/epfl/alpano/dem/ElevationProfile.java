@@ -11,11 +11,11 @@ import static java.lang.Math.PI;
 import static java.lang.Math.asin;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static ch.epfl.alpano.Preconditions.checkArgument;
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
-import ch.epfl.alpano.Preconditions;
 
 public final class ElevationProfile {
     
@@ -38,8 +38,8 @@ public final class ElevationProfile {
     public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin,
                                               double azimuth, double length) {
 //        
-//        Preconditions.checkArgumentNullPointerEx(elevationModel);
-//        Preconditions.checkArgumentNullPointerEx(origin);
+//        checkArgumentNullPointerEx(elevationModel);
+//        checkArgumentNullPointerEx(origin);
 //        
         if (elevationModel == null) {
             throw new NullPointerException();
@@ -49,8 +49,8 @@ public final class ElevationProfile {
             throw new NullPointerException();
         }
         
-        Preconditions.checkArgument(Azimuth.isCanonical(azimuth));
-        Preconditions.checkArgument(length > 0);
+        checkArgument(Azimuth.isCanonical(azimuth));
+        checkArgument(length > 0);
         
         this.elevMod = elevationModel;
         this.origin = origin;
@@ -88,7 +88,7 @@ public final class ElevationProfile {
      * @return the elevation as a double
      */
     public double elevationAt(double x) {
-        Preconditions.checkArgument(x <= length && x >= 0);
+        checkArgument(x <= length && x >= 0);
         
         GeoPoint point = positionAt(x);
         
@@ -101,7 +101,7 @@ public final class ElevationProfile {
      * @return corresponding GeoPoint
      */
     public GeoPoint positionAt(double x) {
-        Preconditions.checkArgument(x <= length && x >= 0);
+        checkArgument(x <= length && x >= 0);
         
         double[] lowerBound;
         double[] upperBound;
@@ -130,7 +130,7 @@ public final class ElevationProfile {
      * @return the slope as a double
      */
     public double slopeAt(double x) {
-        Preconditions.checkArgument(x <= length && x >= 0);
+        checkArgument(x <= length && x >= 0);
         
         GeoPoint point = positionAt(x);
         

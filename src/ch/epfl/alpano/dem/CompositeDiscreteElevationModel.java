@@ -7,8 +7,9 @@
 
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import ch.epfl.alpano.Interval2D;
-import ch.epfl.alpano.Preconditions;
 
 final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     
@@ -51,7 +52,7 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
         Interval2D inter1 = dem1.extent();
         Interval2D inter2 = dem2.extent();
         
-        Preconditions.checkArgument(inter1.contains(x, y) || inter2.contains(x, y));
+        checkArgument(inter1.contains(x, y) || inter2.contains(x, y));
         
         if (inter1.contains(x, y)) {
             return dem1.elevationSample(x, y);

@@ -9,6 +9,8 @@ package ch.epfl.alpano;
 
 import java.util.Objects;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 public final class Interval2D {
     
     /**
@@ -25,8 +27,8 @@ public final class Interval2D {
      */
     public Interval2D(Interval1D iX, Interval1D iY) {
 //        
-//        Preconditions.checkArgumentNullPointerEx(iX);
-//        Preconditions.checkArgumentNullPointerEx(iY);
+//        checkArgumentNullPointerEx(iX);
+//        checkArgumentNullPointerEx(iY);
 //        
         if (iX == null) {
             throw new NullPointerException();
@@ -65,9 +67,9 @@ public final class Interval2D {
     public final boolean contains(int x, int y) {
         if (iX.contains(x) && iY.contains(y)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
     
     /**
@@ -123,8 +125,8 @@ public final class Interval2D {
      * of bidimensional interval this and that
      */
     public final Interval2D union(Interval2D that) {
-        Preconditions.checkArgument(iX.isUnionableWith(that.iX()));
-        Preconditions.checkArgument(iY.isUnionableWith(that.iY()));
+        checkArgument(iX.isUnionableWith(that.iX()));
+        checkArgument(iY.isUnionableWith(that.iY()));
         
         Interval1D interval1 = iX.union(that.iX());
         Interval1D interval2 = iY.union(that.iY());
@@ -145,9 +147,9 @@ public final class Interval2D {
         
         if((this.iX().equals(that.iX())) && this.iY().equals(that.iY())) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
     
     /**
