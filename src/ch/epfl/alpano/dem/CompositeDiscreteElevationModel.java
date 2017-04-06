@@ -12,14 +12,11 @@ import ch.epfl.alpano.Preconditions;
 
 final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     
-    private final DiscreteElevationModel dem1;
-    private final DiscreteElevationModel dem2;
+    private final DiscreteElevationModel dem1, dem2;
     
     CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
         Preconditions.checkArgumentNullPointerEx(dem1);
         Preconditions.checkArgumentNullPointerEx(dem2);
-        
-        
         
         if (!(dem1.extent().isUnionableWith(dem2.extent()))) {
             throw new IllegalArgumentException();

@@ -13,12 +13,9 @@ public final class Interval1D {
     
     /**
      * lower bound included
-     */
-    private final int includedFrom;
-    /**
      * upperBound included
      */
-    private final int includedTo;
+    private final int includedFrom, includedTo;
     
     /**
      * Creates an instance of an 1 dimension interval

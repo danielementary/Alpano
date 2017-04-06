@@ -21,8 +21,7 @@ public final class ElevationProfile {
     
     private ContinuousElevationModel elevMod;
     private GeoPoint origin;
-    private double azimuth;
-    private double length;
+    private double azimuth, length;
     
     //distance between points we really calculate the altitude
     private final int DELTA = 4096;

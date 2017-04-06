@@ -15,6 +15,7 @@ import ch.epfl.alpano.Preconditions;
 public final class ContinuousElevationModel {
     
     private final DiscreteElevationModel dem;
+    
     private final static double D_NORTH_SUD = Math2.PI2*Distance.EARTH_RADIUS
                         /(Math2.PI2*DiscreteElevationModel.SAMPLES_PER_RADIAN);
     

@@ -18,8 +18,7 @@ import java.util.Locale;
 
 public final class GeoPoint {
     
-    private final double longitude;
-    private final double latitude;
+    private final double longitude, latitude;
     
     /**
      * Creates an instance of GeoPoint representing a Point on the Earth's 

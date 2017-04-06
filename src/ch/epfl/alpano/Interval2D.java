@@ -11,8 +11,11 @@ import java.util.Objects;
 
 public final class Interval2D {
     
-    private final Interval1D iX;
-    private final Interval1D iY;
+    /**
+     * first interval
+     * second interval
+     */
+    private final Interval1D iX, iY;
     
     /**
      * Creates an instance of a bidimensional interval
@@ -43,6 +46,7 @@ public final class Interval2D {
     public final Interval1D iY() {
         return iY;
     }
+    
     /**
      * informs if the cartesian product of iX and iY contains (x,y)
      * @param x of (x,y)

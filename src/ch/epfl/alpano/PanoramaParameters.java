@@ -7,18 +7,12 @@
 
 package ch.epfl.alpano;
 
-import static java.util.Objects.requireNonNull;
-
 public final class PanoramaParameters {
     
     private GeoPoint observerPosition;
     
-    private int observerElevation;
-    private double centerAzimuth;
-    private double horizontalFieldOfView;
-    private int maxDistance;
-    private int width;
-    private int height;
+    private double centerAzimuth, horizontalFieldOfView;
+    private int observerElevation, maxDistance, width, height;
     
     /**
      * instantiate a panorama
@@ -34,7 +28,7 @@ public final class PanoramaParameters {
             double centerAzimuth, double horizontalFieldOfView, int maxDistance,
             int width, int height) {
         
-        requireNonNull(observerPosition);
+        Preconditions.checkArgumentNullPointerEx(observerPosition);
         Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth),
                                                     "azimuth not canonical");
         

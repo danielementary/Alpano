@@ -20,8 +20,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     private final File file;
     private ShortBuffer buffer;
-    private int latitude;
-    private int longitude;
+    private int latitude, longitude;
     
     /**
      * create a hgtDiscreteElevationModel instance. It opens the HGT file <file> 

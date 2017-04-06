@@ -41,13 +41,10 @@ public final class PanoramaComputer {
         double x;
         double lowerBoundRoot;
         
-        float distance;
-        float latitude;
-        float longitude;
-        float elevation;
-        float slope;
+        float distance, latitude, longitude, elevation, slope;
         
         for (int i = 0 ; i < parameters.width() ; ++i) {
+            
             int j = parameters.height()-1;
             
             ElevationProfile profile = new ElevationProfile(dem, 
@@ -103,7 +100,8 @@ public final class PanoramaComputer {
      * @param profile elevation profile
      * @param ray0 
      * @param raySlope tan(a) where a is the angle between the horizontal and the ray
-     * @return DoubleUnaryOperator distance between the ray from the observer and the ground
+     * @return DoubleUnaryOperator distance between the ray from the observer
+     *  and the ground
      */
     public static DoubleUnaryOperator rayToGroundDistance(ElevationProfile profile,
                                                     double ray0, double raySlope) {

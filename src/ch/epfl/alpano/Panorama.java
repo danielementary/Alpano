@@ -13,11 +13,7 @@ public final class Panorama {
     
     private PanoramaParameters parameters;
 
-    private float[] distance;
-    private float[] longitude;
-    private float[] latitude;
-    private float[] elevation;
-    private float[] slope;
+    private float[] distance, longitude, latitude, elevation , slope;
 
     /**
      * instantiate a panorama with arrays of all infos listed below
@@ -272,7 +268,7 @@ public final class Panorama {
         		throw new IllegalStateException();
         	}
         	
-        	if (!parameters.isValidSampleIndex(x, y)){
+        	if (!parameters.isValidSampleIndex(x, y)) {
                 throw new IndexOutOfBoundsException();
             }
         	
@@ -294,9 +290,9 @@ public final class Panorama {
         		throw new IllegalStateException();
         	}
         	
-        	if (!parameters.isValidSampleIndex(x, y)){
-                throw new IndexOutOfBoundsException();
-            }
+        	if (!parameters.isValidSampleIndex(x, y)) {
+        	    throw new IndexOutOfBoundsException();
+        	}
         	
         	this.slope[parameters.linearSampleIndex(x,y)] = slope;
 
