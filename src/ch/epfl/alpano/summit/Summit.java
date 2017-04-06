@@ -23,8 +23,18 @@ public final class Summit {
      * @param elevation
      */
     public Summit(String name, GeoPoint position, int elevation) {
-        Preconditions.checkArgumentNullPointerEx(name);
-        Preconditions.checkArgumentNullPointerEx(position);
+//        
+//        Preconditions.checkArgumentNullPointerEx(name);
+//        Preconditions.checkArgumentNullPointerEx(position);
+//        
+        
+        if (name == null) {
+            throw new NullPointerException();
+        }
+        
+        if (position == null) {
+            throw new NullPointerException();
+        }
         
         this.name = name;
         this.position = position;

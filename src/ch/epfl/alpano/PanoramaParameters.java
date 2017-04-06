@@ -27,8 +27,13 @@ public final class PanoramaParameters {
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation,
             double centerAzimuth, double horizontalFieldOfView, int maxDistance,
             int width, int height) {
+//        
+//        Preconditions.checkArgumentNullPointerEx(observerPosition);
+//        
+        if (observerPosition == null) {
+            throw new NullPointerException();
+        }
         
-        Preconditions.checkArgumentNullPointerEx(observerPosition);
         Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth),
                                                     "azimuth not canonical");
         

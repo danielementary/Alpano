@@ -24,8 +24,17 @@ public final class Interval2D {
      * @param iY second unidimensional interval
      */
     public Interval2D(Interval1D iX, Interval1D iY) {
-        Preconditions.checkArgumentNullPointerEx(iX);
-        Preconditions.checkArgumentNullPointerEx(iY);
+//        
+//        Preconditions.checkArgumentNullPointerEx(iX);
+//        Preconditions.checkArgumentNullPointerEx(iY);
+//        
+        if (iX == null) {
+            throw new NullPointerException();
+        }
+        
+        if (iY == null) {
+            throw new NullPointerException();
+        }
         
         this.iX = iX;
         this.iY = iY;

@@ -30,25 +30,25 @@ public interface Preconditions {
         }
     }
     
-    /**
-     * throw a NullPointerException without an message if b is false 
-     * @param b condition boolean
-     */
-    public static void checkArgumentNullPointerEx(Object o) {
-        if (o == null) {
-            throw new NullPointerException();
-        }
-    }
-    
-    /**
-     * throw a NullPointerException with message if b is false
-     * @param b condition boolean
-     * @param message message string
-     */
-    public static void checkArgumentNullPointerEx(Object o, String message) {
-        if (o == null) {
-            throw new NullPointerException(message);
-        }
-    }
+//    /**
+//     * throw a NullPointerException without an message if b is false 
+//     * @param b condition boolean
+//     */
+//    public static void checkArgumentNullPointerEx(Object o) {
+//        if (o == null) {
+//            throw new NullPointerException();
+//        }
+//    }
+//    
+//    /**
+//     * throw a NullPointerException with message if b is false
+//     * @param b condition boolean
+//     * @param message message string
+//     */
+//    public static void checkArgumentNullPointerEx(Object o, String message) {
+//        if (o == null) {
+//            throw new NullPointerException(message);
+//        }
+//    }
     
 }

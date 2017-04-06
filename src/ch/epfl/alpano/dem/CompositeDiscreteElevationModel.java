@@ -15,8 +15,14 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     private final DiscreteElevationModel dem1, dem2;
     
     CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
-        Preconditions.checkArgumentNullPointerEx(dem1);
-        Preconditions.checkArgumentNullPointerEx(dem2);
+        
+        if (dem1 == null) {
+            throw new NullPointerException();
+        }
+        
+        if (dem2 == null) {
+            throw new NullPointerException();
+        }
         
         if (!(dem1.extent().isUnionableWith(dem2.extent()))) {
             throw new IllegalArgumentException();

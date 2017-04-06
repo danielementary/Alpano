@@ -37,9 +37,17 @@ public final class ElevationProfile {
      */
     public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin,
                                               double azimuth, double length) {
+//        
+//        Preconditions.checkArgumentNullPointerEx(elevationModel);
+//        Preconditions.checkArgumentNullPointerEx(origin);
+//        
+        if (elevationModel == null) {
+            throw new NullPointerException();
+        }
         
-        Preconditions.checkArgumentNullPointerEx(elevationModel);
-        Preconditions.checkArgumentNullPointerEx(origin);
+        if (origin == null) {
+            throw new NullPointerException();
+        }
         
         Preconditions.checkArgument(Azimuth.isCanonical(azimuth));
         Preconditions.checkArgument(length > 0);

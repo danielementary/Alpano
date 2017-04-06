@@ -20,7 +20,12 @@ public final class ContinuousElevationModel {
                         /(Math2.PI2*DiscreteElevationModel.SAMPLES_PER_RADIAN);
     
     public ContinuousElevationModel(DiscreteElevationModel dem) {
-        Preconditions.checkArgumentNullPointerEx(dem);
+//        
+//        Preconditions.checkArgumentNullPointerEx(dem);
+//        
+        if (dem == null) {
+            throw new NullPointerException();
+        }
         
         this.dem = dem;
     }

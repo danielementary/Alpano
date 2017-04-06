@@ -169,8 +169,13 @@ public final class Panorama {
          * @param parameters
          */
         public Builder(PanoramaParameters parameters) {
+//            
+//            Preconditions.checkArgumentNullPointerEx(parameters);
+//            
+            if (parameters == null) {
+                throw new NullPointerException();
+            }
             
-            Preconditions.checkArgumentNullPointerEx(parameters);
             this.parameters = parameters;
             
             int listsLength = parameters.width()*parameters.height();
