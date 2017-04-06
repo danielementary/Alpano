@@ -67,6 +67,12 @@ public final class Summit {
      */
     @Override
     public String toString(){
-        return String.format(name + " " + position.toString() + " " + elevation);
+        StringBuilder str = new StringBuilder();
+        
+        return str.append(name)
+                  .append(" ")
+                  .append(position.toString())
+                  .append(" ")
+                  .append(elevation).toString();
     }
 }

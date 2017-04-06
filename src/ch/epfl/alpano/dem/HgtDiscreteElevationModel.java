@@ -30,6 +30,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
      * @throws IOException
      */
     public HgtDiscreteElevationModel(File file) {
+        
         this.file = file;
         long l = this.file.length();
         

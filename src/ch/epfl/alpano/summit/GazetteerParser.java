@@ -65,17 +65,17 @@ public class GazetteerParser {
                 }
                 
                 //instansiating the GeoPoint corresponding to the coordinates
-                
                 GeoPoint localisation = new GeoPoint(longitude, latitude);
+                
                 //instantiating the Summit corresponding to all informations
-                
                 Summit summit = new Summit(name, localisation, elevation);
-                //add the Summit to the list
                 
+                //add the Summit to the list
                 summits.add(summit);
             }
         }
-        //return an unmodifiable version of the array of Summits
+        
+        //returns an unmodifiable version of the array of Summits
         return Collections.unmodifiableList(summits);
     }
     
