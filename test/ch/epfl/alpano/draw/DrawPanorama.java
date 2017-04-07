@@ -73,7 +73,9 @@ final class DrawPanorama {
                             "png",
                             new File("niesen-profile.png"));
       }
-              
+ 
+    }
+}
               
 
 //        BufferedImage i =
@@ -93,12 +95,12 @@ final class DrawPanorama {
 //
 //        ImageIO.write(i, "png", new File("niesen.png"));
 //      }
-      
-    }
-
-    private static int gray(double v) {
-        double clampedV = max(0, min(v, 1));
-        int gray = (int) (255.9999 * clampedV);
-        return (gray << 16) | (gray << 8) | gray;
-      } 
-  }
+//      
+//    }
+//
+//    private static int gray(double v) {
+//        double clampedV = max(0, min(v, 1));
+//        int gray = (int) (255.9999 * clampedV);
+//        return (gray << 16) | (gray << 8) | gray;
+//      } 
+//  }
