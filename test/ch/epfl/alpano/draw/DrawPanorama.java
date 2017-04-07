@@ -55,23 +55,45 @@ final class DrawPanorama {
           .computePanorama(PARAMS);
         
         
-        ChannelPainter gray =
-                ChannelPainter.maxDistanceToNeighbors(p)
-                .sub(500)
-                .div(4500)
-                .clamped()
-                .revert();
-
-              ChannelPainter distance = p::distanceAt;
-              ChannelPainter opacity =
-                distance.map(d -> d == Float.POSITIVE_INFINITY ? 0 : 1);
-
-              ImagePainter l = ImagePainter.gray(gray, opacity);
+//        ChannelPainter gray =
+//                ChannelPainter.maxDistanceToNeighbors(p)
+//                .sub(500)
+//                .div(4500)
+//                .clamped()
+//                .revert();
+//
+//              ChannelPainter distance = p::distanceAt;
+//              ChannelPainter opacity =
+//                distance.map(d -> d == Float.POSITIVE_INFINITY ? 0 : 1);
+                
+        
+        ChannelPainter hue, saturation, brightness, opacity;
+        
+        hue = ChannelPainter.distance(p)
+                            .div(100000)
+                            .cycle()
+                            .mul(360);
+        
+        saturation = ChannelPainter.distance(p)
+                                   .div(200000)
+                                   .clamp()
+                                   .invert();
+        
+        brightness = ChannelPainter.slope(p)
+                                   .mul(2)
+                                   .div((float) Math.PI)
+                                   .invert()
+                                   .mul((float) 0.7)
+                                   .add((float) 0.3);
+        
+        opacity = ChannelPainter.opacity(p);
+        
+              ImagePainter l = ImagePainter.hsb(hue, saturation, brightness, opacity);
 
               Image i = PanoramaRenderer.renderPanorama(l, p);
               ImageIO.write(SwingFXUtils.fromFXImage(i, null),
                             "png",
-                            new File("niesen-profile.png"));
+                            new File("niesen-color.png"));
       }
  
     }

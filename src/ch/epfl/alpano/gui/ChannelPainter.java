@@ -38,13 +38,28 @@ public interface ChannelPainter {
                                                         -pano.distanceAt(x, y);
     }
     
+    public static ChannelPainter distance(Panorama pano) {
+
+        return (x,y) -> pano.distanceAt(x, y);
+    }
+    
+    public static ChannelPainter slope(Panorama pano) {
+
+        return (x,y) -> pano.slopeAt(x, y);
+    }
+    
+    public static ChannelPainter opacity(Panorama pano) {
+
+        return (x,y) -> (pano.distanceAt(x, y) == Float.POSITIVE_INFINITY) ? 0 : 1;
+    }
+    
     /**
      * add the constant to the value of the channel
      * @param constant the constant
      * @return a new Channel
      */
     public default ChannelPainter add(float constant) {
-        return (x,y)-> valueAt(x,y) + constant;  
+        return (x,y) -> valueAt(x,y) + constant;  
     }
     
     /**
@@ -53,7 +68,7 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter mul(float constant) {
-        return (x,y)-> valueAt(x,y) * constant;  
+        return (x,y) -> valueAt(x,y) * constant;  
     }
     
     /**
@@ -62,7 +77,7 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter sub(float constant) {
-        return (x,y)-> valueAt(x,y) - constant;  
+        return (x,y) -> valueAt(x,y) - constant;  
     }
    
     /**
@@ -71,7 +86,7 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter div(float constant) {
-        return (x,y)-> valueAt(x,y)  / constant;  
+        return (x,y) -> valueAt(x,y)  / constant;  
     }
     
     /**
@@ -80,30 +95,30 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter map(DoubleUnaryOperator op) {
-        return (x,y)-> (float) op.applyAsDouble(valueAt(x,y));
+        return (x,y) -> (float) op.applyAsDouble(valueAt(x,y));
     }
     
     /**
      * gives the max between 0 and the minimum of the valueAt(x,y) and 1
      * @return a new ChannelPainter
      */
-    public default ChannelPainter clamped() {
-        return (x,y)-> Math.max(0, Math.min(valueAt(x,y), 1));
+    public default ChannelPainter clamp() {
+        return (x,y) -> Math.max(0, Math.min(valueAt(x,y), 1));
     }
     
     /**
      * gives the 1-valueAt(x,y)
      * @return a new ChannelPainter
      */
-    public default ChannelPainter revert() {
-        return (x,y)-> 1 - valueAt(x,y);
+    public default ChannelPainter invert() {
+        return (x,y) -> 1-valueAt(x,y);
     }
     
     /**
      * give the valueAt(x,y) mod 1
      * @return a new ChannelPainter
      */
-    public default ChannelPainter cycling() {
-        return (x,y)->valueAt(x,y) % 1;
+    public default ChannelPainter cycle() {
+        return (x,y) -> valueAt(x,y) % 1;
     }
 }
