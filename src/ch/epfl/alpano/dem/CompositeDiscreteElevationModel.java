@@ -15,7 +15,7 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     
     private final DiscreteElevationModel dem1, dem2;
     
-    CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
+    public CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
         
         if (dem1 == null) {
             throw new NullPointerException();
