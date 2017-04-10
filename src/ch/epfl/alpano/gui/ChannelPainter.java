@@ -23,7 +23,7 @@ public interface ChannelPainter {
     public abstract float valueAt(int x, int y);
     
     /**
-     * return the greatest difference between the distance of the pixel(x,y) 
+     * return the greatest difference between the distance of the pixel (x,y) 
      * and the distance of his neighbours
      * @param pano the panorama in which you want to work
      * @return the max difference distance
@@ -38,16 +38,31 @@ public interface ChannelPainter {
                                                         -pano.distanceAt(x, y);
     }
     
+    /**
+     * return the distance of the pixel(x,y) from the observator
+     * @param pano the panorama in which you want to work
+     * @return a distance
+     */
     public static ChannelPainter distance(Panorama pano) {
 
         return (x,y) -> pano.distanceAt(x, y);
     }
     
+    /**
+     * return the slope of the pixel (x,y)
+     * @param pano the panorama in which you want to work
+     * @return a slope
+     */
     public static ChannelPainter slope(Panorama pano) {
 
         return (x,y) -> pano.slopeAt(x, y);
     }
     
+    /**
+     * return the opacity corresponding to the distance of pixel (x,y)
+     * @param pano the panorama in which you want to work
+     * @return 0 if the distance is infinite, 1 otherwhise
+     */
     public static ChannelPainter opacity(Panorama pano) {
 
         return (x,y) -> (pano.distanceAt(x, y) == Float.POSITIVE_INFINITY) ? 0 : 1;

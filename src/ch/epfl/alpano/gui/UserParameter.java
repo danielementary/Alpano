@@ -1,8 +1,9 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        10 avr. 2017
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
  */
-
 
 package ch.epfl.alpano.gui;
 
@@ -21,17 +22,18 @@ public enum UserParameter {
     private int min;
     private int max;
 
-    private UserParameter(int min, int max){
+    private UserParameter(int min, int max) {
         this.min = min;     
         this.max = max;
     }
     
-    public int sanitize(int value){
-        if (value > max){
+    public int sanitize(int value) {
+        if (value > max) {
             return max;
-        }else if(value < min){
+        } else if (value < min) {
             return min;
         }
+        
         return value;
     }
 }
