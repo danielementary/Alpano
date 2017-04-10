@@ -7,6 +7,10 @@
 
 package ch.epfl.alpano.gui;
 
+/**
+ * enumeration that describes the min and max values accepted
+ * to generate a panorama from a certain point of view
+ */
 public enum UserParameter {
 
     OBSERVER_LONGITUDE(6,12),
@@ -27,6 +31,11 @@ public enum UserParameter {
         this.max = max;
     }
     
+    /**
+     * returns a value in the bounds corresponding to the given value
+     * @param given value
+     * @return the accurate value in the bounds
+     */
     public int sanitize(int value) {
         if (value > max) {
             return max;
