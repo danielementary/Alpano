@@ -14,7 +14,13 @@ import javafx.scene.image.WritableImage;
 
 @SuppressWarnings("restriction")
 public interface PanoramaRenderer {
-
+   
+    /**
+     * create a new Image with the imagePainter and the panorama given in argument.
+     * @param painter
+     * @param pano
+     * @return a Image
+     */
     public static Image renderPanorama(ImagePainter painter, Panorama pano) {
         
         int width = pano.parameters().width();

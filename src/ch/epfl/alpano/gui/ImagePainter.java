@@ -9,6 +9,7 @@ package ch.epfl.alpano.gui;
 
 import javafx.scene.paint.Color;
 
+@FunctionalInterface
 @SuppressWarnings("restriction")
 public interface ImagePainter {
     
@@ -20,6 +21,16 @@ public interface ImagePainter {
      */
     public abstract Color colorAt(int x, int y);
     
+    
+    /**
+     * create a new ImagePainter with the 4 channelPainter given in argument. The color is created
+     * with the HSB system.
+     * @param hue
+     * @param saturation
+     * @param brightness
+     * @param opacity
+     * @return a new ImagePainter
+     */
     public static ImagePainter hsb(ChannelPainter hue, 
                                    ChannelPainter saturation,
                                    ChannelPainter brightness, 
@@ -30,7 +41,12 @@ public interface ImagePainter {
                                    brightness.valueAt(x, y),
                                    opacity.valueAt(x, y));
     }
-    
+    /**
+     * create a new imagePainter. the Color is in gray variation.
+     * @param gray
+     * @param opacity
+     * @return a new ImagePainter
+     */
     public static ImagePainter gray(ChannelPainter gray, ChannelPainter opacity) {
         return (x,y) -> Color.gray(gray.valueAt(x, y), opacity.valueAt(x, y));
     }
