@@ -9,7 +9,7 @@ package ch.epfl.alpano.gui;
 
 /**
  * enumeration that describes the min and max values accepted
- * to generate a panorama from a certain point of view
+ * to generate a panorama
  */
 public enum UserParameter {
 

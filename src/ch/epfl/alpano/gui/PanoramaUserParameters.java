@@ -168,16 +168,19 @@ public final class PanoramaUserParameters {
     
     @Override
     public int hashCode() {
+        /*
+        //hash the values of the parameters
+        return Objects.hash(parameters.get(UserParameter.OBSERVER_LONGITUDE),
+                            parameters.get(UserParameter.OBSERVER_LATITUDE),
+                            parameters.get(UserParameter.OBSERVER_ELEVATION),
+                            parameters.get(UserParameter.CENTER_AZIMUTH),
+                            parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW),
+                            parameters.get(UserParameter.MAX_DISTANCE),
+                            parameters.get(UserParameter.WIDTH),
+                            parameters.get(UserParameter.HEIGHT),
+                            parameters.get(UserParameter.SUPER_SAMPLING_EXPONENT));
+        */
         
-      //hash the values of the parameters
-      return Objects.hash(parameters.get(UserParameter.OBSERVER_LONGITUDE),
-                          parameters.get(UserParameter.OBSERVER_LATITUDE),
-                          parameters.get(UserParameter.OBSERVER_ELEVATION),
-                          parameters.get(UserParameter.CENTER_AZIMUTH),
-                          parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW),
-                          parameters.get(UserParameter.MAX_DISTANCE),
-                          parameters.get(UserParameter.WIDTH),
-                          parameters.get(UserParameter.HEIGHT),
-                          parameters.get(UserParameter.SUPER_SAMPLING_EXPONENT));
+        return parameters.hashCode();
     }
 }

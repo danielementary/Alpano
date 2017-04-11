@@ -1,4 +1,11 @@
-package ch.epfl.alpano.gui;
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
+ */
+
+ package ch.epfl.alpano.gui;
 
 public interface PredefinedPanoramas {
     public static int mainWidth = 2500;
