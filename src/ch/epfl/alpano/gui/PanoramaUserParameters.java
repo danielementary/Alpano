@@ -12,7 +12,6 @@ import static java.lang.Math.scalb;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 
 public final class PanoramaUserParameters {
 
@@ -27,11 +26,12 @@ public final class PanoramaUserParameters {
         
         parameters.replaceAll((k, v) -> k.sanitize(v));
         
-        int maxHeight = 170*((parameters.get(UserParameter.WIDTH)-1)
-                              /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW))+1;
+        int maxHeight = (170*((parameters.get(UserParameter.WIDTH)-1)
+                              /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW)))+1;
         
         if (parameters.get(UserParameter.HEIGHT) > maxHeight) {
             parameters.replace(UserParameter.HEIGHT, maxHeight);
+            
         }
         
         this.parameters = Collections.unmodifiableMap(new EnumMap<>(parameters));
@@ -158,7 +158,7 @@ public final class PanoramaUserParameters {
         
         //compare all the values of the parameters
         for (UserParameter uP : this.parameters.keySet()) {
-            if (this.parameters.get(uP) != ((PanoramaUserParameters) that).parameters.get(uP)){
+            if (!this.parameters.get(uP).equals(((PanoramaUserParameters) that).parameters.get(uP))) {
                 return false;
             }
         }
