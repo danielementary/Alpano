@@ -30,7 +30,7 @@ public final class PanoramaUserParameters {
                               /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW)))+1;
         
         if (parameters.get(UserParameter.HEIGHT) > maxHeight) {
-            parameters.replace(UserParameter.HEIGHT, maxHeight);
+            parameters.replace(UserParameter.HEIGHT, UserParameter.HEIGHT.sanitize(maxHeight));
             
         }
         
