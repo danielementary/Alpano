@@ -30,7 +30,6 @@ public final class PanoramaUserParameters {
                             /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW))+1;
         
         if (parameters.get(UserParameter.HEIGHT) > maxHeight) {
-            System.out.println(maxHeight);
             parameters.replace(UserParameter.HEIGHT, UserParameter.HEIGHT.sanitize(maxHeight)); 
         }
         
@@ -156,14 +155,7 @@ public final class PanoramaUserParameters {
             return false;
         }
         
-        //compare all the values of the parameters
-        for (UserParameter uP : this.parameters.keySet()) {
-            if (!this.parameters.get(uP).equals(((PanoramaUserParameters) that).parameters.get(uP))) {
-                return false;
-            }
-        }
-        
-        return true;
+        return parameters.equals(((PanoramaUserParameters) that).parameters);
     }
     
     @Override
