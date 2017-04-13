@@ -26,12 +26,12 @@ public final class PanoramaUserParameters {
         
         parameters.replaceAll((k, v) -> k.sanitize(v));
         
-        int maxHeight = (170*((parameters.get(UserParameter.WIDTH)-1)
-                              /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW)))+1;
+        int maxHeight = ((170*(parameters.get(UserParameter.WIDTH)-1))
+                            /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW))+1;
         
         if (parameters.get(UserParameter.HEIGHT) > maxHeight) {
-            parameters.replace(UserParameter.HEIGHT, UserParameter.HEIGHT.sanitize(maxHeight));
-            
+            System.out.println(maxHeight);
+            parameters.replace(UserParameter.HEIGHT, UserParameter.HEIGHT.sanitize(maxHeight)); 
         }
         
         this.parameters = Collections.unmodifiableMap(new EnumMap<>(parameters));
@@ -168,19 +168,7 @@ public final class PanoramaUserParameters {
     
     @Override
     public int hashCode() {
-        /*
-        //hash the values of the parameters
-        return Objects.hash(parameters.get(UserParameter.OBSERVER_LONGITUDE),
-                            parameters.get(UserParameter.OBSERVER_LATITUDE),
-                            parameters.get(UserParameter.OBSERVER_ELEVATION),
-                            parameters.get(UserParameter.CENTER_AZIMUTH),
-                            parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW),
-                            parameters.get(UserParameter.MAX_DISTANCE),
-                            parameters.get(UserParameter.WIDTH),
-                            parameters.get(UserParameter.HEIGHT),
-                            parameters.get(UserParameter.SUPER_SAMPLING_EXPONENT));
-        */
-        
+
         return parameters.hashCode();
     }
 }

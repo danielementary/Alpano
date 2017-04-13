@@ -4,6 +4,7 @@
  * @author Daniel Filipe Nunes Silva (275197)
  *
  */
+
 package ch.epfl.alpano.gui;
 
 import static org.junit.Assert.assertEquals;
@@ -113,7 +114,7 @@ public class PanoramaUserParametersTestSD {
         assertEquals(180, pan3.getHoriFieldOfView(), 0);
         assertEquals(305, pan3.getMaxDist(), 0);
         assertEquals(30, pan3.getWidth(), 0);
-        //assertEquals(10, pan3.getHeight(), 0);
+        assertEquals(28, pan3.getHeight(), 0);
         assertEquals(0, pan3.getSuperSamp(), 0);
     }
     
