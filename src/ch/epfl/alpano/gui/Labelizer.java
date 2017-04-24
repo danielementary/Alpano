@@ -7,10 +7,10 @@
 package ch.epfl.alpano.gui;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
-import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
@@ -30,7 +30,7 @@ public class Labelizer {
 
     
     public List<Node> labels(PanoramaParameters param){
-        
+        BitSet column = new BitSet();
         
         return null;
     }
