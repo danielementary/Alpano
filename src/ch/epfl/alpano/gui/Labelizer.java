@@ -114,7 +114,7 @@ public class Labelizer {
             if (lowerBoundRoot < Double.POSITIVE_INFINITY ) {
                 root = Math2.improveRoot(distanceFunction,
                              lowerBoundRoot, lowerBoundRoot + step, delta);
-                 double distance = profile.positionAt(root).distanceTo(param.observerPosition()); // here problem
+                 double distance = profile.positionAt(root).distanceTo(param.observerPosition()); 
                  if (distance >= distanceSummitObserver-tolerance){
                      visibleSummits.add(summit);
                  }
@@ -122,7 +122,7 @@ public class Labelizer {
         } 
         
         System.out.println("visibles terminated");
-        System.out.println(visibleSummits.size());
+        System.out.println(visibleSummits.size()); // here the list is empty :'(
         return visibleSummits;
         
         
