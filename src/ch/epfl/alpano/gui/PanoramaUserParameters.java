@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
+import ch.epfl.alpano.GeoPoint;
+import ch.epfl.alpano.PanoramaParameters;
+
 public final class PanoramaUserParameters {
 
     private Map<UserParameter, Integer> parameters =
@@ -130,20 +133,37 @@ public final class PanoramaUserParameters {
     /**
      * @return the parameters of the instance after scaling the dimensions
      */
-    public Map<UserParameter, Integer> panoramaParameters() {
-        Map<UserParameter, Integer> paramMap = new EnumMap<>(parameters);
+    public PanoramaParameters panoramaParameters() {
+//        Map<UserParameter, Integer> paramMap = new EnumMap<>(parameters);
+//        
+//        paramMap.replace(UserParameter.HEIGHT, (int) (getHeight()*scalb(1, getSuperSamp())));
+//        paramMap.replace(UserParameter.WIDTH, (int) (getWidth()*scalb(1, getSuperSamp())));
+//        
+//        return Collections.unmodifiableMap(new EnumMap<>(paramMap));
         
-        paramMap.replace(UserParameter.HEIGHT, (int) (getHeight()*scalb(1, getSuperSamp())));
-        paramMap.replace(UserParameter.WIDTH, (int) (getWidth()*scalb(1, getSuperSamp())));
+        int newHeight = (int) (getHeight() *scalb(1, getSuperSamp()));
+        int newWidth= (int) (getWidth() *scalb(1, getSuperSamp()));
         
-        return Collections.unmodifiableMap(new EnumMap<>(paramMap));
+        return new PanoramaParameters(
+                new GeoPoint(Math.toRadians(getOberserverLong()*1e-4), Math.toRadians(getOberserverLati()*1e-4)), 
+                getObserverElev(),
+                Math.toRadians(getCenterAzim()), Math.toRadians(getHoriFieldOfView()),
+                getMaxDist(), newWidth, newHeight);
+        
+        
     }
     
     /**
      * @return the parameters of the instance
      */
-    public Map<UserParameter, Integer> panoramaDisplayParameters() {
-        return Collections.unmodifiableMap(new EnumMap<>(parameters));
+    public PanoramaParameters panoramaDisplayParameters() {
+//        return Collections.unmodifiableMap(new EnumMap<>(parameters));
+        return new PanoramaParameters(
+                new GeoPoint(Math.toRadians(getOberserverLong()*1e-4), Math.toRadians(getOberserverLati()*1e-4)), 
+                getObserverElev(),
+                Math.toRadians(getCenterAzim()), Math.toRadians(getHoriFieldOfView()),
+                getMaxDist(), getWidth(), getHeight());
+        
     }
     
     // defines how PanoramaUserParameters should be compared
