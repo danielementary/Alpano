@@ -1,0 +1,142 @@
+Total: 53/80
+------------------------------
+* Etape 1 (DSA) [14/15]
+Remarque générale:
++0: Bien documenté, code concis et clair. Excellent travail. Attention toutefois à bien suivre les consignes à la lettre.
+
+** Interface Preconditions [1/1]
++0: Evitez de mettre du code en commentaire!
+
+** Interface Math2 [9/10]
+*** Style [2/2]
+*** Méthode firstIntervalContainingRoot [1/2]
++0: la validité des paramètres n'est pas testée (minX <= maxX et 0 < dX)
++0: WARNING >> attention au "do .. while" ! Ici il vaut mieux tester la condition de sortie avant d'exécuter le code de la boucle!
+-1: la méthode doit retourner la borne inférieure d’un intervalle complet de taille dX
+*** Méthode improveRoot [2/2]
++0: attention au "do .. while" ! Ici il vaut mieux tester la condition de sortie avant d'exécuter le code de la boucle!
+*** Méthode lerp [1/1]
+*** Méthode bilerp [1/1]
+*** Méthodes Restantes [2/2]
+
+** Interface Distance [1/1]
+
+** Interface Azimuth [3/3]
+*** Méthode toOctantString [1/1]
++0: Excellente utilisation de StringBuilder!
+*** Méthodes Restantes [2/2]
++0: pour isCanonical, préférez "return (condition);" plutot que "if (condition) return true else false"
+------------------------------
+* Etape 2 (FSC) [7/13]
+
+** Classe GeoPoint [3/3]
+*** Méthode distanceTo [1/1]
+*** Méthode azimuthTo [1/1]
+*** Constructeur et autres méthodes [1/1]
++0: utilisez les accesseurs (getter) au lieu des attributs
+
+** Classe Interval1D [1/5]
+*** Méthode sizeOfIntersectionWith [0/1]
+-1: Construction inutile d'un objet Interval1D pour calculer sizeOfIntersectionWith()
+*** Constructeur et autres méthodes [1/4]
++0: utilisez les accesseurs (getter) au lieu des attributs
+-1: méthode trop compliquée pour isUnionable, cherchez simplement à comparer la taille de l’union et de l’union englobante
+-1: equals peut être réduit à un return de l’intersection de plusieurs conditions (pas de if)
+-1: Utilisation de StringBuilder au lieu de stringFormat ou de créer un string tout simplement
+
+** Classe Interval2D [3/5]
+*** Méthode sizeOfIntersectionWith [1/1]
+*** Constructeur et autres méthodes [2/4]
++0: utilisation de if(cond) {return true} else {return false} au lieu de return cond dans contains (déjà pénalisé dans equals de Interval1D)
+-1: Utilisez la méthode size de Intervald2D dans isUnionableWith
+-1: non utilisation de isUnionableWith() de Intervald2D dans union()
++0: equals peut être réduit à un return de l’intersection de plusieurs conditions (pas de if) (déjà pénalisé dans Interval1D)
+------------------------------
+* Etape 3 (RGE) [9/13]
+
+** Interface DiscreteElevationModel [1/2]
+*** Création et utilisation des constantes demandées [1/1]
+*** Implémentation des méthodes de l'interface [0/1]
+-1: la méthode union() ne vérifie pas que les MNT sont "unionables".
+
+** Classe CompositeDiscreteElevationModel [3/4]
+*** Classe finale et visible dans le package seulement [1/1]
+*** Traitement correct des arguments dans le constructeur [0/1]
++0: Votre code serait plus propre en utilisant requireNonNull comme suggéré dans le cours.
+-1: L'union des MNT n’est pas stockée à la construction de l’objet et est recalculée à chaque fois que la méthode extent() est appelée.
+*** Implémentation de la méthode elevationSample [2/2]
+
+** Classe ContinuousElevationModel [5/7]
+*** Classe finale et publique [1/1]
+*** Création et utilisation judicieuse des constantes [0/1]
+-1: Non utilisation des fonctions à disposition pour le calcul de D_NORTH_SUD.
+*** Implémentation efficace de la méthode slopeAt [2/3]
+-1: Duplication de certaines expressions potentiellement coûteuses (elevationExtension). Utilisez des variables et/ou des constantes.
+*** Implémentation efficace de la méthode elevationAt [2/2]
+------------------------------
+* Etape 4 (RME) [7/13]
+
+** Classe HgtDiscreteElevationModel [3/6]
+*** Constructeur [2/4]
+-1: attribut "file" non utilise
+-1: accès non maîtrisé au lettres du nom du fichier (longueur non vérifiée avant l'accès)
++0: utilisez plutot une constante pour la taille du fichier
++0: pour faciliter la maintenance, calculez plutot la taille du fichier en fonction de SAMPLES_PER_DEGREE
+*** Méthode close & extent [0/1]
+-1: recalcule l'intervalle 2D a chaque appel alors qu'il est constant (peut etre stocke dans un attribut depuis le constructeur)
+*** Méthode elevationSample [1/1]
+
+** Classe ElevationProfile [4/7]
+*** Constructeur [1/4]
+-1: attributs de classe azimuth et origin jamais utilises
+-1: certains attributs ne sont pas finaux
+-1: Ne test pas si les arguments origin et elevationModel sont null
+*** Méthode positionAt [2/2]
+*** Méthode slopeAt & elevationAt [1/1]
+------------------------------
+* Etape 5 (LCO) [8/13]
+
+** Classe Summit [1/2]
+*** ToString format [1/1]
+*** Constructeur [0/1]
+-1: aucun attribut n'est final
++0: Utiliser Objects.requireNonNull est plus propre que de tester == null
+
+** Classe GazetteerParser [4/5]
+*** Constructeur [1/1]
+*** Méthode readSummits [3/4]
+-1: IndexOutOfBound n'est jamais catch
++0: Préférer un seul try catch plutôt que de les imbriquer
+
+** Classe PanoramaParameters [3/6]
+*** Calculs d'azimuth, altitude propres [1/2]
+-1: verticalFieldOfView()/2 est recalculé 3 fois dans verticalFieldOfView
+*** Constructeur [1/2]
++0: Utiliser la méthode Objects.requireNonNull est plus propre que de tester == null
+-1: Aucun attribut n'est final
+*** Accesseurs [0/1]
+-1: verticalFieldOfView ne doit pas refaire le même calcul à chaque appel, privilégier un attribut supplémentaire
+*** Calcul de l'index linéaire [1/1]
++0: pas de check sur la validité du couple (x, y) passé
+------------------------------
+* Etape 6 (GTA) [8/13]
+
+** Class Panorama [1/3]
+-1: Les attributs devraient être final.
+-1: Mettez le contrôle de l'index dans une méthode privée (Duplication de code).
+
+** Class Panorama.Builder [2/3]
++0: parameters devrait être final.
+-1: Utilisez requireNonNull au lieu de if (x==null)...
++0: Même remarque que pour Panorama (index).
++0: Il faudrait mettre les tableaux à null dans build pour libérer de la mémoire.
+
+** Class PanoramaComputer [5/7]
++0: requireNonNull
+*** Méthode computePanorama [3/5]
+-1: Stockez altitudeForY dans une variable pour éviter des calculs inutiles.
+-1: Les constantes devraient être private static final.
++0: Inutile de déclarer toutes les variables au début de la méthode.
+*** Méthode rayToGroundDistance [2/2]
++0: (1-K)/(2*R) devrait être une constante (calculs inutiles).
+
