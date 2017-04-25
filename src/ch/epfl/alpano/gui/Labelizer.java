@@ -8,9 +8,11 @@ package ch.epfl.alpano.gui;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
+import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.Math2;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
@@ -30,7 +32,38 @@ public class Labelizer {
 
     
     public List<Node> labels(PanoramaParameters param){
-        BitSet column = new BitSet();
+        BitSet column = new BitSet(); //false if the column is free, true if she is busy(she has a sign
+                                      // or a column in the 20 left or right has one))
+        
+        
+        List<Summit> visible = visibleSummits(hgt, param);
+        visible.sort( (s1, s2)-> {
+            double y1 = param.yForAltitude(
+                    (correctedElevation(s1, param)-param.observerElevation())/
+                    s1.position().distanceTo(param.observerPosition()) );
+            
+            double y2 = param.yForAltitude(
+                    (correctedElevation(s2, param)-param.observerElevation())/
+                    s2.position().distanceTo(param.observerPosition()) );
+            
+            int y1_round = (int) Math.round(y1);
+            int y2_round = (int) Math.round(y2);
+            if(y1_round == y2_round){
+                return s1.elevation() - s2.elevation();
+                
+            }else{
+                return y2_round - y1_round;
+            }
+        });
+        
+        for (Summit summit : visible) {
+            int x = (int) Math.round(param.xForAzimuth(param.observerPosition().azimuthTo(summit.position())));
+            int y = (int) Math.round(param.yForAltitude(
+                    (correctedElevation(summit, param)-param.observerElevation())/
+                    summit.position().distanceTo(param.observerPosition()) ) );
+            
+            System.out.println(summit.name() + "(" + x + " , " + y + ")");
+        }
         
         return null;
     }
@@ -41,8 +74,8 @@ public class Labelizer {
      * @return
      */
     private List<Summit> visibleSummits(ContinuousElevationModel hgt, PanoramaParameters param){
-        List<Summit> list_inAzimuth = new ArrayList();
-        List<Summit> visibleSummits = new ArrayList();
+        List<Summit> list_inAzimuth = new ArrayList<>();
+        List<Summit> visibleSummits = new ArrayList<>();
         int step = 64;
         int delta = 4;
         int tolerance = 200;
@@ -91,5 +124,12 @@ public class Labelizer {
         
         
         
+    }
+    
+    private double correctedElevation(Summit summit, PanoramaParameters param){
+        double elev = summit.elevation();
+        double tan = (elev -param.observerElevation())/param.observerPosition().distanceTo(summit.position());
+        
+        return elev - ((1-0.13)/(2*Distance.EARTH_RADIUS))*Math2.sq(tan);
     }
 }
