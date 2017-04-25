@@ -87,8 +87,11 @@ public class Labelizer {
                 list_inAzimuth.add(summit);
             }
         }
+        System.out.println(list_inAzimuth.size());
+        
         
         for (Summit summit : list_inAzimuth) {
+
             double distanceSummitObserver = summit.position().distanceTo(param.observerPosition());
             
             ElevationProfile profile = new ElevationProfile(hgt, param.observerPosition(),
@@ -106,21 +109,22 @@ public class Labelizer {
             
             double root;
             
-            if (lowerBoundRoot < Double.POSITIVE_INFINITY) {
+        
+            
+            if (lowerBoundRoot < Double.POSITIVE_INFINITY ) {
                 root = Math2.improveRoot(distanceFunction,
                              lowerBoundRoot, lowerBoundRoot + step, delta);
-            }else{
-                root = lowerBoundRoot;
-            }
-            
-            double distance = profile.positionAt(root).distanceTo(param.observerPosition());
-            
-            if (distance >= distanceSummitObserver-tolerance){
-                visibleSummits.add(summit);
+                 double distance = profile.positionAt(root).distanceTo(param.observerPosition()); // here problem
+                 if (distance >= distanceSummitObserver-tolerance){
+                     visibleSummits.add(summit);
+                 }
             }
         } 
         
+        System.out.println("visibles terminated");
+        System.out.println(visibleSummits.size());
         return visibleSummits;
+        
         
         
         
