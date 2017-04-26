@@ -8,11 +8,11 @@ package ch.epfl.alpano.gui;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
 import ch.epfl.alpano.Distance;
+import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
@@ -38,102 +38,106 @@ public class Labelizer {
         
         List<Summit> visible = visibleSummits(hgt, param);
         visible.sort( (s1, s2)-> {
-            double y1 = param.yForAltitude(
-                    (correctedElevation(s1, param)-param.observerElevation())/
-                    s1.position().distanceTo(param.observerPosition()) );
+                      
+            int y1 = yForSummit(s1, param);
             
-            double y2 = param.yForAltitude(
-                    (correctedElevation(s2, param)-param.observerElevation())/
-                    s2.position().distanceTo(param.observerPosition()) );
+            int y2 = yForSummit(s2, param);
             
-            int y1_round = (int) Math.round(y1);
-            int y2_round = (int) Math.round(y2);
-            if(y1_round == y2_round){
+           
+            if(y1 == y2){
                 return s1.elevation() - s2.elevation();
                 
             }else{
-                return y2_round - y1_round;
+                return y1 - y2;
             }
         });
         
         for (Summit summit : visible) {
             int x = (int) Math.round(param.xForAzimuth(param.observerPosition().azimuthTo(summit.position())));
-            int y = (int) Math.round(param.yForAltitude(
-                    (correctedElevation(summit, param)-param.observerElevation())/
-                    summit.position().distanceTo(param.observerPosition()) ) );
+            int y = yForSummit(summit, param);
             
             System.out.println(summit.name() + "(" + x + " , " + y + ")");
         }
-        
+
         return null;
     }
-    
+
     /**
      * gives the list of the summits who are visible for the observer
      * @param param
      * @return
      */
     private List<Summit> visibleSummits(ContinuousElevationModel hgt, PanoramaParameters param){
-        List<Summit> list_inAzimuth = new ArrayList<>();
         List<Summit> visibleSummits = new ArrayList<>();
         int step = 64;
-        int delta = 4;
         int tolerance = 200;
-        
+
+        GeoPoint observerPosition = param.observerPosition();
+
         for (Summit summit : summits) {
-            double summitAzimuth = summit.position().azimuthTo(param.observerPosition());
-            
-            if (Math2.angularDistance(summitAzimuth, param.centerAzimuth()) <= param.horizontalFieldOfView()/2 ){
-                list_inAzimuth.add(summit);
+            double summitAzimuth = observerPosition.azimuthTo(summit.position());
+
+            if ( Math.abs(Math2.angularDistance(summitAzimuth, param.centerAzimuth())) <=  param.horizontalFieldOfView()/2){
+
+                GeoPoint summitPosition = summit.position();
+
+                double distanceObserverSummit = observerPosition.distanceTo(summitPosition);
+
+                ElevationProfile profile = new ElevationProfile(hgt, observerPosition,
+                        observerPosition.azimuthTo(summitPosition),
+                        distanceObserverSummit);
+
+                DoubleUnaryOperator distanceFunction = 
+                        PanoramaComputer.rayToGroundDistance(profile, 
+                                param.observerElevation(), 
+                                (summit.elevation() - param.observerElevation()) / distanceObserverSummit );
+
+                double lowerBoundRoot = Math2.firstIntervalContainingRoot(
+                        distanceFunction,
+                        0, distanceObserverSummit, step);
+
+
+
+
+
+                if (lowerBoundRoot < Double.POSITIVE_INFINITY ) {
+                    //                    
+                    double distance = profile.positionAt(lowerBoundRoot).distanceTo(observerPosition); 
+                    if(summit.name().equals("NIESEN")){
+                        System.out.println(distance + " : " + (distanceObserverSummit - tolerance));
+                    }
+
+                    if (distance >= distanceObserverSummit-tolerance){
+
+                        visibleSummits.add(summit);
+                    }
+                }else{
+
+                    visibleSummits.add(summit);
+                }
             }
         }
-        System.out.println(list_inAzimuth.size());
-        
-        
-        for (Summit summit : list_inAzimuth) {
 
-            double distanceSummitObserver = summit.position().distanceTo(param.observerPosition());
-            
-            ElevationProfile profile = new ElevationProfile(hgt, param.observerPosition(),
-                    summit.position().azimuthTo(param.observerPosition()),
-                    distanceSummitObserver);
-            
-            DoubleUnaryOperator distanceFunction = 
-                    PanoramaComputer.rayToGroundDistance(profile, 
-                            param.observerElevation(), 
-                            (summit.elevation() - param.observerElevation()) / distanceSummitObserver );
-            
-            double lowerBoundRoot = Math2.firstIntervalContainingRoot(
-                    distanceFunction,
-                            0, distanceSummitObserver, step);
-            
-            double root;
-            
-        
-            
-            if (lowerBoundRoot < Double.POSITIVE_INFINITY ) {
-                root = Math2.improveRoot(distanceFunction,
-                             lowerBoundRoot, lowerBoundRoot + step, delta);
-                 double distance = profile.positionAt(root).distanceTo(param.observerPosition()); 
-                 if (distance >= distanceSummitObserver-tolerance){
-                     visibleSummits.add(summit);
-                 }
-            }
-        } 
-        
-        System.out.println("visibles terminated");
-        System.out.println(visibleSummits.size()); // here the list is empty :'(
         return visibleSummits;
-        
-        
-        
-        
+
+
+
+
     }
     
+    private int yForSummit(Summit summit, PanoramaParameters param){
+        GeoPoint obsPos = param.observerPosition();
+        int obsElev = param.observerElevation();
+        
+        return (int) Math.round(param.yForAltitude(Math.atan2(
+                (correctedElevation(summit, param)-obsElev),
+                summit.position().distanceTo(obsPos) )) );
+    }
     private double correctedElevation(Summit summit, PanoramaParameters param){
         double elev = summit.elevation();
-        double tan = (elev -param.observerElevation())/param.observerPosition().distanceTo(summit.position());
+        double dist = param.observerPosition().distanceTo(summit.position());
         
-        return elev - ((1-0.13)/(2*Distance.EARTH_RADIUS))*Math2.sq(tan);
+        return elev - ((1-0.13)/(2*Distance.EARTH_RADIUS)) * Math2.sq(dist);
     }
 }
+
