@@ -12,7 +12,6 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
-import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
 import ch.epfl.alpano.PanoramaComputer;
@@ -21,12 +20,17 @@ import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
 import ch.epfl.alpano.summit.Summit;
 import javafx.scene.Node;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
+import javafx.scene.shape.Line;
 
 public class Labelizer {
     
     ContinuousElevationModel hgt;
     List<Summit> summits;
     final int vertLim = 170; //limit of height for summits
+    final int bound = 20;
     
     Labelizer(ContinuousElevationModel hgt, List<Summit> summits){
         this.hgt = hgt;
@@ -35,8 +39,16 @@ public class Labelizer {
 
     
     public List<Node> labels(PanoramaParameters param){
-        BitSet column = new BitSet(); //false if the column is free, true if she is busy(she has a sign
+        int width = param.width();
+        BitSet column = new BitSet(width); //false if the column is free, true if she is busy(she has a sign
                                       // or a column in the 20 left or right has one))
+        
+        for(int i = 0 ; i < bound ; ++i){
+            column.set(i);
+        }
+        for (int i = width-1 ; i > width - 1 - bound ; --i){
+            column.set(i);
+        }
         
         List<Node> nodes = new ArrayList<>();
         
@@ -50,6 +62,9 @@ public class Labelizer {
             return y1 == y2 ? s2.elevation() - s1.elevation() : y1-y2;
         });
         
+        int yLabel = yForSummit(visible.get(0), param) - 22;
+        double angleForTextLabel = 60; //degrees
+        
         for (Summit summit : visible) {
             int x = (int) Math.round(param.xForAzimuth(param.observerPosition().azimuthTo(summit.position())));
             int y = yForSummit(summit, param);
@@ -57,6 +72,29 @@ public class Labelizer {
             if (y > vertLim){
                 if(column.get(x) == false){
                     //create a node, add it to the list and change column
+                    
+                    //adding the Text Node
+                    String str = summit.name() + " (" + summit.elevation() + " m)";
+                    Text t = new Text(x, y, str);
+                    t.getTransforms().addAll(new Rotate(angleForTextLabel), new Translate(0, (y-yLabel)));
+                    
+                    //adding the Line
+                    Line l = new Line();
+                    l.setStartX(x);
+                    l.setEndX(x);
+                    l.setStartY(y-2);
+                    l.setEndY(yLabel+2);
+                    
+                    nodes.add(l);
+                    nodes.add(t);
+                    
+                    //we put the column x to true and the 19 on right and 19 on the left to true too
+                    //because these are now full and can't get a label
+                    column.set(x);
+                    for (int i = 1 ; i <= 19 ; ++i){
+                        column.set(x + i);
+                        column.set(x - i);
+                    }
                 }
             }
             
@@ -128,13 +166,6 @@ public class Labelizer {
         GeoPoint obsPos = param.observerPosition();
         int obsElev = param.observerElevation();
         
-//        if(summit.name().equals("FROMBERGHORE") || summit.name().equals("NIESEN"))
-//        {
-//            System.out.println(param.yForAltitude(Math.atan2(
-//                    (correctedElevation(summit, param)-obsElev),
-//                    summit.position().distanceTo(obsPos) )));
-//        }
-        
         return (int) Math.round(param.yForAltitude(Math.atan2(
                 (correctedElevation(summit, param)- obsElev),
                 summit.position().distanceTo(obsPos) )) );
@@ -163,7 +194,7 @@ public class Labelizer {
                         param.observerElevation(), 
                        0);
         
-        return  param.observerElevation() + Math.abs(distanceFunction.applyAsDouble(dist));
+        return  param.observerElevation() -(distanceFunction.applyAsDouble(dist));
     }
 }
 
