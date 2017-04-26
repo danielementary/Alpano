@@ -85,8 +85,8 @@ public class Labelizer {
                     l.setStartY(y-2);
                     l.setEndY(yLabel+2);
                     
-                    nodes.add(l);
                     nodes.add(t);
+                    nodes.add(l);
                     
                     //we put the column x to true and the 19 on right and 19 on the left to true too
                     //because these are now full and can't get a label
@@ -98,10 +98,10 @@ public class Labelizer {
                 }
             }
             
-            System.out.println(summit.name() + "(" + x + " , " + y + ")");
+//            System.out.println(summit.name() + "(" + x + " , " + y + ")");
         }
 
-        return null;
+        return nodes;
     }
 
     /**

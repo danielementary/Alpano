@@ -19,6 +19,12 @@ import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 import ch.epfl.alpano.summit.GazetteerParser;
 import ch.epfl.alpano.summit.Summit;
 
+import javafx.scene.Node;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
+import javafx.scene.shape.Line;
+
 public class LabelizerTest {
 
     @Test
@@ -33,7 +39,11 @@ public class LabelizerTest {
             List<Summit> list = GazetteerParser.readSummitsFrom(new File("alps.txt"));
             PanoramaParameters p = PredefinedPanoramas.niesen.panoramaParameters();
             Labelizer l = new Labelizer(cDEM,list);
-            l.labels(p);
+            List<Node> n = l.labels(p);
+            
+            for (Node node : n) {
+                System.out.println(n);
+            }
         }               
 
     }
