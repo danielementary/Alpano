@@ -26,6 +26,7 @@ public class Labelizer {
     
     ContinuousElevationModel hgt;
     List<Summit> summits;
+    final int vertLim = 170; //limit of height for summits
     
     Labelizer(ContinuousElevationModel hgt, List<Summit> summits){
         this.hgt = hgt;
@@ -37,23 +38,27 @@ public class Labelizer {
         BitSet column = new BitSet(); //false if the column is free, true if she is busy(she has a sign
                                       // or a column in the 20 left or right has one))
         
+        List<Node> nodes = new ArrayList<>();
+        
         List<Summit> visible = visibleSummits(hgt, param);
         
         visible.sort( (s1, s2) -> {
 
             int y1 = yForSummit(s1, param);
             int y2 = yForSummit(s2, param);
-            
-            if (y1 == y2) {
-                return s1.elevation() - s2.elevation();
-            } else {
-                return y1 - y2;
-            }
+                        
+            return y1 == y2 ? s2.elevation() - s1.elevation() : y1-y2;
         });
         
         for (Summit summit : visible) {
             int x = (int) Math.round(param.xForAzimuth(param.observerPosition().azimuthTo(summit.position())));
             int y = yForSummit(summit, param);
+            
+            if (y > vertLim){
+                if(column.get(x) == false){
+                    
+                }
+            }
             
             System.out.println(summit.name() + "(" + x + " , " + y + ")");
         }
@@ -81,39 +86,41 @@ public class Labelizer {
                 GeoPoint summitPosition = summit.position();
 
                 double distanceObserverSummit = observerPosition.distanceTo(summitPosition);
-
-                ElevationProfile profile = new ElevationProfile(hgt, observerPosition,
-                        observerPosition.azimuthTo(summitPosition),
-                        distanceObserverSummit);
-
-                DoubleUnaryOperator distanceFunction = 
-                        PanoramaComputer.rayToGroundDistance(profile, 
-                                param.observerElevation(), 
-                                (summit.elevation() - param.observerElevation()) / distanceObserverSummit );
-
-                double lowerBoundRoot = Math2.firstIntervalContainingRoot(
-                        distanceFunction,
-                        0, distanceObserverSummit, step);
+                
+                if (distanceObserverSummit/1000 <= param.maxDistance() ){
 
 
-                if (lowerBoundRoot < Double.POSITIVE_INFINITY ) {
-                    //                    
-                    double distance = profile.positionAt(lowerBoundRoot).distanceTo(observerPosition); 
-                    if(summit.name().equals("NIESEN")){
-                        System.out.println(distance + " : " + (distanceObserverSummit - tolerance));
-                    }
+                    ElevationProfile profile = new ElevationProfile(hgt, observerPosition,
+                            observerPosition.azimuthTo(summitPosition),
+                            distanceObserverSummit);
 
-                    if (distance >= distanceObserverSummit-tolerance){
+                    DoubleUnaryOperator distanceFunction = 
+                            PanoramaComputer.rayToGroundDistance(profile, 
+                                    param.observerElevation(), 
+                                    (correctedElevation(summit, param) - param.observerElevation()) / distanceObserverSummit );
+
+                    double lowerBoundRoot = Math2.firstIntervalContainingRoot(
+                            distanceFunction,
+                            0, distanceObserverSummit, step);
+
+
+                    if (lowerBoundRoot < Double.POSITIVE_INFINITY ) {
+                        //                    
+                        double distance = profile.positionAt(lowerBoundRoot).distanceTo(observerPosition); 
+
+                        if (distance >= distanceObserverSummit-tolerance){
+
+                            visibleSummits.add(summit);
+                        }
+                    }else{
 
                         visibleSummits.add(summit);
                     }
-                }else{
-
-                    visibleSummits.add(summit);
                 }
             }
         }
 
+        System.out.println(visibleSummits.size());
         return visibleSummits;
 
     }
