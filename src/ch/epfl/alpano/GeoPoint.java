@@ -56,7 +56,7 @@ public final class GeoPoint {
     /**
      * calculates the distance between the point this and that
      * @param that other GeoPoint
-     * @return the distance between these points in double
+     * @return the distance between these points in double in meters
      */
     public final double distanceTo(GeoPoint that) {
         double sqrt = sqrt(Math2.haversin(this.latitude - that.latitude)
