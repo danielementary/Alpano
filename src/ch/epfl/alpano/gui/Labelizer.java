@@ -1,8 +1,9 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        24 avr. 2017
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
  */
-
 
 package ch.epfl.alpano.gui;
 
@@ -22,6 +23,7 @@ import ch.epfl.alpano.summit.Summit;
 import javafx.scene.Node;
 
 public class Labelizer {
+    
     ContinuousElevationModel hgt;
     List<Summit> summits;
     
@@ -35,19 +37,16 @@ public class Labelizer {
         BitSet column = new BitSet(); //false if the column is free, true if she is busy(she has a sign
                                       // or a column in the 20 left or right has one))
         
-        
         List<Summit> visible = visibleSummits(hgt, param);
-        visible.sort( (s1, s2)-> {
-                      
+        
+        visible.sort( (s1, s2) -> {
+
             int y1 = yForSummit(s1, param);
-            
             int y2 = yForSummit(s2, param);
             
-           
-            if(y1 == y2){
+            if (y1 == y2) {
                 return s1.elevation() - s2.elevation();
-                
-            }else{
+            } else {
                 return y1 - y2;
             }
         });
