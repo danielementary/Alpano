@@ -56,7 +56,7 @@ public class Labelizer {
             
             if (y > vertLim){
                 if(column.get(x) == false){
-                    
+                    //create a node, add it to the list and change column
                 }
             }
             
@@ -120,7 +120,6 @@ public class Labelizer {
             }
         }
 
-        System.out.println(visibleSummits.size());
         return visibleSummits;
 
     }
@@ -129,15 +128,42 @@ public class Labelizer {
         GeoPoint obsPos = param.observerPosition();
         int obsElev = param.observerElevation();
         
+//        if(summit.name().equals("FROMBERGHORE") || summit.name().equals("NIESEN"))
+//        {
+//            System.out.println(param.yForAltitude(Math.atan2(
+//                    (correctedElevation(summit, param)-obsElev),
+//                    summit.position().distanceTo(obsPos) )));
+//        }
+        
         return (int) Math.round(param.yForAltitude(Math.atan2(
-                (correctedElevation(summit, param)-obsElev),
+                (correctedElevation(summit, param)- obsElev),
                 summit.position().distanceTo(obsPos) )) );
     }
+    
+    /**
+     * compute the "new elevation" of a summit by ajusting with earth radius and atmosphere refraction:
+     * we throw a ray from the observer position in the direction of the summit but with a angle of 0°
+     * it gives us the elevation between a horizontal line which goes from the observer and the top of the summit.
+     * Then we have to add this distance to the observer elevation and we obtain a corrected elevation for the summit.
+     * @param summit
+     * @param param
+     * @return
+     */
     private double correctedElevation(Summit summit, PanoramaParameters param){
-        double elev = summit.elevation();
         double dist = param.observerPosition().distanceTo(summit.position());
         
-        return elev - ((1-0.13)/(2*Distance.EARTH_RADIUS)) * Math2.sq(dist);
+        GeoPoint observerPosition = param.observerPosition();
+        
+        ElevationProfile profile = new ElevationProfile(hgt, observerPosition,
+                observerPosition.azimuthTo(summit.position()),
+                dist);
+        
+        DoubleUnaryOperator distanceFunction = 
+                PanoramaComputer.rayToGroundDistance(profile, 
+                        param.observerElevation(), 
+                       0);
+        
+        return  param.observerElevation() + Math.abs(distanceFunction.applyAsDouble(dist));
     }
 }
 
