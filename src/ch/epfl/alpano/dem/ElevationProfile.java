@@ -37,10 +37,7 @@ public final class ElevationProfile {
      */
     public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin,
                                               double azimuth, double length) {
-//        
-//        checkArgumentNullPointerEx(elevationModel);
-//        checkArgumentNullPointerEx(origin);
-//        
+      
         if (elevationModel == null) {
             throw new NullPointerException();
         }

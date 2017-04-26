@@ -13,7 +13,7 @@ public final class LabeledListStringConverter extends StringConverter<Integer> {
     
     private final String[] labeledList;
     
-    public LabeledListStringConverter(String[] labeledList) {
+    public LabeledListStringConverter(String... labeledList) {
         this.labeledList = labeledList;
     }
 
