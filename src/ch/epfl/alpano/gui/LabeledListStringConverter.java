@@ -25,7 +25,7 @@ public final class LabeledListStringConverter extends StringConverter<Integer> {
                 return i;
             }
         }
-
+        
         return -1;
     }
 
