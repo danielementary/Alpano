@@ -141,8 +141,8 @@ public final class PanoramaUserParameters {
 //        
 //        return Collections.unmodifiableMap(new EnumMap<>(paramMap));
         
-        int newHeight = (int) (getHeight() *scalb(1, getSuperSamp()));
-        int newWidth= (int) (getWidth() *scalb(1, getSuperSamp()));
+        int newHeight = (int) (scalb(getHeight(), getSuperSamp()));
+        int newWidth= (int) (scalb(getWidth(), getSuperSamp()));
         
         return new PanoramaParameters(
                 new GeoPoint(Math.toRadians(getOberserverLong()*1e-4), Math.toRadians(getOberserverLati()*1e-4)), 
