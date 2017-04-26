@@ -97,9 +97,6 @@ public class Labelizer {
                         0, distanceObserverSummit, step);
 
 
-
-
-
                 if (lowerBoundRoot < Double.POSITIVE_INFINITY ) {
                     //                    
                     double distance = profile.positionAt(lowerBoundRoot).distanceTo(observerPosition); 
@@ -119,9 +116,6 @@ public class Labelizer {
         }
 
         return visibleSummits;
-
-
-
 
     }
     
