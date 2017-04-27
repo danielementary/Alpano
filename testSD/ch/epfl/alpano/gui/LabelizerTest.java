@@ -41,9 +41,9 @@ public class LabelizerTest {
             Labelizer l = new Labelizer(cDEM,list);
             List<Node> n = l.labels(p);
             
-            for (Node node : n) {
-                System.out.println(n);
-            }
+//            for (Node node : n) {
+//                System.out.println(n);
+//            }
         }               
 
     }

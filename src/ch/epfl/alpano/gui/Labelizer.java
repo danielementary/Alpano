@@ -79,11 +79,11 @@ public class Labelizer {
                     t.getTransforms().addAll(new Rotate(angleForTextLabel), new Translate(0, (y-yLabel)));
                     
                     //adding the Line
-                    Line l = new Line();
-                    l.setStartX(x);
-                    l.setEndX(x);
-                    l.setStartY(y-2);
-                    l.setEndY(yLabel+2);
+                    Line l = new Line(x, y-2, x, yLabel);
+//                    l.setStartX(x);
+//                    l.setEndX(x);
+//                    l.setStartY(y-2);
+//                    l.setEndY(yLabel);
                     
                     nodes.add(t);
                     nodes.add(l);
@@ -98,7 +98,7 @@ public class Labelizer {
                 }
             }
             
-//            System.out.println(summit.name() + "(" + x + " , " + y + ")");
+            System.out.println(summit.name() + "(" + x + " , " + y + ")");
         }
 
         return nodes;
@@ -135,7 +135,7 @@ public class Labelizer {
                     DoubleUnaryOperator distanceFunction = 
                             PanoramaComputer.rayToGroundDistance(profile, 
                                     param.observerElevation(), 
-                                    (correctedElevation(summit, param) - param.observerElevation()) / distanceObserverSummit );
+                                    elevationDifference(summit, param) / distanceObserverSummit );
 
                     double lowerBoundRoot = Math2.firstIntervalContainingRoot(
                             distanceFunction,
@@ -167,7 +167,7 @@ public class Labelizer {
         int obsElev = param.observerElevation();
         
         return (int) Math.round(param.yForAltitude(Math.atan2(
-                (correctedElevation(summit, param)- obsElev),
+                (elevationDifference(summit, param)),
                 summit.position().distanceTo(obsPos) )) );
     }
     
@@ -180,7 +180,7 @@ public class Labelizer {
      * @param param
      * @return
      */
-    private double correctedElevation(Summit summit, PanoramaParameters param){
+    private double elevationDifference(Summit summit, PanoramaParameters param){
         double dist = param.observerPosition().distanceTo(summit.position());
         
         GeoPoint observerPosition = param.observerPosition();
@@ -194,7 +194,7 @@ public class Labelizer {
                         param.observerElevation(), 
                        0);
         
-        return  param.observerElevation() -(distanceFunction.applyAsDouble(dist));
+        return  - (distanceFunction.applyAsDouble(dist));
     }
 }
 
