@@ -160,8 +160,8 @@ public class Labelizer {
     }
     
     private int yForSummit(Summit summit, PanoramaParameters param){
+        
         GeoPoint obsPos = param.observerPosition();
-        int obsElev = param.observerElevation();
         
         return (int) Math.round(param.yForAltitude(Math.atan2(
                 (elevationDifference(summit, param)),
@@ -178,6 +178,7 @@ public class Labelizer {
      * @return
      */
     private double elevationDifference(Summit summit, PanoramaParameters param){
+        
         double dist = param.observerPosition().distanceTo(summit.position());
         
         GeoPoint observerPosition = param.observerPosition();
