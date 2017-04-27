@@ -62,7 +62,7 @@ public class Labelizer {
             return y1 == y2 ? s2.elevation() - s1.elevation() : y1-y2;
         });
         
-        int yLabel = yForSummit(visible.get(0), param) - 22;
+        int yLabel = -1;
         double angleForTextLabel = 60; //degrees
         
         for (Summit summit : visible) {
@@ -73,17 +73,16 @@ public class Labelizer {
                 if(column.get(x) == false){
                     //create a node, add it to the list and change column
                     
+                    if(yLabel < 0){
+                        yLabel = y-22;
+                    }
                     //adding the Text Node
                     String str = summit.name() + " (" + summit.elevation() + " m)";
-                    Text t = new Text(x, y, str);
-                    t.getTransforms().addAll(new Rotate(angleForTextLabel), new Translate(0, (y-yLabel)));
+                    Text t = new Text(x, yLabel, str);
+                    t.setRotate(angleForTextLabel);
                     
                     //adding the Line
-                    Line l = new Line(x, y-2, x, yLabel);
-//                    l.setStartX(x);
-//                    l.setEndX(x);
-//                    l.setStartY(y-2);
-//                    l.setEndY(yLabel);
+                    Line l = new Line(x, y, x, yLabel+2);
                     
                     nodes.add(t);
                     nodes.add(l);
@@ -97,8 +96,6 @@ public class Labelizer {
                     }
                 }
             }
-            
-            System.out.println(summit.name() + "(" + x + " , " + y + ")");
         }
 
         return nodes;
