@@ -12,6 +12,8 @@ import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
 
 public final class PanoramaComputer {
+    private final static double step = Math.scalb(1, 6);
+    private final static double delta = Math.scalb(1, 2);
     
     private final ContinuousElevationModel dem;
     
@@ -21,10 +23,6 @@ public final class PanoramaComputer {
      * @param dem Continuous elevation model
      */
     public PanoramaComputer(ContinuousElevationModel dem) {
-//        
-//        checkArgumentNullPointerEx(dem);
-//        
-        
         if (dem == null) {
             throw new NullPointerException();
         }
@@ -40,9 +38,6 @@ public final class PanoramaComputer {
     public Panorama computePanorama(PanoramaParameters parameters) {
         
         Panorama.Builder builder = new Panorama.Builder(parameters);
-        
-        double step = Math.scalb(1, 6);
-        double delta = Math.scalb(1, 2);
         
         double x;
         double lowerBoundRoot;
@@ -115,5 +110,12 @@ public final class PanoramaComputer {
             return ray0 + x*raySlope - profile.elevationAt(x)
                                 + ((1-0.13)/(2*Distance.EARTH_RADIUS))*Math2.sq(x);
         };
+    }
+    
+    /**
+     * @return the value of private final static value of step
+     */
+    public static double getStep() {
+        return step;
     }
 }
