@@ -19,26 +19,27 @@ import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
 import ch.epfl.alpano.summit.Summit;
+
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.scene.shape.Line;
 
-public class Labelizer {
+public final class Labelizer {
     
-    ContinuousElevationModel hgt;
-    List<Summit> summits;
-    final int vertLim = 170; //limit of height for summits
-    final int bound = 20;
+    private ContinuousElevationModel hgt;
+    private List<Summit> summits;
+    private final int vertLim = 170; //limit of height for summits
+    private final int bound = 20;
     
     Labelizer(ContinuousElevationModel hgt, List<Summit> summits){
         this.hgt = hgt;
-        this.summits = summits;
+        this.summits = new ArrayList<Summit>(summits);
     }
 
     
-    public List<Node> labels(PanoramaParameters param){
+    public List<Node> labels(PanoramaParameters param) {
         int width = param.width();
         BitSet column = new BitSet(width); //false if the column is free, true if she is busy(she has a sign
                                       // or a column in the 20 left or right has one))
