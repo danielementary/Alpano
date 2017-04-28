@@ -22,7 +22,7 @@ public final class FixedPointStringConverter extends StringConverter<Integer> {
     public Integer fromString(String string) {
         return new BigDecimal(string).movePointRight(dec)
                                      .setScale(0, BigDecimal.ROUND_HALF_UP)
-                                     .intValue();
+                                     .intValueExact();
     }
 
     @Override

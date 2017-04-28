@@ -7,31 +7,27 @@
 
 package ch.epfl.alpano.gui;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javafx.util.StringConverter;
 
 public final class LabeledListStringConverter extends StringConverter<Integer> {
     
-    private final String[] labeledList;
+    private final List<String> labeledList;
     
     public LabeledListStringConverter(String... labeledList) {
-        this.labeledList = labeledList;
+        this.labeledList = Arrays.asList(labeledList);
     }
 
     @Override
     public Integer fromString(String s) {
-        
-        for (int i = 0; i < labeledList.length; ++i) {
-            if (labeledList[i].equals(s)) {
-                return i;
-            }
-        }
-        
-        return -1;
+        return labeledList.indexOf(s);
     }
 
     @Override
     public String toString(Integer n) {
-        return labeledList[n];
+        return labeledList.get(n);
     }
 
 }
