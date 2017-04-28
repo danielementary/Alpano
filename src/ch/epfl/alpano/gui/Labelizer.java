@@ -62,6 +62,7 @@ public final class Labelizer {
         List<Node> nodes = new ArrayList<>();
         List<Summit> visible = visibleSummits(hgt, param);
         
+        
         visible.sort((s1, s2) -> {
             int y1 = yForSummit(s1, param);
             int y2 = yForSummit(s2, param);
@@ -72,8 +73,6 @@ public final class Labelizer {
         int yLabel = -1;
         
         for (Summit summit : visible) {
-            
-
             
             int x = (int) Math.round(param.xForAzimuth(param.observerPosition().azimuthTo(summit.position())));
             int y = yForSummit(summit, param);
