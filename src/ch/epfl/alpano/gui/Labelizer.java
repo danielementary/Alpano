@@ -69,8 +69,11 @@ public final class Labelizer {
             return y1 == y2 ? Integer.compare(s2.elevation(), s1.elevation()) : Integer.compare(y1, y2);
         });
         
+        int yLabel = -1;
+        
         for (Summit summit : visible) {
-            int yLabel = -1;
+            
+
             
             int x = (int) Math.round(param.xForAzimuth(param.observerPosition().azimuthTo(summit.position())));
             int y = yForSummit(summit, param);
@@ -126,7 +129,10 @@ public final class Labelizer {
                 GeoPoint summitPosition = summit.position();
                 double distanceObserverSummit = observerPosition.distanceTo(summitPosition);
                 
-                if (distanceObserverSummit/1000 <= param.maxDistance()) {
+                double tan = elevationDifference(summit, param)/ distanceObserverSummit;
+                double angle = Math.atan(tan);
+                if (distanceObserverSummit/1000 <= param.maxDistance() &&
+                        Math.abs(angle) <= param.verticalFieldOfView()/2) {
                     
                     ElevationProfile profile = 
                             new ElevationProfile(hgt, 
@@ -137,7 +143,7 @@ public final class Labelizer {
                     DoubleUnaryOperator distanceFunction = 
                             PanoramaComputer.rayToGroundDistance(profile, 
                                                                  param.observerElevation(), 
-                                                                 elevationDifference(summit, param)/distanceObserverSummit);
+                                                                 tan);
 
                     double lowerBoundRoot = 
                             Math2.firstIntervalContainingRoot(distanceFunction,
@@ -146,7 +152,8 @@ public final class Labelizer {
                                                               step);
                     
                     if (!(lowerBoundRoot < Double.POSITIVE_INFINITY)
-                            || profile.positionAt(lowerBoundRoot).distanceTo(observerPosition) >= distanceObserverSummit-tolerance) {
+                            || profile.positionAt(lowerBoundRoot).distanceTo(observerPosition) >=
+                            distanceObserverSummit-tolerance) {
                         visibleSummits.add(summit);
                     } 
                 }
