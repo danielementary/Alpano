@@ -5,7 +5,7 @@
  *
  */
 
- package ch.epfl.alpano.gui;
+package ch.epfl.alpano.gui;
 
 public interface PredefinedPanoramas {
     public static int mainWidth = 2500;

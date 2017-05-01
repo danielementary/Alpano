@@ -144,14 +144,13 @@ public final class PanoramaUserParameters {
         int newHeight = (int) (scalb(getHeight(), getSuperSamp()));
         int newWidth= (int) (scalb(getWidth(), getSuperSamp()));
         
-        return new PanoramaParameters(
-                new GeoPoint(Math.toRadians(getOberserverLong()*1e-4), Math.toRadians(getOberserverLati()*1e-4)), 
-                getObserverElev(),
-                Math.toRadians(getCenterAzim()), Math.toRadians(getHoriFieldOfView()),
-                getMaxDist(), newWidth, newHeight);
-        
-        
-    }
+        return new PanoramaParameters(new GeoPoint(Math.toRadians(getOberserverLong()*1e-4),
+                                                   Math.toRadians(getOberserverLati()*1e-4)), 
+                                      getObserverElev(),
+                                      Math.toRadians(getCenterAzim()),
+                                      Math.toRadians(getHoriFieldOfView()),
+                                      getMaxDist(), newWidth, newHeight);
+}
     
     /**
      * @return the parameters of the instance
