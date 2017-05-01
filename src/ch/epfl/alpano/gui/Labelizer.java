@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
 import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.Math2;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;

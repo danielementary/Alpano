@@ -8,41 +8,41 @@
 package ch.epfl.alpano.gui;
 
 public interface PredefinedPanoramas {
-    public static int mainWidth = 2500;
-    public static int mainHeight = 800;
-    public static int mainSuperSamp = 0;
-    public static int mainMaxDist = 300;
+    public static final int MAIN_WIDTH = 2500;
+    public static final int MAIN_HEIGHT = 800;
+    public static final int MAIN_SUPER_SAMP = 0;
+    public static final int MAIN_MAX_DIST = 300;
     
     //predefined PanoramaUserParameters whose name is clear
     
-    public static PanoramaUserParameters niesen 
+    public static final PanoramaUserParameters NIESEN 
                       = new PanoramaUserParameters(76500, 467300, 600, 180, 110,
-                                                   mainMaxDist, mainWidth,
-                                                   mainHeight, mainSuperSamp);
+                                                   MAIN_MAX_DIST, MAIN_WIDTH,
+                                                   MAIN_HEIGHT, MAIN_SUPER_SAMP);
     
-    public static PanoramaUserParameters alpesDuJura 
+    public static final PanoramaUserParameters ALPES_DU_JURA 
                         = new PanoramaUserParameters(68087, 470085, 1380, 162, 27,
-                                                     mainMaxDist, mainWidth,
-                                                     mainHeight, mainSuperSamp);
+                                                     MAIN_MAX_DIST, MAIN_WIDTH,
+                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
     
-    public static PanoramaUserParameters montRacine 
+    public static final PanoramaUserParameters MONT_RACINE 
                         = new PanoramaUserParameters(68200, 470200, 1500, 135, 45,
-                                                     mainMaxDist, mainWidth,
-                                                     mainHeight, mainSuperSamp);
+                                                     MAIN_MAX_DIST, MAIN_WIDTH,
+                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
     
-    public static PanoramaUserParameters finsteraarhorn 
+    public static final PanoramaUserParameters FINSTERAARHORN
                         = new PanoramaUserParameters(81260, 465371, 4300, 205, 20,
-                                                     mainMaxDist, mainWidth,
-                                                     mainHeight, mainSuperSamp);
+                                                     MAIN_MAX_DIST, MAIN_WIDTH,
+                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
                         
-    public static PanoramaUserParameters tourDeSauvabelin 
+    public static final PanoramaUserParameters TOUR_DE_SAUVABELIN 
                         = new PanoramaUserParameters(66385, 465353, 700, 135, 100,
-                                                     mainMaxDist, mainWidth,
-                                                     mainHeight, mainSuperSamp);
+                                                     MAIN_MAX_DIST, MAIN_WIDTH,
+                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
                         
-    public static PanoramaUserParameters plageDuPelican 
+    public static final PanoramaUserParameters PLAGE_DU_PELICAN 
                         = new PanoramaUserParameters(65728, 465132, 380, 135, 60,
-                                                     mainMaxDist, mainWidth,
-                                                     mainHeight, mainSuperSamp);
+                                                     MAIN_MAX_DIST, MAIN_WIDTH,
+                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
                         
 }
