@@ -7,10 +7,12 @@
 
 package ch.epfl.alpano.gui;
 
+import ch.epfl.alpano.PanoramaParameters;
 import javafx.beans.property.*;
+import static javafx.application.Platform.runLater;
 
 public final class PanoramaParametersBean {
-    private ReadOnlyObjectProperty<PanoramaUserParameters> parametersProp;
+    private ReadOnlyObjectProperty parametersProp;
     private ObjectProperty<Integer> observerLongitudeProp;
     private ObjectProperty<Integer> observerLatitudeProp;
     private ObjectProperty<Integer> observerElevationProp;
@@ -21,23 +23,49 @@ public final class PanoramaParametersBean {
     private ObjectProperty<Integer> heightProp;
     private ObjectProperty<Integer> superSamplingExponentProp;
     
-    public PanoramaParametersBean() {
-        parametersProp = new SimpleObjectProperty<>(); 
-        observerLongitudeProp = new SimpleObjectProperty<>();
-        observerLatitudeProp = new SimpleObjectProperty<>();
-        observerElevationProp = new SimpleObjectProperty<>();
-        centerAzimuthProp = new SimpleObjectProperty<>();
-        horizontalFieldOfViewProp = new SimpleObjectProperty<>();
-        maxDistanceProp = new SimpleObjectProperty<>();
-        widthProp = new SimpleObjectProperty<>();
-        heightProp = new SimpleObjectProperty<>();
-        superSamplingExponentProp = new SimpleObjectProperty<>();
+    public PanoramaParametersBean(PanoramaUserParameters pUP) {
+        parametersProp = new SimpleObjectProperty<>(pUP); 
+        
+        observerLongitudeProp = new SimpleObjectProperty<>(pUP.getOberserverLong());
+        observerLongitudeProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        observerLatitudeProp = new SimpleObjectProperty<>(pUP.getOberserverLati());
+        observerLatitudeProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        observerElevationProp = new SimpleObjectProperty<>(pUP.getObserverElev());
+        observerElevationProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        centerAzimuthProp = new SimpleObjectProperty<>(pUP.getCenterAzim());
+        centerAzimuthProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        horizontalFieldOfViewProp = new SimpleObjectProperty<>(pUP.getHoriFieldOfView());
+        horizontalFieldOfViewProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        maxDistanceProp = new SimpleObjectProperty<>(pUP.getMaxDist());
+        maxDistanceProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        widthProp = new SimpleObjectProperty<>(pUP.getWidth());
+        widthProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        heightProp = new SimpleObjectProperty<>(pUP.getHeight());
+        heightProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
+        
+        superSamplingExponentProp = new SimpleObjectProperty<>(pUP.getSuperSamp());
+        superSamplingExponentProp.addListener((p, o, n) -> runLater(this::synchronizeParameters));
     }
     
+    /**
+     * getter : ReadOnlyObjectProperty<PanoramaUserParameters> ParametersProp()
+     * @return ParametersProp
+     */
     public ReadOnlyObjectProperty<PanoramaUserParameters> ParametersProp() {
         return parametersProp;
     }
     
+    /**
+     * 
+     * @return
+     */
     public ObjectProperty<Integer> ObserverLongitudeProp() {
         return observerLongitudeProp;
     }
@@ -73,44 +101,27 @@ public final class PanoramaParametersBean {
     public ObjectProperty<Integer> SuperSamplingExponentProp() {
         return superSamplingExponentProp;
     }
-
-    public void setObserverLongitudeProp(Integer observerLongitudeProp) {
-        this.observerLongitudeProp.set(observerLongitudeProp);
-    }
-
-    public void setObserverLatitudeProp(int observerLatitudeProp) {
-        this.observerLatitudeProp.set(observerLatitudeProp);
-    }
-
-    public void setObserverElevationProp(int observerElevationProp) {
-        this.observerElevationProp.set(observerElevationProp);
-    }
-
-    public void setCenterAzimuthProp(int centerAzimuthProp) {
-        this.centerAzimuthProp.set(centerAzimuthProp);
-    }
-
-    public void setHorizontalFieldOfViewProp(int horizontalFieldOfViewProp) {
-        this.horizontalFieldOfViewProp.set(horizontalFieldOfViewProp);
-    }
-
-    public void setMaxDistanceProp(int maxDistanceProp) {
-        this.maxDistanceProp.set(maxDistanceProp);
-    }
-
-    public void setWidthProp(int widthProp) {
-        this.widthProp.set(widthProp);
-    }
-
-    public void setHeightProp(int heightProp) {
-        this.heightProp.set(heightProp);
-    }
-
-    public void setSuperSamplingExponentProp(int superSamplingExponentProp) {
-        this.superSamplingExponentProp.set(superSamplingExponentProp);
-    }
     
     private void synchronizeParameters() {
+        PanoramaUserParameters nPUP = new PanoramaUserParameters(observerLongitudeProp.get(),
+                                                                 observerLatitudeProp.get(),
+                                                                 observerElevationProp.get(),
+                                                                 centerAzimuthProp.get(),
+                                                                 horizontalFieldOfViewProp.get(),
+                                                                 maxDistanceProp.get(),
+                                                                 widthProp.get(),
+                                                                 heightProp.get(),
+                                                                 superSamplingExponentProp.get());
+        parametersProp = new SimpleObjectProperty<>(nPUP); 
         
+        observerLongitudeProp.set(nPUP.getOberserverLong());
+        observerLatitudeProp.set(nPUP.getOberserverLati());
+        observerElevationProp.set(nPUP.getObserverElev());
+        centerAzimuthProp.set(nPUP.getCenterAzim());
+        horizontalFieldOfViewProp.set(nPUP.getHoriFieldOfView());
+        maxDistanceProp.set(nPUP.getMaxDist());
+        widthProp.set(nPUP.getWidth());
+        heightProp.set(nPUP.getHeight());
+        superSamplingExponentProp.set(nPUP.getSuperSamp());
     }  
 }

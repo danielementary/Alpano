@@ -1,3 +1,5 @@
+package ch.epfl.alpano.gui;
+
 import static ch.epfl.alpano.gui.PredefinedPanoramas.*;
 
 import ch.epfl.alpano.gui.PanoramaParametersBean;
