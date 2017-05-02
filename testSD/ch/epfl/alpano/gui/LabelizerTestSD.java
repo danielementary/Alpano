@@ -37,7 +37,7 @@ public class LabelizerTestSD {
 
 
             List<Summit> list = GazetteerParser.readSummitsFrom(new File("alps.txt"));
-            PanoramaParameters p = PredefinedPanoramas.niesen.panoramaParameters();
+            PanoramaParameters p = PredefinedPanoramas.NIESEN.panoramaParameters();
             Labelizer l = new Labelizer(cDEM,list);
             List<Node> n = l.labels(p);
             
