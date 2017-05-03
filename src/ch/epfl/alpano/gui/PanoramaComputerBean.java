@@ -12,6 +12,7 @@ import static javafx.collections.FXCollections.unmodifiableObservableList;
 
 import javafx.scene.image.Image;
 import java.util.List;
+import java.util.Objects;
 
 import ch.epfl.alpano.Panorama;
 import ch.epfl.alpano.gui.PanoramaRenderer;
@@ -33,15 +34,15 @@ public final class PanoramaComputerBean {
     private ReadOnlyObjectProperty<Panorama> panoramaProp;
     private ReadOnlyObjectProperty<Image> imageProp;
     private ReadOnlyObjectProperty<ObservableList<Node>> labelsProp;
-    private final List<Summit> summitList;
+    private final List<Summit> summitsList;
     private final ContinuousElevationModel cem; 
     
     public PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summitsList) {
         panoramaUserParamProp = new SimpleObjectProperty<>();
         panoramaProp = null; 
         imageProp = null;
-        
-        summitList = summitsList;
+        Objects.requireNonNull(summitsList);
+        this.summitsList = summitsList;
         this.cem = cem;
 //        labelsProp = new SimpleObjectProperty<>(unmodifiableObservableList(observableArrayList(summitsList)));
         
@@ -96,7 +97,7 @@ public final class PanoramaComputerBean {
         
         imageProp = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
         
-        Labelizer lab = new Labelizer(cem, summitList);
+        Labelizer lab = new Labelizer(cem, summitsList);
         List<Node> newList = lab.labels(panoramaParameters);
         
         labelsProp = new SimpleObjectProperty(newList);
