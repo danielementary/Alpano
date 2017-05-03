@@ -16,6 +16,7 @@ import java.util.List;
 import ch.epfl.alpano.Panorama;
 import ch.epfl.alpano.gui.PanoramaRenderer;
 import ch.epfl.alpano.PanoramaComputer;
+import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.summit.Summit;
 import javafx.beans.InvalidationListener;
@@ -36,7 +37,7 @@ public final class PanoramaComputerBean {
     private final ContinuousElevationModel cem; 
     
     public PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summitsList) {
-        panoramaUserParamProp = null;
+        panoramaUserParamProp = new SimpleObjectProperty<>();
         panoramaProp = null; 
         imageProp = null;
         
@@ -88,35 +89,43 @@ public final class PanoramaComputerBean {
     private void update() {
         PanoramaComputer newPanoComputer = new PanoramaComputer(cem);
         
-        Panorama newPano = newPanoComputer.computePanorama(panoramaUserParamProp.get().panoramaParameters());
+        PanoramaParameters panoramaParameters = panoramaUserParamProp.get().panoramaParameters();
+        Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
         
         panoramaProp = new SimpleObjectProperty<>(newPano);
         
         imageProp = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+        
+        Labelizer lab = new Labelizer(cem, summitList);
+        List<Node> newList = lab.labels(panoramaParameters);
+        
+        labelsProp = new SimpleObjectProperty(newList);
+        
+        
     }
     
     private ImagePainter imgPainter(Panorama p){
-ChannelPainter hue, saturation, brightness, opacity;
-        
+        ChannelPainter hue, saturation, brightness, opacity;
+
         hue = ChannelPainter.distance(p)
-                            .div(100000)
-                            .cycle()
-                            .mul(360);
-        
+                .div(100000)
+                .cycle()
+                .mul(360);
+
         saturation = ChannelPainter.distance(p)
-                                   .div(200000)
-                                   .clamp()
-                                   .invert();
-        
+                .div(200000)
+                .clamp()
+                .invert();
+
         brightness = ChannelPainter.slope(p)
-                                   .mul(2)
-                                   .div((float) Math.PI)
-                                   .invert()
-                                   .mul((float) 0.7)
-                                   .add((float) 0.3);
-        
+                .mul(2)
+                .div((float) Math.PI)
+                .invert()
+                .mul((float) 0.7)
+                .add((float) 0.3);
+
         opacity = ChannelPainter.opacity(p);
-        
-              return ImagePainter.hsb(hue, saturation, brightness, opacity);
+
+        return ImagePainter.hsb(hue, saturation, brightness, opacity);
     }
 }
