@@ -10,14 +10,19 @@ package ch.epfl.alpano.gui;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.collections.FXCollections.unmodifiableObservableList;
 
-import java.awt.Image;
+import javafx.scene.image.Image;
 import java.util.List;
 
 import ch.epfl.alpano.Panorama;
+import ch.epfl.alpano.gui.PanoramaRenderer;
+import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
+import ch.epfl.alpano.summit.Summit;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
@@ -27,23 +32,27 @@ public final class PanoramaComputerBean {
     private ReadOnlyObjectProperty<Panorama> panoramaProp;
     private ReadOnlyObjectProperty<Image> imageProp;
     private ReadOnlyObjectProperty<ObservableList<Node>> labelsProp;
-    private final ContinuousElevationModel cem;
+    private final List<Summit> summitList;
+    private final ContinuousElevationModel cem; 
     
-    public PanoramaComputerBean(ContinuousElevationModel cem, List<Node> summitsList) {
+    public PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summitsList) {
         panoramaUserParamProp = null;
         panoramaProp = null; 
         imageProp = null;
         
+        summitList = summitsList;
         this.cem = cem;
-        labelsProp = new SimpleObjectProperty<>(unmodifiableObservableList(observableArrayList(summitsList)));
+//        labelsProp = new SimpleObjectProperty<>(unmodifiableObservableList(observableArrayList(summitsList)));
+        
         
         panoramaUserParamProp.addListener((p, o, n) -> update());
+        
     }
-    
+
     public ObjectProperty<PanoramaUserParameters> parametersProp() {
         return panoramaUserParamProp;
     }
-    
+
     public PanoramaUserParameters getParameters() {
         return panoramaUserParamProp.get();
     }
@@ -77,6 +86,37 @@ public final class PanoramaComputerBean {
     }
     
     private void update() {
-        System.out.println("update sa mère");
+        PanoramaComputer newPanoComputer = new PanoramaComputer(cem);
+        
+        Panorama newPano = newPanoComputer.computePanorama(panoramaUserParamProp.get().panoramaParameters());
+        
+        panoramaProp = new SimpleObjectProperty<>(newPano);
+        
+        imageProp = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+    }
+    
+    private ImagePainter imgPainter(Panorama p){
+ChannelPainter hue, saturation, brightness, opacity;
+        
+        hue = ChannelPainter.distance(p)
+                            .div(100000)
+                            .cycle()
+                            .mul(360);
+        
+        saturation = ChannelPainter.distance(p)
+                                   .div(200000)
+                                   .clamp()
+                                   .invert();
+        
+        brightness = ChannelPainter.slope(p)
+                                   .mul(2)
+                                   .div((float) Math.PI)
+                                   .invert()
+                                   .mul((float) 0.7)
+                                   .add((float) 0.3);
+        
+        opacity = ChannelPainter.opacity(p);
+        
+              return ImagePainter.hsb(hue, saturation, brightness, opacity);
     }
 }

@@ -11,8 +11,10 @@ import ch.epfl.alpano.PanoramaParameters;
 import javafx.beans.property.*;
 import static javafx.application.Platform.runLater;
 
+
 public final class PanoramaParametersBean {
     private ReadOnlyObjectProperty parametersProp;
+    
     private ObjectProperty<Integer> observerLongitudeProp;
     private ObjectProperty<Integer> observerLatitudeProp;
     private ObjectProperty<Integer> observerElevationProp;
@@ -70,6 +72,9 @@ public final class PanoramaParametersBean {
         return observerLongitudeProp;
     }
     
+    /**
+     * @return
+     */
     public ObjectProperty<Integer> ObserverLatitudeProp() {
         return observerLatitudeProp;
     }
