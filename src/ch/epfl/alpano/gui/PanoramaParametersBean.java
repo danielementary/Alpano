@@ -60,7 +60,7 @@ public final class PanoramaParametersBean {
      * getter : ReadOnlyObjectProperty<PanoramaUserParameters> ParametersProp()
      * @return ParametersProp
      */
-    public ReadOnlyObjectProperty<PanoramaUserParameters> ParametersProp() {
+    public ReadOnlyObjectProperty<PanoramaUserParameters> parametersProperty() {
         return parametersProp;
     }
     
@@ -68,42 +68,42 @@ public final class PanoramaParametersBean {
      * 
      * @return
      */
-    public ObjectProperty<Integer> ObserverLongitudeProp() {
+    public ObjectProperty<Integer> observerLongitudeProperty() {
         return observerLongitudeProp;
     }
     
     /**
      * @return
      */
-    public ObjectProperty<Integer> ObserverLatitudeProp() {
+    public ObjectProperty<Integer> observerLatitudeProperty() {
         return observerLatitudeProp;
     }
     
-    public ObjectProperty<Integer> ObserverElevationProp() {
+    public ObjectProperty<Integer> observerElevationProperty() {
         return observerElevationProp;
     }
     
-    public ObjectProperty<Integer> CenterAzimuthProp() {
+    public ObjectProperty<Integer> CenterAzimuthProperty() {
         return centerAzimuthProp;
     }
     
-    public ObjectProperty<Integer> HorizontalFieldOfViewProp() {
+    public ObjectProperty<Integer> horizontalFieldOfViewProperty() {
         return horizontalFieldOfViewProp;
     }
     
-    public ObjectProperty<Integer> MaxDistanceProp() {
+    public ObjectProperty<Integer> maxDistanceProperty() {
         return maxDistanceProp;
     }
     
-    public ObjectProperty<Integer> WidthProp() {
+    public ObjectProperty<Integer> widthProperty() {
         return widthProp;
     }
     
-    public ObjectProperty<Integer> HeightProp() {
+    public ObjectProperty<Integer> heightProperty() {
         return heightProp;
     }
     
-    public ObjectProperty<Integer> SuperSamplingExponentProp() {
+    public ObjectProperty<Integer> SuperSamplingExponentProperty() {
         return superSamplingExponentProp;
     }
     
