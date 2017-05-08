@@ -7,123 +7,162 @@
 
 package ch.epfl.alpano.gui;
 
-import static javafx.collections.FXCollections.observableArrayList;
-import static javafx.collections.FXCollections.unmodifiableObservableList;
-
-import javafx.scene.image.Image;
 import java.util.List;
 import java.util.Objects;
 
 import ch.epfl.alpano.Panorama;
-import ch.epfl.alpano.gui.PanoramaRenderer;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.summit.Summit;
-import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 
 public final class PanoramaComputerBean {
     
-    private ObjectProperty<PanoramaUserParameters> panoramaUserParamProp;
-    private ReadOnlyObjectProperty<Panorama> panoramaProp;
-    private ReadOnlyObjectProperty<Image> imageProp;
-    private ReadOnlyObjectProperty<ObservableList<Node>> labelsProp;
-    private final List<Summit> summitsList;
+    private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
+    private ReadOnlyObjectProperty<Panorama> panoramaProperty;
+    private ReadOnlyObjectProperty<Image> imageProperty;
+    private ReadOnlyObjectProperty<ObservableList<Node>> labelsProperty;
     private final ContinuousElevationModel cem; 
+    private final List<Summit> summitsList;
     
+    /***
+     * constructs an instance of drawed panorama parameters
+     * @param cem
+     * @param summitsList
+     */
     public PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summitsList) {
-        panoramaUserParamProp = new SimpleObjectProperty<>();
-        panoramaProp = null; 
-        imageProp = null;
-        Objects.requireNonNull(summitsList);
-        this.summitsList = summitsList;
+        
+        this.panoramaUserParamProperty = new SimpleObjectProperty<>(null);
+        this.panoramaUserParamProperty.addListener((p, o, n) -> update());
+        
+        this.panoramaProperty = null; 
+        this.imageProperty = null;
+        this.labelsProperty = null;
+        
         this.cem = cem;
-//        labelsProp = new SimpleObjectProperty<>(unmodifiableObservableList(observableArrayList(summitsList)));
-        
-        
-        panoramaUserParamProp.addListener((p, o, n) -> update());
-        
+        this.summitsList = Objects.requireNonNull(summitsList);
     }
 
+    /**
+     * getter : panoramaUserParamProperty
+     * @return ObjectProperty<PanoramaUserParameters>
+     */
     public ObjectProperty<PanoramaUserParameters> parametersProp() {
-        return panoramaUserParamProp;
+        return panoramaUserParamProperty;
     }
 
+    /**
+     * getter : panoramaUserParamProperty
+     * @return PanoramaUserParameters
+     */
     public PanoramaUserParameters getParameters() {
-        return panoramaUserParamProp.get();
+        return panoramaUserParamProperty.get();
     }
     
+    /**
+     * set param as new value for panoramaUserParamProperty
+     * @param param
+     */
     public void setParameters(PanoramaUserParameters param) {
-        panoramaUserParamProp.set(param);
+        panoramaUserParamProperty.set(param);
     }
     
+    /**
+     * getter : panoramaProperty
+     * @return ReadOnlyObjectProperty<Panorama>
+     */
     public ReadOnlyObjectProperty<Panorama> panoramaProp() {
-        return panoramaProp;
+        return panoramaProperty;
     }
     
+    /**
+     * getter : PanoramaProperty
+     * @return Panorama
+     */
     public Panorama getPanorama() {
-        return panoramaProp.get();
+        return panoramaProperty.get();
     }
     
+    /**
+     * getter : imageProperty
+     * @return ReadOnlyObjectProperty<Image>
+     */
     public ReadOnlyObjectProperty<Image> imageProp() {
-        return imageProp;
+        return imageProperty;
     }
     
+    /**
+     * getter : imageProperty
+     * @return Image
+     */
     public Image getImage() {
-        return imageProp.get();
+        return imageProperty.get();
     }
     
+    /**
+     * getter : labelsProperty
+     * @return ReadOnlyObjectProperty<ObservableList<Node>>
+     */
     public ReadOnlyObjectProperty<ObservableList<Node>> labelsProp() {
-        return labelsProp;
+        return labelsProperty;
     }
     
+    /**
+     * getter : labelsProperty
+     * @return ObservableList<Node>
+     */
     public ObservableList<Node> getLabels() {
-        return labelsProp.get();
+        return labelsProperty.get();
     }
     
+    /**
+     * 
+     */
     private void update() {
+        
         PanoramaComputer newPanoComputer = new PanoramaComputer(cem);
-        
-        PanoramaParameters panoramaParameters = panoramaUserParamProp.get().panoramaParameters();
+        PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
         Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
-        
-        panoramaProp = new SimpleObjectProperty<>(newPano);
-        
-        imageProp = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+        panoramaProperty = new SimpleObjectProperty<>(newPano);
+        imageProperty = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
         
         Labelizer lab = new Labelizer(cem, summitsList);
         List<Node> newList = lab.labels(panoramaParameters);
-        
-        labelsProp = new SimpleObjectProperty(newList);
-        
-        
+        labelsProperty = new SimpleObjectProperty<>(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
     }
     
+    /**
+     * 
+     * @param p
+     * @return
+     */
     private ImagePainter imgPainter(Panorama p){
+        
         ChannelPainter hue, saturation, brightness, opacity;
 
         hue = ChannelPainter.distance(p)
-                .div(100000)
-                .cycle()
-                .mul(360);
+                            .div(100000)
+                            .cycle()
+                            .mul(360);
 
         saturation = ChannelPainter.distance(p)
-                .div(200000)
-                .clamp()
-                .invert();
+                                   .div(200000)
+                                   .clamp()
+                                   .invert();
 
         brightness = ChannelPainter.slope(p)
-                .mul(2)
-                .div((float) Math.PI)
-                .invert()
-                .mul((float) 0.7)
-                .add((float) 0.3);
+                                   .mul(2)
+                                   .div((float) Math.PI)
+                                   .invert()
+                                   .mul((float) 0.7)
+                                   .add((float) 0.3);
 
         opacity = ChannelPainter.opacity(p);
 
