@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView ;
 
 import ch.epfl.alpano.dem.ContinuousElevationModel;
@@ -21,6 +22,10 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
+
 
 public class Alpano extends Application{
     public static void main(String[] args){
@@ -56,25 +61,73 @@ public class Alpano extends Application{
         }
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
         
-        
-        BorderPane root = new BorderPane();
-        
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
         
+        
+        
+        BorderPane root = new BorderPane();
         ImageView panoView = createImageView(panoParamBean, panoCompBean);
         
     }
     
     private ImageView createImageView(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
-        ImageView panoView = new ImageView(pCB.imageProp().get());
-        pUP.widthProperty().addListener(panoView.fitWidthProperty());
         
-        pCB.imageProp().addListener(panoView.imageProperty());
+        ImageView panoView = new ImageView();
+        
+        panoView.setImage(pCB.getImage());
+        
+        //le cast est peut etre degue
+        pUP.widthProperty().addListener((p,o,n)->
+            panoView.setFitWidth(n));
+        
+        pCB.imageProp().addListener((p,o,n)-> panoView.setImage(n));
         
         panoView.setSmooth(true);
         panoView.setPreserveRatio(true);
+
+        panoView.setOnMouseMoved((event)->{
+            event.getSceneX();
+            event.getSceneY();
+            //a continuer
+        });
+        
+        panoView.setOnMouseClicked((event)->{
+            //ouvrir l'url  
+        });
         
         return panoView;
+    }
+    
+    private Pane createLabelsPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+        
+        Pane labelsPane = new Pane();
+        labelsPane.getChildren().addAll(pCB.getLabels());
+        
+        pUP.widthProperty().addListener((p,o,n)->labelsPane.prefWidth(n));
+        pUP.heightProperty().addListener((p,o,n)->labelsPane.prefHeight(n));
+        
+        
+    }
+    
+    private StackPane createPanoGroup(ImageView panoView, Pane labelsPane, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+        //TODO
+    }
+    
+    private ScrollPane createPanoScrollPane(StackPane panoGroup, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+        //TODO
+    }
+    
+    private StackPane createUpdateNotice(Text textUpdate, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+        //TODO
+    }
+    
+    private StackPane createPanoPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB,
+            StackPane updateNotice, ScrollPane panoScrollPane){
+        //TODO
+    }
+    
+    private GridPane ParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB, Node ... args){
+        //TODO
     }
 }
