@@ -6,9 +6,12 @@
 
 package ch.epfl.alpano.gui;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import javax.swing.Scrollable;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView ;
@@ -25,6 +28,18 @@ import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
+import javafx.beans.binding.Bindings; 
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.Node;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Background;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 
 public class Alpano extends Application{
@@ -35,6 +50,7 @@ public class Alpano extends Application{
     
     @Override
     public void start(Stage primaryStage) throws Exception {
+        
         
         ContinuousElevationModel cem;
         
@@ -66,8 +82,23 @@ public class Alpano extends Application{
         
         
         
+        
         BorderPane root = new BorderPane();
+        
+        Scene scene = new Scene(root);
+
+        primaryStage.setTitle("Alpano");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
         ImageView panoView = createImageView(panoParamBean, panoCompBean);
+        Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
+        StackPane panoGroup = createPanoGroup(panoView, labelsPane, panoParamBean, panoCompBean);
+        ScrollPane scrollPane = createPanoScrollPane(panoGroup, panoParamBean, panoCompBean);
+        StackPane updateNotice = createUpdateNotice(panoParamBean, panoCompBean);
+        StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane);
+        
+        root.getChildren().add(panoPane);
         
     }
     
@@ -75,13 +106,12 @@ public class Alpano extends Application{
         
         ImageView panoView = new ImageView();
         
-        panoView.setImage(pCB.getImage());
+//        panoView.setImage(pCB.getImage());
         
-        //le cast est peut etre degue
-        pUP.widthProperty().addListener((p,o,n)->
-            panoView.setFitWidth(n));
+        panoView.fitWidthProperty().bind(pUP.widthProperty());
+
         
-        pCB.imageProp().addListener((p,o,n)-> panoView.setImage(n));
+        pCB.parametersProp().addListener((p,o,n)-> panoView.setImage(pCB.getImage()));
         
         panoView.setSmooth(true);
         panoView.setPreserveRatio(true);
@@ -102,32 +132,97 @@ public class Alpano extends Application{
     private Pane createLabelsPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         
         Pane labelsPane = new Pane();
-        labelsPane.getChildren().addAll(pCB.getLabels());
+//        labelsPane.getChildren().addAll(pCB.getLabels());
         
-        pUP.widthProperty().addListener((p,o,n)->labelsPane.prefWidth(n));
-        pUP.heightProperty().addListener((p,o,n)->labelsPane.prefHeight(n));
+//        pUP.widthProperty().addListener((p,o,n)->labelsPane.prefWidth(n));
+//        pUP.heightProperty().addListener((p,o,n)->labelsPane.prefHeight(n));
         
+        labelsPane.prefHeightProperty().bind(pUP.heightProperty());
+        labelsPane.prefWidthProperty().bind(pUP.heightProperty());
+        
+//        pCB.labelsProp().addListener((p,o,n) -> Bindings.bindContent(labelsPane.getChildren(), n));
+        
+//        Bindings.bindContent(labelsPane.getChildren(), pCB.getLabels());
+        
+        labelsPane.setMouseTransparent(true);
+        
+        return labelsPane;
         
     }
     
     private StackPane createPanoGroup(ImageView panoView, Pane labelsPane, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
-        //TODO
+        StackPane panoGroup = new StackPane();
+        panoGroup.getChildren().add(panoView);
+        panoGroup.getChildren().add(labelsPane);
+        
+        return panoGroup;
     }
     
     private ScrollPane createPanoScrollPane(StackPane panoGroup, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
-        //TODO
+        ScrollPane panoScrollPane = new ScrollPane(panoGroup);
+        
+        return panoScrollPane;
     }
     
-    private StackPane createUpdateNotice(Text textUpdate, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
-        //TODO
+    private StackPane createUpdateNotice(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+        double textSize = 40;
+        StackPane updateNotice = new StackPane();
+        
+        Text text = new Text();
+        text.setText("Les paramètres du panorama ont changé. Cliquez ici pour mettre le dessin à jour.");
+        text.setFont(new Font(textSize));
+        text.setTextAlignment(TextAlignment.CENTER);
+        
+        
+        updateNotice.getChildren().add(text);
+        
+        updateNotice.visibleProperty().bind(pUP.parametersProperty().isNotEqualTo(pCB.parametersProp()));
+        
+        updateNotice.setOnMouseClicked((event)-> pCB.setParameters(pUP.parametersProperty().get()));
+        
+        
+//        Background backg = new Background(new BackgroundFill(Color.WHITE));
+//        updateNotice.setBackground(backg);
+        
+        return updateNotice;
     }
     
     private StackPane createPanoPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB,
             StackPane updateNotice, ScrollPane panoScrollPane){
-        //TODO
+        
+        StackPane panoPane = new StackPane();
+        panoPane.getChildren().add(panoScrollPane);
+        panoPane.getChildren().add(updateNotice);
+        
+        return panoPane;
+        
+        
     }
     
-    private GridPane ParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB, Node ... args){
-        //TODO
+    private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB, Node ... args){
+       Label latLab = new Label("Latitude (°) :");
+       Label longLab = new Label("Longitude (°) :");
+       Label azLab = new Label("Azimuth (°) : ");
+       Label viewAngleLab = new Label("Angle de vue (°) :");
+       Label altLab = new Label("Altitude (m) :");
+       Label visiLab = new Label("Visibilité (km) :");
+       Label widthLab = new Label("Largeur (px) :");
+       Label heightLab = new Label("Hauteur (px) :");
+       Label superSamplingLab = new Label("Suréchantillonnage :");
+       
+       TextField latField = new TextField();
+       TextField longField = new TextField();
+       TextField azField = new TextField();
+       TextField viewAngleField = new TextField();
+       TextField altField = new TextField();
+       TextField visiField = new TextField();
+       TextField widthField = new TextField();
+       TextField heightField = new TextField();
+       
+       StringConverter<Integer> stringConverter = ;
+       TextFormatter<Integer> formatter =
+         new TextFormatter<>(stringConverter);
+
+       
     }
 }

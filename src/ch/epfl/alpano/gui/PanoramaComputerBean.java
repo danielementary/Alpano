@@ -26,9 +26,9 @@ import javafx.scene.image.Image;
 public final class PanoramaComputerBean {
     
     private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
-    private ReadOnlyObjectProperty<Panorama> panoramaProperty;
-    private ReadOnlyObjectProperty<Image> imageProperty;
-    private ReadOnlyObjectProperty<ObservableList<Node>> labelsProperty;
+    private ObjectProperty<Panorama> panoramaProperty;
+    private ObjectProperty<Image> imageProperty;
+    private ObjectProperty<ObservableList<Node>> labelsProperty;
     private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
     
@@ -129,13 +129,19 @@ public final class PanoramaComputerBean {
         
         PanoramaComputer newPanoComputer = new PanoramaComputer(cem);
         PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
-        Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
-        panoramaProperty = new SimpleObjectProperty<>(newPano);
-        imageProperty = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
         
         Labelizer lab = new Labelizer(cem, summitsList);
         List<Node> newList = lab.labels(panoramaParameters);
-        labelsProperty = new SimpleObjectProperty<>(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
+//        labelsProperty = new SimpleObjectProperty<>(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
+        labelsProperty.set(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
+        
+        Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
+//        panoramaProperty = new SimpleObjectProperty<>(newPano);
+        panoramaProperty.set(newPano);
+        
+//        imageProperty = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+        imageProperty.set(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+        
     }
     
     /**

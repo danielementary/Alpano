@@ -18,7 +18,7 @@ public final class BeansTestsSD extends Application {
     PanoramaParametersBean bean =
       new PanoramaParametersBean(NIESEN);
     ObjectProperty<Integer> prop =
-      bean.ObserverLatitudeProp();
+      bean.observerLatitudeProperty();
 
     prop.addListener((o, oV, nV) ->
       System.out.printf("  %d -> %d (%s)%n", oV, nV, o));
