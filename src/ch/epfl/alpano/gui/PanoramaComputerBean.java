@@ -131,10 +131,6 @@ public final class PanoramaComputerBean {
         PanoramaComputer newPanoComputer = new PanoramaComputer(cem);
         PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
         
-        Labelizer lab = new Labelizer(cem, summitsList);
-        List<Node> newList = lab.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
-//        labelsProperty = new SimpleObjectProperty<>(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
-        labelsProperty.set(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
         
         Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
 //        panoramaProperty = new SimpleObjectProperty<>(newPano);
@@ -143,6 +139,10 @@ public final class PanoramaComputerBean {
 //        imageProperty = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
         imageProperty.set(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
         
+        Labelizer lab = new Labelizer(cem, summitsList);
+        List<Node> newList = lab.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
+//        labelsProperty = new SimpleObjectProperty<>(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
+        labelsProperty.set(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
     }
     
     /**

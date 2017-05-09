@@ -15,6 +15,7 @@ import ch.epfl.alpano.dem.DiscreteElevationModel;
 import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 import ch.epfl.alpano.summit.GazetteerParser;
 import ch.epfl.alpano.summit.Summit;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
@@ -35,6 +36,11 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ChoiceBox;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.geometry.Insets;
+import static javafx.scene.paint.Color.color;
 
 
 public class Alpano extends Application{
@@ -76,13 +82,15 @@ public class Alpano extends Application{
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
 
-        //        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
+        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
 
 
         ImageView panoView = createImageView(panoParamBean, panoCompBean);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
+        
         StackPane panoGroup = createPanoGroup(panoView, labelsPane, panoParamBean, panoCompBean);
         ScrollPane scrollPane = createPanoScrollPane(panoGroup, panoParamBean, panoCompBean);
+        
         StackPane updateNotice = createUpdateNotice(panoParamBean, panoCompBean);
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane);
 
@@ -137,6 +145,8 @@ public class Alpano extends Application{
         
         Bindings.bindContent(labelsPane.getChildren(), pCB.getLabels());
         
+        
+        
         labelsPane.setMouseTransparent(true);
         
         return labelsPane;
@@ -145,13 +155,14 @@ public class Alpano extends Application{
     
     private StackPane createPanoGroup(ImageView panoView, Pane labelsPane, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         StackPane panoGroup = new StackPane();
-        panoGroup.getChildren().addAll(labelsPane, panoView);
+        panoGroup.getChildren().addAll(panoView, labelsPane);
         
         return panoGroup;
     }
     
     private ScrollPane createPanoScrollPane(StackPane panoGroup, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
-        ScrollPane panoScrollPane = new ScrollPane(panoGroup);
+        ScrollPane panoScrollPane = new ScrollPane();
+        panoScrollPane.setContent(panoGroup);
         
         return panoScrollPane;
     }
@@ -173,8 +184,8 @@ public class Alpano extends Application{
         updateNotice.setOnMouseClicked((event)-> pCB.setParameters(pUP.parametersProperty().get()));
         
         
-//        Background backg = new Background(new BackgroundFill(Color.WHITE));
-//        updateNotice.setBackground(backg);
+        Background backg = new Background(new BackgroundFill(color(1,1,1,0.9), CornerRadii.EMPTY, Insets.EMPTY));
+        updateNotice.setBackground(backg);
         
         return updateNotice;
     }
@@ -183,8 +194,7 @@ public class Alpano extends Application{
             StackPane updateNotice, ScrollPane panoScrollPane){
         
         StackPane panoPane = new StackPane();
-        panoPane.getChildren().add(panoScrollPane);
-        panoPane.getChildren().add(updateNotice);
+        panoPane.getChildren().addAll(panoScrollPane, updateNotice);
         
         return panoPane;
         
@@ -212,6 +222,7 @@ public class Alpano extends Application{
         TextField visiField = new TextField();
         TextField widthField = new TextField();
         TextField heightField = new TextField();
+        
         ChoiceBox superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
 
@@ -240,6 +251,8 @@ public class Alpano extends Application{
         formatterFixedPointWidth.valueProperty().bindBidirectional(pUP.widthProperty());
         formatterFixedPointHeight.valueProperty().bindBidirectional(pUP.heightProperty());
 
+        superSamplingBox.valueProperty().bindBidirectional(pUP.SuperSamplingExponentProperty());
+        
         superSamplingBox.setConverter(stringConverterSampling);
         latField.setTextFormatter(formatterFixedPointLat);
         longField.setTextFormatter(formatterFixedPointLong);
