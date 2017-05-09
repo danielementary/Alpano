@@ -8,8 +8,8 @@
 package ch.epfl.alpano.gui;
 
 public interface PredefinedPanoramas {
-    public static final int MAIN_WIDTH = 2500;
-    public static final int MAIN_HEIGHT = 800;
+    public static final int MAIN_WIDTH = 1250;
+    public static final int MAIN_HEIGHT = 700;
     public static final int MAIN_SUPER_SAMP = 0;
     public static final int MAIN_MAX_DIST = 300;
     

@@ -177,5 +177,7 @@ public final class PanoramaParametersBean {
         widthProperty.set(nPUP.getWidth());
         heightProperty.set(nPUP.getHeight());
         superSamplingExponentProperty.set(nPUP.getSuperSamp());
+        
+        System.out.println(observerElevationProperty().get());
     }  
 }
