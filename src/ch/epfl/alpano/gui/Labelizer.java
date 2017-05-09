@@ -23,6 +23,8 @@ import ch.epfl.alpano.summit.Summit;
 import javafx.scene.Node;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 public final class Labelizer {
     
@@ -30,7 +32,7 @@ public final class Labelizer {
     private final List<Summit> summits;
     private final static int vertLim = 170; //limit of height for summits
     private final static int bound = 20;
-    private final static int rotationAng = 60;
+    private final static int rotationAng = -60;
     private final static int tolerance = 200;
     private final static double step = PanoramaComputer.getStep();
     
@@ -85,8 +87,9 @@ public final class Labelizer {
                     }
                     //adding the Text Node
                     String str = summit.name() + " (" + summit.elevation() + " m)";
-                    Text t = new Text(x, yLabel, str);
-                    t.setRotate(rotationAng);
+                    Text t = new Text(str);
+                    
+                    t.getTransforms().addAll(new Translate(x, yLabel), new Rotate(rotationAng, 0,0));
                     //adding the Line
                     Line l = new Line(x, y, x, yLabel+2);
                     

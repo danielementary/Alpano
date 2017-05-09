@@ -6,15 +6,9 @@
 
 package ch.epfl.alpano.gui;
 
-import java.awt.Color;
+import java.awt.GridBagConstraints;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import javax.swing.Scrollable;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView ;
 
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.DiscreteElevationModel;
@@ -22,24 +16,25 @@ import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 import ch.epfl.alpano.summit.GazetteerParser;
 import ch.epfl.alpano.summit.Summit;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.GridPane;
-import javafx.beans.binding.Bindings; 
-import javafx.scene.text.Text;
-import javafx.scene.text.Font;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Background;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView ;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ChoiceBox;
+import javafx.geometry.Pos;
+import javafx.scene.layout.GridPane;
 
 
 public class Alpano extends Application{
@@ -74,23 +69,16 @@ public class Alpano extends Application{
             
             DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
             cem = new ContinuousElevationModel(dDemAll);
-        }
+        
+        
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
         
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
         
+        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
         
         
-        
-        BorderPane root = new BorderPane();
-        
-        Scene scene = new Scene(root);
-
-        primaryStage.setTitle("Alpano");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
         ImageView panoView = createImageView(panoParamBean, panoCompBean);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
         StackPane panoGroup = createPanoGroup(panoView, labelsPane, panoParamBean, panoCompBean);
@@ -98,20 +86,33 @@ public class Alpano extends Application{
         StackPane updateNotice = createUpdateNotice(panoParamBean, panoCompBean);
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane);
         
-        root.getChildren().add(panoPane);
+        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean);
         
+        
+        BorderPane root = new BorderPane();
+        root.setCenter(panoPane);
+        root.setBottom(paramsGrid);
+        
+        Scene scene = new Scene(root);
+
+        primaryStage.setTitle("Alpano");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        
+        }
     }
     
     private ImageView createImageView(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         
         ImageView panoView = new ImageView();
         
-//        panoView.setImage(pCB.getImage());
-        
         panoView.fitWidthProperty().bind(pUP.widthProperty());
 
         
         pCB.parametersProp().addListener((p,o,n)-> panoView.setImage(pCB.getImage()));
+        
+        panoView.imageProperty().bind(pCB.imageProp());
         
         panoView.setSmooth(true);
         panoView.setPreserveRatio(true);
@@ -132,17 +133,13 @@ public class Alpano extends Application{
     private Pane createLabelsPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         
         Pane labelsPane = new Pane();
-//        labelsPane.getChildren().addAll(pCB.getLabels());
         
-//        pUP.widthProperty().addListener((p,o,n)->labelsPane.prefWidth(n));
-//        pUP.heightProperty().addListener((p,o,n)->labelsPane.prefHeight(n));
         
         labelsPane.prefHeightProperty().bind(pUP.heightProperty());
-        labelsPane.prefWidthProperty().bind(pUP.heightProperty());
+        labelsPane.prefWidthProperty().bind(pUP.widthProperty());
         
-//        pCB.labelsProp().addListener((p,o,n) -> Bindings.bindContent(labelsPane.getChildren(), n));
         
-//        Bindings.bindContent(labelsPane.getChildren(), pCB.getLabels());
+        Bindings.bindContent(labelsPane.getChildren(), pCB.getLabels());
         
         labelsPane.setMouseTransparent(true);
         
@@ -199,30 +196,91 @@ public class Alpano extends Application{
         
     }
     
-    private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB, Node ... args){
-       Label latLab = new Label("Latitude (°) :");
-       Label longLab = new Label("Longitude (°) :");
-       Label azLab = new Label("Azimuth (°) : ");
-       Label viewAngleLab = new Label("Angle de vue (°) :");
-       Label altLab = new Label("Altitude (m) :");
-       Label visiLab = new Label("Visibilité (km) :");
-       Label widthLab = new Label("Largeur (px) :");
-       Label heightLab = new Label("Hauteur (px) :");
-       Label superSamplingLab = new Label("Suréchantillonnage :");
-       
-       TextField latField = new TextField();
-       TextField longField = new TextField();
-       TextField azField = new TextField();
-       TextField viewAngleField = new TextField();
-       TextField altField = new TextField();
-       TextField visiField = new TextField();
-       TextField widthField = new TextField();
-       TextField heightField = new TextField();
-       
-       StringConverter<Integer> stringConverter = ;
-       TextFormatter<Integer> formatter =
-         new TextFormatter<>(stringConverter);
+    private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+        GridPane paramsGrid = new GridPane();
 
+        Label latLab = new Label("Latitude (°) :");
+        Label longLab = new Label("Longitude (°) :");
+        Label azLab = new Label("Azimuth (°) : ");
+        Label viewAngleLab = new Label("Angle de vue (°) :");
+        Label altLab = new Label("Altitude (m) :");
+        Label visiLab = new Label("Visibilité (km) :");
+        Label widthLab = new Label("Largeur (px) :");
+        Label heightLab = new Label("Hauteur (px) :");
+        Label superSamplingLab = new Label("Suréchantillonnage :");
+
+        TextField latField = new TextField();
+        TextField longField = new TextField();
+        TextField azField = new TextField();
+        TextField viewAngleField = new TextField();
+        TextField altField = new TextField();
+        TextField visiField = new TextField();
+        TextField widthField = new TextField();
+        TextField heightField = new TextField();
+        ChoiceBox superSamplingBox = new ChoiceBox<>();
+        superSamplingBox.getItems().addAll(0,1,2);
+
+
+        StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "1x", "2x");
+
+        StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
+        StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
+        
+        TextFormatter<Integer> formatterFixedPointLat = new TextFormatter<>(stringConverterFixedPoint);
+        TextFormatter<Integer> formatterFixedPointLong = new TextFormatter<>(stringConverterFixedPoint);
+        TextFormatter<Integer> formatterFixedPointAz = new TextFormatter<>(stringConverterFixedPointZero);
+        TextFormatter<Integer> formatterFixedPointViewAngle = new TextFormatter<>(stringConverterFixedPointZero);
+        TextFormatter<Integer> formatterFixedPointAlt = new TextFormatter<>(stringConverterFixedPointZero);
+        TextFormatter<Integer> formatterFixedPointVisi = new TextFormatter<>(stringConverterFixedPointZero);
+        TextFormatter<Integer> formatterFixedPointWidth = new TextFormatter<>(stringConverterFixedPointZero);
+        TextFormatter<Integer> formatterFixedPointHeight = new TextFormatter<>(stringConverterFixedPointZero);
+        
+        
+        formatterFixedPointLat.valueProperty().bindBidirectional(pUP.observerLatitudeProperty());
+        formatterFixedPointLong.valueProperty().bindBidirectional(pUP.observerLongitudeProperty());
+        formatterFixedPointAz.valueProperty().bindBidirectional(pUP.CenterAzimuthProperty());
+        formatterFixedPointViewAngle.valueProperty().bindBidirectional(pUP.horizontalFieldOfViewProperty());
+        formatterFixedPointAlt.valueProperty().bindBidirectional(pUP.observerElevationProperty());
+        formatterFixedPointVisi.valueProperty().bindBidirectional(pUP.maxDistanceProperty());
+        formatterFixedPointWidth.valueProperty().bindBidirectional(pUP.widthProperty());
+        formatterFixedPointHeight.valueProperty().bindBidirectional(pUP.heightProperty());
+
+        superSamplingBox.setConverter(stringConverterSampling);
+        latField.setTextFormatter(formatterFixedPointLat);
+        longField.setTextFormatter(formatterFixedPointLong);
+        azField.setTextFormatter(formatterFixedPointAz);        
+        viewAngleField.setTextFormatter(formatterFixedPointViewAngle);        
+        altField.setTextFormatter(formatterFixedPointAlt);        
+        visiField.setTextFormatter(formatterFixedPointVisi);        
+        widthField.setTextFormatter(formatterFixedPointWidth);        
+        heightField.setTextFormatter(formatterFixedPointHeight);        
+        
+        latField.setAlignment(Pos.CENTER_RIGHT);
+        longField.setAlignment(Pos.CENTER_RIGHT);
+        azField.setAlignment(Pos.CENTER_RIGHT);
+        viewAngleField.setAlignment(Pos.CENTER_RIGHT);
+        altField.setAlignment(Pos.CENTER_RIGHT);
+        visiField.setAlignment(Pos.CENTER_RIGHT);
+        widthField.setAlignment(Pos.CENTER_RIGHT);
+        heightField.setAlignment(Pos.CENTER_RIGHT);
+        
+        latField.setPrefColumnCount(7);
+        longField.setPrefColumnCount(7);
+        azField.setPrefColumnCount(3);
+        viewAngleField.setPrefColumnCount(3);
+        altField.setPrefColumnCount(4);
+        visiField.setPrefColumnCount(3);
+        widthField.setPrefColumnCount(4);
+        heightField.setPrefColumnCount(4);
+        
+        
+       
+        paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
+        paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
+        paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
+        
+        return paramsGrid;
+       
        
     }
 }

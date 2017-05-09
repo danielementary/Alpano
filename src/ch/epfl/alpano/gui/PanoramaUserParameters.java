@@ -149,7 +149,7 @@ public final class PanoramaUserParameters {
                                       getObserverElev(),
                                       Math.toRadians(getCenterAzim()),
                                       Math.toRadians(getHoriFieldOfView()),
-                                      getMaxDist(), newWidth, newHeight);
+                                      getMaxDist()*1000, newWidth, newHeight);
 }
     
     /**
@@ -161,7 +161,7 @@ public final class PanoramaUserParameters {
                 new GeoPoint(Math.toRadians(getOberserverLong()*1e-4), Math.toRadians(getOberserverLati()*1e-4)), 
                 getObserverElev(),
                 Math.toRadians(getCenterAzim()), Math.toRadians(getHoriFieldOfView()),
-                getMaxDist(), getWidth(), getHeight());
+                getMaxDist()*1000, getWidth(), getHeight());
         
     }
     

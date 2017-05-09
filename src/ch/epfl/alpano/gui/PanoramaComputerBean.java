@@ -7,6 +7,7 @@
 
 package ch.epfl.alpano.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,10 +16,10 @@ import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.summit.Summit;
-import javafx.collections.FXCollections;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -42,9 +43,9 @@ public final class PanoramaComputerBean {
         this.panoramaUserParamProperty = new SimpleObjectProperty<>(null);
         this.panoramaUserParamProperty.addListener((p, o, n) -> update());
         
-        this.panoramaProperty = null; 
-        this.imageProperty = null;
-        this.labelsProperty = null;
+        this.panoramaProperty = new SimpleObjectProperty<>(); 
+        this.imageProperty = new SimpleObjectProperty<>();
+        this.labelsProperty = new SimpleObjectProperty<>(FXCollections.observableArrayList());
         
         this.cem = cem;
         this.summitsList = Objects.requireNonNull(summitsList);
@@ -131,7 +132,7 @@ public final class PanoramaComputerBean {
         PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
         
         Labelizer lab = new Labelizer(cem, summitsList);
-        List<Node> newList = lab.labels(panoramaParameters);
+        List<Node> newList = lab.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
 //        labelsProperty = new SimpleObjectProperty<>(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
         labelsProperty.set(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
         
