@@ -9,6 +9,7 @@ package ch.epfl.alpano.gui;
 import java.awt.GridBagConstraints;
 import java.io.File;
 import java.util.List;
+import java.util.Observable;
 
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.DiscreteElevationModel;
@@ -18,6 +19,7 @@ import ch.epfl.alpano.summit.Summit;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -41,6 +43,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.geometry.Insets;
 import static javafx.scene.paint.Color.color;
+import javafx.collections.ListChangeListener.Change;
+import javafx.collections.ListChangeListener;
+import javafx.beans.value.ChangeListener;
+
 
 
 public class Alpano extends Application{
@@ -78,7 +84,7 @@ public class Alpano extends Application{
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
 
-        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
+//        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
 
         ImageView panoView = createImageView(panoParamBean, panoCompBean);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
@@ -165,7 +171,9 @@ public class Alpano extends Application{
         
         updateNotice.getChildren().add(text);
         
-        updateNotice.visibleProperty().bind(pUP.parametersProperty().isNotEqualTo(pCB.parametersProp()));
+        BooleanBinding booleanCondition = pUP.parametersProperty().isNotEqualTo(pCB.parametersProp());
+        
+        updateNotice.visibleProperty().bind(booleanCondition);
         
         updateNotice.setOnMouseClicked((event)-> pCB.setParameters(pUP.parametersProperty().get()));
         
@@ -209,7 +217,7 @@ public class Alpano extends Application{
         ChoiceBox superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
 
-        StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "1x", "2x");
+        StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "2x", "4x");
 
         StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);

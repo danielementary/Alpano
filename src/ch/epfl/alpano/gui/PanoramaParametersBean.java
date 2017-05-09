@@ -16,7 +16,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public final class PanoramaParametersBean {
     
     //property for parameters
-    private ReadOnlyObjectProperty parametersProperty;
+    private ObjectProperty parametersProperty;
     
     //properties for each modifiable parameter
     private ObjectProperty<Integer> observerLongitudeProperty;
@@ -149,7 +149,7 @@ public final class PanoramaParametersBean {
     }
     
     /**
-     * synchronize all parameters when there is somes changes
+     * synchronize all parameters when there is some changes
      */
     private void synchronizeParameters() {
         
@@ -165,7 +165,8 @@ public final class PanoramaParametersBean {
                                                                  superSamplingExponentProperty.get());
         
         //change the property's value with the new instance
-        parametersProperty = new SimpleObjectProperty<>(nPUP); 
+//        parametersProperty = new SimpleObjectProperty<>(nPUP); 
+        parametersProperty.set(nPUP);
         
         //update all properties
         observerLongitudeProperty.set(nPUP.getOberserverLong());
@@ -178,6 +179,5 @@ public final class PanoramaParametersBean {
         heightProperty.set(nPUP.getHeight());
         superSamplingExponentProperty.set(nPUP.getSuperSamp());
         
-        System.out.println(observerElevationProperty().get());
     }  
 }

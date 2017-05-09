@@ -133,16 +133,14 @@ public final class PanoramaComputerBean {
         
         
         Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
-//        panoramaProperty = new SimpleObjectProperty<>(newPano);
         panoramaProperty.set(newPano);
         
-//        imageProperty = new SimpleObjectProperty<>(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
         imageProperty.set(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+        
         
         Labelizer lab = new Labelizer(cem, summitsList);
         List<Node> newList = lab.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
-//        labelsProperty = new SimpleObjectProperty<>(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
-        labelsProperty.set(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
+        labelsProperty.get().setAll(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
     }
     
     /**
