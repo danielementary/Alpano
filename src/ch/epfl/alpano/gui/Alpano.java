@@ -45,11 +45,11 @@ public class Alpano extends Application{
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
-        
+
+
         ContinuousElevationModel cem;
-        
-        try(
+
+
         DiscreteElevationModel dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
         DiscreteElevationModel dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
         DiscreteElevationModel dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
@@ -57,60 +57,56 @@ public class Alpano extends Application{
         DiscreteElevationModel dDem5 = new HgtDiscreteElevationModel(new File("N46E006.hgt"));
         DiscreteElevationModel dDem6 = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
         DiscreteElevationModel dDem7 = new HgtDiscreteElevationModel(new File("N46E008.hgt"));
-        DiscreteElevationModel dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"))){
-            
-            DiscreteElevationModel dDem12 = dDem1.union(dDem2);
-            DiscreteElevationModel dDem34 = dDem3.union(dDem4);
-            DiscreteElevationModel dDem56 = dDem5.union(dDem6);
-            DiscreteElevationModel dDem78 = dDem7.union(dDem8);
-            
-            DiscreteElevationModel dDem1234 = dDem12.union(dDem34);
-            DiscreteElevationModel dDem5678 = dDem56.union(dDem78);
-            
-            DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
-            cem = new ContinuousElevationModel(dDemAll);
-        
-        
+        DiscreteElevationModel dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"));
+
+        DiscreteElevationModel dDem12 = dDem1.union(dDem2);
+        DiscreteElevationModel dDem34 = dDem3.union(dDem4);
+        DiscreteElevationModel dDem56 = dDem5.union(dDem6);
+        DiscreteElevationModel dDem78 = dDem7.union(dDem8);
+
+        DiscreteElevationModel dDem1234 = dDem12.union(dDem34);
+        DiscreteElevationModel dDem5678 = dDem56.union(dDem78);
+
+        DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
+        cem = new ContinuousElevationModel(dDemAll);
+
+
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
-        
+
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
-        
-        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
-        
-        
+
+        //        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
+
+
         ImageView panoView = createImageView(panoParamBean, panoCompBean);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
         StackPane panoGroup = createPanoGroup(panoView, labelsPane, panoParamBean, panoCompBean);
         ScrollPane scrollPane = createPanoScrollPane(panoGroup, panoParamBean, panoCompBean);
         StackPane updateNotice = createUpdateNotice(panoParamBean, panoCompBean);
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane);
-        
+
         GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean);
-        
-        
+
+
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
         root.setBottom(paramsGrid);
-        
+
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Alpano");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        
-        }
+
     }
-    
+
     private ImageView createImageView(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         
         ImageView panoView = new ImageView();
         
         panoView.fitWidthProperty().bind(pUP.widthProperty());
-
-        
-        pCB.parametersProp().addListener((p,o,n)-> panoView.setImage(pCB.getImage()));
         
         panoView.imageProperty().bind(pCB.imageProp());
         
@@ -149,8 +145,7 @@ public class Alpano extends Application{
     
     private StackPane createPanoGroup(ImageView panoView, Pane labelsPane, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         StackPane panoGroup = new StackPane();
-        panoGroup.getChildren().add(panoView);
-        panoGroup.getChildren().add(labelsPane);
+        panoGroup.getChildren().addAll(labelsPane, panoView);
         
         return panoGroup;
     }
