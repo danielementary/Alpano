@@ -46,16 +46,13 @@ import static javafx.scene.paint.Color.color;
 public class Alpano extends Application{
     public static void main(String[] args){
         Application.launch(args);
-        
     }
     
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
         ContinuousElevationModel cem;
-
-
+        
         DiscreteElevationModel dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
         DiscreteElevationModel dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
         DiscreteElevationModel dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
@@ -74,16 +71,14 @@ public class Alpano extends Application{
         DiscreteElevationModel dDem5678 = dDem56.union(dDem78);
 
         DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
+        
         cem = new ContinuousElevationModel(dDemAll);
-
-
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
 
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
 
         panoCompBean.setParameters(panoParamBean.parametersProperty().get());
-
 
         ImageView panoView = createImageView(panoParamBean, panoCompBean);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
@@ -96,7 +91,6 @@ public class Alpano extends Application{
 
         GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean);
 
-
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
         root.setBottom(paramsGrid);
@@ -106,8 +100,6 @@ public class Alpano extends Application{
         primaryStage.setTitle("Alpano");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
     }
 
     private ImageView createImageView(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
@@ -138,19 +130,14 @@ public class Alpano extends Application{
         
         Pane labelsPane = new Pane();
         
-        
         labelsPane.prefHeightProperty().bind(pUP.heightProperty());
         labelsPane.prefWidthProperty().bind(pUP.widthProperty());
-        
-        
+                
         Bindings.bindContent(labelsPane.getChildren(), pCB.getLabels());
-        
-        
-        
+                
         labelsPane.setMouseTransparent(true);
         
         return labelsPane;
-        
     }
     
     private StackPane createPanoGroup(ImageView panoView, Pane labelsPane, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
@@ -176,13 +163,11 @@ public class Alpano extends Application{
         text.setFont(new Font(textSize));
         text.setTextAlignment(TextAlignment.CENTER);
         
-        
         updateNotice.getChildren().add(text);
         
         updateNotice.visibleProperty().bind(pUP.parametersProperty().isNotEqualTo(pCB.parametersProp()));
         
         updateNotice.setOnMouseClicked((event)-> pCB.setParameters(pUP.parametersProperty().get()));
-        
         
         Background backg = new Background(new BackgroundFill(color(1,1,1,0.9), CornerRadii.EMPTY, Insets.EMPTY));
         updateNotice.setBackground(backg);
@@ -191,14 +176,12 @@ public class Alpano extends Application{
     }
     
     private StackPane createPanoPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB,
-            StackPane updateNotice, ScrollPane panoScrollPane){
+                                     StackPane updateNotice, ScrollPane panoScrollPane) {
         
         StackPane panoPane = new StackPane();
         panoPane.getChildren().addAll(panoScrollPane, updateNotice);
         
         return panoPane;
-        
-        
     }
     
     private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
@@ -226,7 +209,6 @@ public class Alpano extends Application{
         ChoiceBox superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
 
-
         StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "1x", "2x");
 
         StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
@@ -240,7 +222,6 @@ public class Alpano extends Application{
         TextFormatter<Integer> formatterFixedPointVisi = new TextFormatter<>(stringConverterFixedPointZero);
         TextFormatter<Integer> formatterFixedPointWidth = new TextFormatter<>(stringConverterFixedPointZero);
         TextFormatter<Integer> formatterFixedPointHeight = new TextFormatter<>(stringConverterFixedPointZero);
-        
         
         formatterFixedPointLat.valueProperty().bindBidirectional(pUP.observerLatitudeProperty());
         formatterFixedPointLong.valueProperty().bindBidirectional(pUP.observerLongitudeProperty());
@@ -280,15 +261,11 @@ public class Alpano extends Application{
         visiField.setPrefColumnCount(3);
         widthField.setPrefColumnCount(4);
         heightField.setPrefColumnCount(4);
-        
-        
-       
+
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
         
         return paramsGrid;
-       
-       
     }
 }
