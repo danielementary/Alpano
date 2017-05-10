@@ -139,7 +139,8 @@ public class Alpano extends Application{
         labelsPane.prefHeightProperty().bind(pUP.heightProperty());
         labelsPane.prefWidthProperty().bind(pUP.widthProperty());
                 
-        Bindings.bindContent(labelsPane.getChildren(), pCB.getLabels());
+        Bindings.bindContent(labelsPane.getChildren(), pCB.labelsProp().get());
+        
                 
         labelsPane.setMouseTransparent(true);
         
@@ -204,6 +205,16 @@ public class Alpano extends Application{
         Label widthLab = new Label("Largeur (px) :");
         Label heightLab = new Label("Hauteur (px) :");
         Label superSamplingLab = new Label("Suréchantillonnage :");
+        
+        latLab.setTextAlignment(TextAlignment.RIGHT);
+        longLab.setTextAlignment(TextAlignment.RIGHT);
+        azLab.setTextAlignment(TextAlignment.RIGHT);
+        viewAngleLab.setTextAlignment(TextAlignment.RIGHT);
+        altLab.setTextAlignment(TextAlignment.RIGHT);
+        visiLab.setTextAlignment(TextAlignment.RIGHT);
+        widthLab.setTextAlignment(TextAlignment.RIGHT);
+        heightLab.setTextAlignment(TextAlignment.RIGHT);
+        superSamplingLab.setTextAlignment(TextAlignment.RIGHT);
 
         TextField latField = new TextField();
         TextField longField = new TextField();

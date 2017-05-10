@@ -120,7 +120,7 @@ public final class PanoramaComputerBean {
      * @return ObservableList<Node>
      */
     public ObservableList<Node> getLabels() {
-        return labelsProperty.get();
+        return FXCollections.unmodifiableObservableList(labelsProperty.get());
     }
     
     /**
