@@ -46,6 +46,7 @@ import static javafx.scene.paint.Color.color;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ListChangeListener;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.property.ObjectProperty;
 
 
 
@@ -215,76 +216,54 @@ public class Alpano extends Application{
         widthLab.setTextAlignment(TextAlignment.RIGHT);
         heightLab.setTextAlignment(TextAlignment.RIGHT);
         superSamplingLab.setTextAlignment(TextAlignment.RIGHT);
+        
+        StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
+        StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
 
-        TextField latField = new TextField();
-        TextField longField = new TextField();
-        TextField azField = new TextField();
-        TextField viewAngleField = new TextField();
-        TextField altField = new TextField();
-        TextField visiField = new TextField();
-        TextField widthField = new TextField();
-        TextField heightField = new TextField();
+        
+        TextField latField = createTextField(stringConverterFixedPoint, 7, pUP.observerLatitudeProperty());
+        TextField longField = createTextField(stringConverterFixedPoint, 7, pUP.observerLongitudeProperty());
+        TextField azField = createTextField(stringConverterFixedPointZero, 3, pUP.CenterAzimuthProperty());
+        TextField viewAngleField = createTextField(stringConverterFixedPointZero, 3, pUP.horizontalFieldOfViewProperty());
+        TextField altField = createTextField(stringConverterFixedPointZero, 4, pUP.observerElevationProperty());
+        TextField visiField = createTextField(stringConverterFixedPointZero, 3, pUP.maxDistanceProperty());
+        TextField widthField = createTextField(stringConverterFixedPointZero, 4, pUP.widthProperty());
+        TextField heightField = createTextField(stringConverterFixedPointZero, 4, pUP.heightProperty());
+        
+        
         
         ChoiceBox superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
 
         StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "2x", "4x");
 
-        StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
-        StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
         
-        TextFormatter<Integer> formatterFixedPointLat = new TextFormatter<>(stringConverterFixedPoint);
-        TextFormatter<Integer> formatterFixedPointLong = new TextFormatter<>(stringConverterFixedPoint);
-        TextFormatter<Integer> formatterFixedPointAz = new TextFormatter<>(stringConverterFixedPointZero);
-        TextFormatter<Integer> formatterFixedPointViewAngle = new TextFormatter<>(stringConverterFixedPointZero);
-        TextFormatter<Integer> formatterFixedPointAlt = new TextFormatter<>(stringConverterFixedPointZero);
-        TextFormatter<Integer> formatterFixedPointVisi = new TextFormatter<>(stringConverterFixedPointZero);
-        TextFormatter<Integer> formatterFixedPointWidth = new TextFormatter<>(stringConverterFixedPointZero);
-        TextFormatter<Integer> formatterFixedPointHeight = new TextFormatter<>(stringConverterFixedPointZero);
-        
-        formatterFixedPointLat.valueProperty().bindBidirectional(pUP.observerLatitudeProperty());
-        formatterFixedPointLong.valueProperty().bindBidirectional(pUP.observerLongitudeProperty());
-        formatterFixedPointAz.valueProperty().bindBidirectional(pUP.CenterAzimuthProperty());
-        formatterFixedPointViewAngle.valueProperty().bindBidirectional(pUP.horizontalFieldOfViewProperty());
-        formatterFixedPointAlt.valueProperty().bindBidirectional(pUP.observerElevationProperty());
-        formatterFixedPointVisi.valueProperty().bindBidirectional(pUP.maxDistanceProperty());
-        formatterFixedPointWidth.valueProperty().bindBidirectional(pUP.widthProperty());
-        formatterFixedPointHeight.valueProperty().bindBidirectional(pUP.heightProperty());
 
         superSamplingBox.valueProperty().bindBidirectional(pUP.SuperSamplingExponentProperty());
         
         superSamplingBox.setConverter(stringConverterSampling);
-        latField.setTextFormatter(formatterFixedPointLat);
-        longField.setTextFormatter(formatterFixedPointLong);
-        azField.setTextFormatter(formatterFixedPointAz);        
-        viewAngleField.setTextFormatter(formatterFixedPointViewAngle);        
-        altField.setTextFormatter(formatterFixedPointAlt);        
-        visiField.setTextFormatter(formatterFixedPointVisi);        
-        widthField.setTextFormatter(formatterFixedPointWidth);        
-        heightField.setTextFormatter(formatterFixedPointHeight);        
         
-        latField.setAlignment(Pos.CENTER_RIGHT);
-        longField.setAlignment(Pos.CENTER_RIGHT);
-        azField.setAlignment(Pos.CENTER_RIGHT);
-        viewAngleField.setAlignment(Pos.CENTER_RIGHT);
-        altField.setAlignment(Pos.CENTER_RIGHT);
-        visiField.setAlignment(Pos.CENTER_RIGHT);
-        widthField.setAlignment(Pos.CENTER_RIGHT);
-        heightField.setAlignment(Pos.CENTER_RIGHT);
         
-        latField.setPrefColumnCount(7);
-        longField.setPrefColumnCount(7);
-        azField.setPrefColumnCount(3);
-        viewAngleField.setPrefColumnCount(3);
-        altField.setPrefColumnCount(4);
-        visiField.setPrefColumnCount(3);
-        widthField.setPrefColumnCount(4);
-        heightField.setPrefColumnCount(4);
 
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
         
         return paramsGrid;
+    }
+
+    
+    private TextField createTextField(StringConverter<Integer> strConv, int columnNum, ObjectProperty<Integer> objProp){
+        TextField textField = new TextField();
+        TextFormatter<Integer> formatter = new TextFormatter<>(strConv);
+        formatter.valueProperty().bindBidirectional(objProp);
+        textField.setTextFormatter(formatter);
+        textField.setAlignment(Pos.CENTER_RIGHT);
+        textField.setPrefColumnCount(columnNum);
+        
+        return textField;
+        
+        
+        
     }
 }
