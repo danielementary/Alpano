@@ -47,6 +47,8 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ListChangeListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.property.ObjectProperty;
+import javafx.scene.control.ContentDisplay;
+import javafx.geometry.HPos;
 
 
 
@@ -167,7 +169,7 @@ public class Alpano extends Application{
         StackPane updateNotice = new StackPane();
         
         Text text = new Text();
-        text.setText("Les paramètres du panorama ont changé. Cliquez ici pour mettre le dessin à jour.");
+        text.setText("Les paramètres du panorama ont changé.\nCliquez ici pour mettre le dessin à jour.");
         text.setFont(new Font(textSize));
         text.setTextAlignment(TextAlignment.CENTER);
         
@@ -197,25 +199,25 @@ public class Alpano extends Application{
     private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         GridPane paramsGrid = new GridPane();
 
-        Label latLab = new Label("Latitude (°) :");
-        Label longLab = new Label("Longitude (°) :");
-        Label azLab = new Label("Azimuth (°) : ");
-        Label viewAngleLab = new Label("Angle de vue (°) :");
-        Label altLab = new Label("Altitude (m) :");
-        Label visiLab = new Label("Visibilité (km) :");
-        Label widthLab = new Label("Largeur (px) :");
-        Label heightLab = new Label("Hauteur (px) :");
-        Label superSamplingLab = new Label("Suréchantillonnage :");
+        Label latLab = new Label("Latitude (°): ");
+        Label longLab = new Label("Longitude (°): ");
+        Label azLab = new Label("Azimuth (°): ");
+        Label viewAngleLab = new Label("Angle de vue (°): ");
+        Label altLab = new Label("Altitude (m): ");
+        Label visiLab = new Label("Visibilité (km): ");
+        Label widthLab = new Label("Largeur (px): ");
+        Label heightLab = new Label("Hauteur (px): ");
+        Label superSamplingLab = new Label("Suréchantillonnage: ");
         
-        latLab.setTextAlignment(TextAlignment.RIGHT);
-        longLab.setTextAlignment(TextAlignment.RIGHT);
-        azLab.setTextAlignment(TextAlignment.RIGHT);
-        viewAngleLab.setTextAlignment(TextAlignment.RIGHT);
-        altLab.setTextAlignment(TextAlignment.RIGHT);
-        visiLab.setTextAlignment(TextAlignment.RIGHT);
-        widthLab.setTextAlignment(TextAlignment.RIGHT);
-        heightLab.setTextAlignment(TextAlignment.RIGHT);
-        superSamplingLab.setTextAlignment(TextAlignment.RIGHT);
+        GridPane.setHalignment(latLab, HPos.RIGHT);
+        GridPane.setHalignment(longLab, HPos.RIGHT);
+        GridPane.setHalignment(azLab, HPos.RIGHT);
+        GridPane.setHalignment(viewAngleLab, HPos.RIGHT);
+        GridPane.setHalignment(altLab, HPos.RIGHT);
+        GridPane.setHalignment(visiLab, HPos.RIGHT);
+        GridPane.setHalignment(widthLab, HPos.RIGHT);
+        GridPane.setHalignment(heightLab, HPos.RIGHT);
+        GridPane.setHalignment(superSamplingLab, HPos.RIGHT);
         
         StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
