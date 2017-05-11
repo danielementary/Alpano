@@ -20,6 +20,7 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,6 +45,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import javafx.concurrent.Task;
 
 
 
@@ -91,7 +93,9 @@ public class Alpano extends Application{
         ScrollPane scrollPane = createPanoScrollPane(panoGroup, panoParamBean, panoCompBean);
         
         StackPane updateNotice = createUpdateNotice(panoParamBean, panoCompBean);
-        StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane);
+        StackPane computeNotice = createComputeNotice(panoParamBean, panoCompBean);
+        
+        StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane, computeNotice);
 
         GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean);
 
@@ -155,6 +159,25 @@ public class Alpano extends Application{
         return panoScrollPane;
     }
     
+    private StackPane createComputeNotice(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+        StackPane computeNotice= new StackPane();
+        
+        Text text = new Text();
+        text.setText("Calcul en cours ...");
+        text.setFont(new Font(40));
+        text.setTextAlignment(TextAlignment.CENTER);
+        
+        computeNotice.getChildren().add(text);
+        
+        computeNotice.visibleProperty().bind(pCB.getComputeInProg());
+        
+        Background backg = new Background(new BackgroundFill(color(0.5,0.5,0.5,0.9), CornerRadii.EMPTY, Insets.EMPTY));
+        
+        computeNotice.setBackground(backg);
+        return computeNotice;
+        
+    }
+    
     private StackPane createUpdateNotice(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         double textSize = 40;
         StackPane updateNotice = new StackPane();
@@ -166,11 +189,22 @@ public class Alpano extends Application{
         
         updateNotice.getChildren().add(text);
         
-        BooleanBinding booleanCondition = pUP.parametersProperty().isNotEqualTo(pCB.parametersProp());
+        
+        BooleanBinding booleanCondition = pUP.parametersProperty().isEqualTo(pCB.parametersProp()).or(pCB.getComputeInProg()).not();
         
         updateNotice.visibleProperty().bind(booleanCondition);
         
-        updateNotice.setOnMouseClicked((event)-> pCB.setParameters(pUP.parametersProperty().get()));
+        updateNotice.setOnMouseClicked((event)-> {
+            
+           Thread th = new Thread(){
+                public void run() {
+                    pCB.setParameters(pUP.parametersProperty().get());
+                    
+                }
+            };
+            th.setDaemon(true);
+            th.start();
+        });
         
         Background backg = new Background(new BackgroundFill(color(1,1,1,0.9), CornerRadii.EMPTY, Insets.EMPTY));
         updateNotice.setBackground(backg);
@@ -179,10 +213,10 @@ public class Alpano extends Application{
     }
     
     private StackPane createPanoPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB,
-                                     StackPane updateNotice, ScrollPane panoScrollPane) {
+                                     StackPane updateNotice, ScrollPane panoScrollPane, StackPane compute) {
         
         StackPane panoPane = new StackPane();
-        panoPane.getChildren().addAll(panoScrollPane, updateNotice);
+        panoPane.getChildren().addAll(panoScrollPane, updateNotice, compute);
         
         return panoPane;
     }

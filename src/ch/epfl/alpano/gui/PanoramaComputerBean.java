@@ -23,6 +23,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.property.SimpleBooleanProperty;
+
+
 
 public final class PanoramaComputerBean {
     
@@ -32,6 +37,9 @@ public final class PanoramaComputerBean {
     private ObjectProperty<ObservableList<Node>> labelsProperty;
     private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
+    private final PanoramaComputer panoComp;
+    private final Labelizer labelizer;
+    private SimpleBooleanProperty computeInProg;
     
     /***
      * constructs an instance of drawed panorama parameters
@@ -43,12 +51,17 @@ public final class PanoramaComputerBean {
         this.panoramaUserParamProperty = new SimpleObjectProperty<>(null);
         this.panoramaUserParamProperty.addListener((p, o, n) -> update());
         
+        this.computeInProg = new SimpleBooleanProperty(false);
+        
         this.panoramaProperty = new SimpleObjectProperty<>(); 
         this.imageProperty = new SimpleObjectProperty<>();
         this.labelsProperty = new SimpleObjectProperty<>(FXCollections.observableArrayList());
         
         this.cem = cem;
         this.summitsList = Objects.requireNonNull(summitsList);
+        
+        this.panoComp = new PanoramaComputer(cem);
+        this.labelizer = new Labelizer(cem, this.summitsList);
     }
 
     /**
@@ -123,24 +136,38 @@ public final class PanoramaComputerBean {
         return FXCollections.unmodifiableObservableList(labelsProperty.get());
     }
     
+    public ObservableBooleanValue getComputeInProg(){
+        return computeInProg;
+    }
+    
     /**
      * 
      */
     private void update() {
         
-        PanoramaComputer newPanoComputer = new PanoramaComputer(cem);
+        computeInProg.set(true);
+        
         PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
         
         
-        Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
+        Panorama newPano = panoComp.computePanorama(panoramaParameters);
         panoramaProperty.set(newPano);
         
-        imageProperty.set(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+        List<Node> newList = labelizer.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
+        
+        Platform.runLater(new Runnable() {
+
+            public void run() {
+                imageProperty.set(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+                labelsProperty.get().setAll(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
+                
+            }
+        });
+        
+        computeInProg.set(false);
+
         
         
-        Labelizer lab = new Labelizer(cem, summitsList);
-        List<Node> newList = lab.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
-        labelsProperty.get().setAll(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
     }
     
     /**
