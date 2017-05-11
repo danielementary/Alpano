@@ -9,6 +9,7 @@ package ch.epfl.alpano.gui;
 import static javafx.scene.paint.Color.color;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.alpano.dem.ContinuousElevationModel;
@@ -46,6 +47,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.concurrent.Task;
+import javafx.scene.control.Button;
 
 
 
@@ -246,6 +248,41 @@ public class Alpano extends Application{
         
         StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
+        
+      //Pour les prédéfinis
+        Label predifinedLab = new Label("Paramètres prédéfinis : ");
+        ChoiceBox predifinedBox = new ChoiceBox<>();
+        predifinedBox.getItems().addAll(0,1,2,3,4,5);
+        
+        StringConverter<Integer> stringPredifined =
+                new LabeledListStringConverter("Niesen","Alpes du Jura", "Mont Racine", "Finsteraarhorn", "Tour de Sauvabelin", "Plage du pélican");
+        
+        predifinedBox.setConverter(stringPredifined);
+        Button loadButton = new Button("Charger les paramètres");
+        loadButton.setOnAction((e)-> {
+            List<PanoramaUserParameters> predifined = new ArrayList<>();
+            predifined.add(PredefinedPanoramas.NIESEN);
+            predifined.add(PredefinedPanoramas.ALPES_DU_JURA);
+            predifined.add(PredefinedPanoramas.MONT_RACINE);
+            predifined.add(PredefinedPanoramas.FINSTERAARHORN);
+            predifined.add(PredefinedPanoramas.TOUR_DE_SAUVABELIN);
+            predifined.add(PredefinedPanoramas.PLAGE_DU_PELICAN);
+            
+            
+            PanoramaUserParameters choosen = predifined.get((int)predifinedBox.valueProperty().get());
+            pUP.widthProperty().set(choosen.getWidth());
+            pUP.heightProperty().set(choosen.getHeight());
+            pUP.observerLatitudeProperty().set(choosen.getOberserverLati());
+            pUP.observerLongitudeProperty().set(choosen.getOberserverLong());
+            pUP.horizontalFieldOfViewProperty().set(choosen.getHoriFieldOfView());
+            pUP.maxDistanceProperty().set(choosen.getMaxDist());
+            pUP.CenterAzimuthProperty().set(choosen.getCenterAzim());
+            pUP.observerElevationProperty().set(choosen.getObserverElev());
+            pUP.SuperSamplingExponentProperty().set(choosen.getSuperSamp());
+            
+        });
+        
+        //fin des prédéfinis
 
         TextField latField = createTextField(stringConverterFixedPoint, 7, pUP.observerLatitudeProperty());
         TextField longField = createTextField(stringConverterFixedPoint, 7, pUP.observerLongitudeProperty());
@@ -272,6 +309,7 @@ public class Alpano extends Application{
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
+        paramsGrid.addRow(3, predifinedLab, predifinedBox, loadButton);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
         
