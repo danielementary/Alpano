@@ -6,27 +6,37 @@
 
 package ch.epfl.alpano.gui;
 
-import java.awt.GridBagConstraints;
+import static javafx.scene.paint.Color.color;
+
 import java.io.File;
 import java.util.List;
-import java.util.Observable;
 
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.DiscreteElevationModel;
 import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 import ch.epfl.alpano.summit.GazetteerParser;
 import ch.epfl.alpano.summit.Summit;
-
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView ;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -34,21 +44,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.ChoiceBox;
-import javafx.geometry.Pos;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.geometry.Insets;
-import static javafx.scene.paint.Color.color;
-import javafx.collections.ListChangeListener.Change;
-import javafx.collections.ListChangeListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.property.ObjectProperty;
-import javafx.scene.control.ContentDisplay;
-import javafx.geometry.HPos;
 
 
 
@@ -106,7 +101,7 @@ public class Alpano extends Application{
 
         Scene scene = new Scene(root);
 
-        primaryStage.setTitle("Alpano");
+        primaryStage.setTitle("Alpano ⛰ 💻");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -122,11 +117,7 @@ public class Alpano extends Application{
         panoView.setSmooth(true);
         panoView.setPreserveRatio(true);
 
-        panoView.setOnMouseMoved((event)->{
-            event.getSceneX();
-            event.getSceneY();
-            //a continuer
-        });
+        panoView.setOnMouseMoved((event) -> getMouseInfos(event.getSceneX(), event.getSceneY()));
         
         panoView.setOnMouseClicked((event)->{
             //ouvrir l'url  
@@ -134,7 +125,7 @@ public class Alpano extends Application{
         
         return panoView;
     }
-    
+
     private Pane createLabelsPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         
         Pane labelsPane = new Pane();
@@ -199,15 +190,15 @@ public class Alpano extends Application{
     private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         GridPane paramsGrid = new GridPane();
 
-        Label latLab = new Label("Latitude (°): ");
-        Label longLab = new Label("Longitude (°): ");
-        Label azLab = new Label("Azimuth (°): ");
-        Label viewAngleLab = new Label("Angle de vue (°): ");
-        Label altLab = new Label("Altitude (m): ");
-        Label visiLab = new Label("Visibilité (km): ");
-        Label widthLab = new Label("Largeur (px): ");
-        Label heightLab = new Label("Hauteur (px): ");
-        Label superSamplingLab = new Label("Suréchantillonnage: ");
+        Label latLab = new Label("Latitude (°) : ");
+        Label longLab = new Label("Longitude (°) : ");
+        Label azLab = new Label("Azimuth (°) : ");
+        Label viewAngleLab = new Label("Angle de vue (°) : ");
+        Label altLab = new Label("Altitude (m) : ");
+        Label visiLab = new Label("Visibilité (km) : ");
+        Label widthLab = new Label("Largeur (px) : ");
+        Label heightLab = new Label("Hauteur (px) : ");
+        Label superSamplingLab = new Label("Suréchantillonnage : ");
         
         GridPane.setHalignment(latLab, HPos.RIGHT);
         GridPane.setHalignment(longLab, HPos.RIGHT);
@@ -222,7 +213,6 @@ public class Alpano extends Application{
         StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
 
-        
         TextField latField = createTextField(stringConverterFixedPoint, 7, pUP.observerLatitudeProperty());
         TextField longField = createTextField(stringConverterFixedPoint, 7, pUP.observerLongitudeProperty());
         TextField azField = createTextField(stringConverterFixedPointZero, 3, pUP.CenterAzimuthProperty());
@@ -232,28 +222,35 @@ public class Alpano extends Application{
         TextField widthField = createTextField(stringConverterFixedPointZero, 4, pUP.widthProperty());
         TextField heightField = createTextField(stringConverterFixedPointZero, 4, pUP.heightProperty());
         
-        
+        TextArea mouseInfo = new TextArea();
+        mouseInfo.setEditable(false);
+        mouseInfo.setPrefRowCount(2);
         
         ChoiceBox superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
 
         StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "2x", "4x");
 
-        
-
         superSamplingBox.valueProperty().bindBidirectional(pUP.SuperSamplingExponentProperty());
         
         superSamplingBox.setConverter(stringConverterSampling);
         
-        
-
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
         
+        paramsGrid.add(mouseInfo, 7, 0, 1, 4);
+        
+        paramsGrid.setAlignment(Pos.CENTER);
+        
+        Insets margin = new Insets(2);
+        
+        for (Node n : paramsGrid.getChildren()) {
+            paramsGrid.setMargin(n, margin);
+        }
+        
         return paramsGrid;
     }
-
     
     private TextField createTextField(StringConverter<Integer> strConv, int columnNum, ObjectProperty<Integer> objProp){
         TextField textField = new TextField();
@@ -264,8 +261,10 @@ public class Alpano extends Application{
         textField.setPrefColumnCount(columnNum);
         
         return textField;
+    }
+    
+    private Object getMouseInfos(double sceneX, double sceneY) {
         
-        
-        
+        return null;
     }
 }
