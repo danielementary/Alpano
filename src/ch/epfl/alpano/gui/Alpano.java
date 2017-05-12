@@ -300,8 +300,9 @@ public class Alpano extends Application{
         str = String.format((Locale) null, "Altitude : %.0f m\n", elevation);
         builder.append(str);
         
-        double az = Math.toDegrees(param.azimuthForX(sceneX));
+        double az = param.azimuthForX(sceneX);
         String octant = Azimuth.toOctantString(az, "N", "E", "S", "O");
+        az = Math.toDegrees(az);
         double altitude = Math.toDegrees(param.altitudeForY(sceneY));
         str = String.format((Locale) null, "Azimuth : %.1f° (%s)   Elévation : %.1f°", az, octant, altitude);
         builder.append(str);
