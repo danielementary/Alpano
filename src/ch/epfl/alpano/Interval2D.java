@@ -26,20 +26,9 @@ public final class Interval2D {
      * @param iY second unidimensional interval
      */
     public Interval2D(Interval1D iX, Interval1D iY) {
-//        
-//        checkArgumentNullPointerEx(iX);
-//        checkArgumentNullPointerEx(iY);
-//        
-        if (iX == null) {
-            throw new NullPointerException();
-        }
         
-        if (iY == null) {
-            throw new NullPointerException();
-        }
-        
-        this.iX = iX;
-        this.iY = iY;
+        this.iX = Objects.requireNonNull(iX);
+        this.iY = Objects.requireNonNull(iY);
     }
     
     /**
@@ -65,11 +54,7 @@ public final class Interval2D {
      * @return true if (x,y) is in iX x iY
      */
     public final boolean contains(int x, int y) {
-        if (iX.contains(x) && iY.contains(y)) {
-            return true;
-        }
-
-        return false;
+        return (iX.contains(x) && iY.contains(y));
     }
     
     /**
@@ -112,8 +97,7 @@ public final class Interval2D {
      * @return boolean true if this and that are unionable, false otherwise
      */
     public final boolean isUnionableWith(Interval2D that) {
-        return (iX.size()*iY.size() + that.iX.size()*that.iY.size()
-                -this.sizeOfIntersectionWith(that)
+        return (this.size()+that.size()-this.sizeOfIntersectionWith(that)
                 ==this.boundingUnion(that).size());
     }
     
@@ -125,8 +109,7 @@ public final class Interval2D {
      * of bidimensional interval this and that
      */
     public final Interval2D union(Interval2D that) {
-        checkArgument(iX.isUnionableWith(that.iX()));
-        checkArgument(iY.isUnionableWith(that.iY()));
+        checkArgument(this.isUnionableWith(that));
         
         Interval1D interval1 = iX.union(that.iX());
         Interval1D interval2 = iY.union(that.iY());
@@ -145,11 +128,7 @@ public final class Interval2D {
         
         Interval2D that = (Interval2D)thatO;
         
-        if((this.iX().equals(that.iX())) && this.iY().equals(that.iY())) {
-            return true;
-        }
-
-        return false;
+        return ((this.iX().equals(that.iX())) && this.iY().equals(that.iY()));
     }
     
     /**

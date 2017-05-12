@@ -10,8 +10,15 @@ import static javafx.scene.paint.Color.color;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Locale;
 
+import ch.epfl.alpano.Azimuth;
+import ch.epfl.alpano.Panorama;
+import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.DiscreteElevationModel;
 import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
@@ -48,6 +55,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
+import javafx.beans.property.SimpleObjectProperty;
 
 
 
@@ -85,10 +93,12 @@ public class Alpano extends Application{
 
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
+        
+        ObjectProperty<String> mouseInfoProperty = new SimpleObjectProperty<>();
 
 //        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
 
-        ImageView panoView = createImageView(panoParamBean, panoCompBean);
+        ImageView panoView = createImageView(panoParamBean, panoCompBean, mouseInfoProperty);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
         
         StackPane panoGroup = createPanoGroup(panoView, labelsPane, panoParamBean, panoCompBean);
@@ -99,7 +109,7 @@ public class Alpano extends Application{
         
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane, computeNotice);
 
-        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean);
+        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty);
 
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
@@ -112,7 +122,8 @@ public class Alpano extends Application{
         primaryStage.show();
     }
 
-    private ImageView createImageView(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+    private ImageView createImageView(PanoramaParametersBean pUP,
+            PanoramaComputerBean pCB, ObjectProperty<String> mouseInfoProp){
         
         ImageView panoView = new ImageView();
         
@@ -123,14 +134,13 @@ public class Alpano extends Application{
         panoView.setSmooth(true);
         panoView.setPreserveRatio(true);
 
-        panoView.setOnMouseMoved((event) -> getMouseInfos(event.getSceneX(), event.getSceneY()));
+        panoView.setOnMouseMoved((event) -> getMouseInfos(event.getX(), event.getY(), pUP, pCB, mouseInfoProp));
         
-        panoView.setOnMouseClicked((event)->{
-            //ouvrir l'url  
-        });
+        panoView.setOnMouseClicked((event)->openUrl(event.getX(), event.getY(), pUP, pCB));
         
         return panoView;
     }
+
 
     private Pane createLabelsPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
         
@@ -223,7 +233,8 @@ public class Alpano extends Application{
         return panoPane;
     }
     
-    private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+    private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB, 
+            ObjectProperty<String> mouseInfoProp){
         GridPane paramsGrid = new GridPane();
 
         Label latLab = new Label("Latitude (°) : ");
@@ -296,6 +307,7 @@ public class Alpano extends Application{
         TextArea mouseInfo = new TextArea();
         mouseInfo.setEditable(false);
         mouseInfo.setPrefRowCount(2);
+        mouseInfo.textProperty().bind(mouseInfoProp);
         
         ChoiceBox superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
@@ -335,8 +347,67 @@ public class Alpano extends Application{
         return textField;
     }
     
-    private Object getMouseInfos(double sceneX, double sceneY) {
+    private void getMouseInfos(double x, double y,PanoramaParametersBean pUP,
+            PanoramaComputerBean pCB, ObjectProperty<String> mouseInfoProp) {
         
-        return null;
+        Panorama pano = pCB.getPanorama();
+        PanoramaParameters param = pano.parameters();
+        
+        int superSampling = pUP.SuperSamplingExponentProperty().get();
+        double mouseX = Math.scalb(x, superSampling);
+        double mouseY = Math.scalb(y, superSampling);
+        
+        StringBuilder builder = new StringBuilder();
+        
+        double latitude = Math.toDegrees(pano.latitudeAt((int) mouseX, (int)mouseY));
+        double longitude = Math.toDegrees(pano.longitudeAt((int) mouseX, (int)mouseY));
+        String str = String.format((Locale)null,"Position : %.4f°N %.4f°E\n", latitude, longitude);
+        builder.append(str);
+  
+        double distance = pano.distanceAt((int)mouseX, (int)mouseY)/1000;
+        str = String.format((Locale) null, "Distance : %.1f km\n", distance);
+        builder.append(str);
+        
+        double elevation = pano.elevationAt((int)mouseX, (int)mouseY);
+        str = String.format((Locale) null, "Altitude : %.0f m\n", elevation);
+        builder.append(str);
+        
+        double az = param.azimuthForX(x);
+        String octant = Azimuth.toOctantString(az, "N", "E", "S", "O");
+        az = Math.toDegrees(az);
+        double altitude = Math.toDegrees(param.altitudeForY(y));
+        str = String.format((Locale) null, "Azimuth : %.1f° (%s)   Elévation : %.1f°", az, octant, altitude);
+        builder.append(str);
+        
+        mouseInfoProp.set(builder.toString());
+        
+    }
+    
+    private void openUrl(double x, double y,
+            PanoramaParametersBean pUP, PanoramaComputerBean pCB) {
+        
+        Panorama pano = pCB.getPanorama();
+        
+        int superSampling = pUP.SuperSamplingExponentProperty().get();
+        double mouseX = Math.scalb(x, superSampling);
+        double mouseY = Math.scalb(y, superSampling);
+        
+        double latitude = Math.toDegrees(pano.latitudeAt((int) mouseX, (int)mouseY));
+        double longitude = Math.toDegrees(pano.longitudeAt((int) mouseX, (int)mouseY));
+        
+        String qy = String.format((Locale) null, "mlat=%.4f&mlon=%.4f", latitude, longitude);
+        String fg = String.format((Locale)null, "map=15/%.4f$/%.4f$" , latitude, longitude);  
+        URI url;
+        
+        try {
+            url = new URI("http", "www.openstreetmap.org", "/", qy, fg);
+            
+            java.awt.Desktop.getDesktop().browse(url);
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
     }
 }
