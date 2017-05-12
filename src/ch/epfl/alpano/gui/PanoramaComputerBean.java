@@ -29,6 +29,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 
 
+
 public final class PanoramaComputerBean {
     
     private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;

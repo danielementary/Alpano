@@ -22,6 +22,7 @@ import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 import ch.epfl.alpano.gui.ChannelPainter;
 import ch.epfl.alpano.gui.ImagePainter;
 import ch.epfl.alpano.gui.PanoramaRenderer;
+import ch.epfl.alpano.gui.PredefinedPanoramas;
 
 final class DrawPanorama {
     final static File HGT_FILE = new File("N46E007.hgt");
@@ -46,13 +47,16 @@ final class DrawPanorama {
                              IMAGE_WIDTH,
                              IMAGE_HEIGHT);
 
+            
     public static void main(String[] as) throws Exception {
       try (DiscreteElevationModel dDEM =
            new HgtDiscreteElevationModel(HGT_FILE)) {
         ContinuousElevationModel cDEM =
           new ContinuousElevationModel(dDEM);
+        double tim1 = System.currentTimeMillis();
         Panorama p = new PanoramaComputer(cDEM)
-          .computePanorama(PARAMS);
+          .computePanorama(PredefinedPanoramas.ALPES_DU_JURA.panoramaParameters());
+        System.out.println(System.currentTimeMillis() - tim1);
         
         
 //        ChannelPainter gray =
