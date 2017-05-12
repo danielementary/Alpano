@@ -260,13 +260,14 @@ public class Alpano extends Application{
         StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
         
-      //Pour les prédéfinis
+      //For predefined selector
         Label predifinedLab = new Label("Paramètres prédéfinis : ");
         ChoiceBox predifinedBox = new ChoiceBox<>();
-        predifinedBox.getItems().addAll(0,1,2,3,4,5);
+        predifinedBox.getItems().addAll(0,1,2,3,4,5,6,7);
         
         StringConverter<Integer> stringPredifined =
-                new LabeledListStringConverter("Niesen","Alpes du Jura", "Mont Racine", "Finsteraarhorn", "Tour de Sauvabelin", "Plage du pélican");
+                new LabeledListStringConverter("Niesen","Alpes du Jura", "Mont Racine", "Finsteraarhorn",
+                        "Tour de Sauvabelin", "Plage du pélican", "Bulle", "Le Jordil");
         
         predifinedBox.setConverter(stringPredifined);
         Button loadButton = new Button("Charger les paramètres");
@@ -278,6 +279,8 @@ public class Alpano extends Application{
             predifined.add(PredefinedPanoramas.FINSTERAARHORN);
             predifined.add(PredefinedPanoramas.TOUR_DE_SAUVABELIN);
             predifined.add(PredefinedPanoramas.PLAGE_DU_PELICAN);
+            predifined.add(PredefinedPanoramas.BULLE);
+            predifined.add(PredefinedPanoramas.LE_JORDIL);
             
             
             PanoramaUserParameters choosen = predifined.get((int)predifinedBox.valueProperty().get());
@@ -293,7 +296,7 @@ public class Alpano extends Application{
             
         });
         
-        //fin des prédéfinis
+        //end of predefined selector
 
         TextField latField = createTextField(stringConverterFixedPoint, 7, pUP.observerLatitudeProperty());
         TextField longField = createTextField(stringConverterFixedPoint, 7, pUP.observerLongitudeProperty());

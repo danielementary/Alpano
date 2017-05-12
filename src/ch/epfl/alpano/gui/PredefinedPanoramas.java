@@ -44,5 +44,16 @@ public interface PredefinedPanoramas {
                         = new PanoramaUserParameters(65728, 465132, 380, 135, 60,
                                                      MAIN_MAX_DIST, MAIN_WIDTH,
                                                      MAIN_HEIGHT, MAIN_SUPER_SAMP);
+    
+    public static final PanoramaUserParameters BULLE 
+                        = new PanoramaUserParameters(70495, 466216, 780, 150, 115,
+                                                    MAIN_MAX_DIST, MAIN_WIDTH,
+                                                    MAIN_HEIGHT, MAIN_SUPER_SAMP);
+    
+    public static final PanoramaUserParameters LE_JORDIL 
+                        = new PanoramaUserParameters(68844, 465664, 860, 180, 120,
+                                                     MAIN_MAX_DIST, MAIN_WIDTH,
+                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
+
                         
 }
