@@ -8,12 +8,15 @@
 package ch.epfl.alpano.summit;
 
 import ch.epfl.alpano.GeoPoint;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Locale;
 
 public final class Summit {
     
-    private String name;
-    private GeoPoint position;
-    private int elevation;
+    private final String name;
+    private final GeoPoint position;
+    private final int elevation;
     
     /**
      * Creates an instance of a Summit with a name, a position and an elevation
@@ -22,21 +25,9 @@ public final class Summit {
      * @param elevation
      */
     public Summit(String name, GeoPoint position, int elevation) {
-//        
-//        checkArgumentNullPointerEx(name);
-//        checkArgumentNullPointerEx(position);
-//        
         
-        if (name == null) {
-            throw new NullPointerException();
-        }
-        
-        if (position == null) {
-            throw new NullPointerException();
-        }
-        
-        this.name = name;
-        this.position = position;
+        this.name = requireNonNull(name);
+        this.position = requireNonNull(position);
         this.elevation = elevation;
     }
 
@@ -67,12 +58,6 @@ public final class Summit {
      */
     @Override
     public String toString(){
-        StringBuilder str = new StringBuilder();
-        
-        return str.append(name)
-                  .append(" ")
-                  .append(position.toString())
-                  .append(" ")
-                  .append(elevation).toString();
+        return String.format((Locale)null, "%s %s %d", name, position.toString(), elevation);
     }
 }
