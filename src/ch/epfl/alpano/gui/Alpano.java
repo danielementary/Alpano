@@ -128,9 +128,9 @@ public class Alpano extends Application{
         panoView.setSmooth(true);
         panoView.setPreserveRatio(true);
 
-        panoView.setOnMouseMoved((event) -> getMouseInfos(event.getSceneX(), event.getSceneY(), pUP, pCB, mouseInfoProp));
+        panoView.setOnMouseMoved((event) -> getMouseInfos(event.getX(), event.getY(), pUP, pCB, mouseInfoProp));
         
-        panoView.setOnMouseClicked((event)->openUrl(event.getSceneX(), event.getSceneY(), pUP, pCB));
+        panoView.setOnMouseClicked((event)->openUrl(event.getX(), event.getY(), pUP, pCB));
         
         return panoView;
     }
@@ -275,15 +275,15 @@ public class Alpano extends Application{
         return textField;
     }
     
-    private void getMouseInfos(double sceneX, double sceneY,PanoramaParametersBean pUP,
+    private void getMouseInfos(double x, double y,PanoramaParametersBean pUP,
             PanoramaComputerBean pCB, ObjectProperty<String> mouseInfoProp) {
         
         Panorama pano = pCB.getPanorama();
         PanoramaParameters param = pano.parameters();
         
         int superSampling = pUP.SuperSamplingExponentProperty().get();
-        double mouseX = Math.scalb(sceneX, superSampling);
-        double mouseY = Math.scalb(sceneY, superSampling);
+        double mouseX = Math.scalb(x, superSampling);
+        double mouseY = Math.scalb(y, superSampling);
         
         StringBuilder builder = new StringBuilder();
         
@@ -300,10 +300,10 @@ public class Alpano extends Application{
         str = String.format((Locale) null, "Altitude : %.0f m\n", elevation);
         builder.append(str);
         
-        double az = param.azimuthForX(sceneX);
+        double az = param.azimuthForX(x);
         String octant = Azimuth.toOctantString(az, "N", "E", "S", "O");
         az = Math.toDegrees(az);
-        double altitude = Math.toDegrees(param.altitudeForY(sceneY));
+        double altitude = Math.toDegrees(param.altitudeForY(y));
         str = String.format((Locale) null, "Azimuth : %.1f° (%s)   Elévation : %.1f°", az, octant, altitude);
         builder.append(str);
         
@@ -311,14 +311,14 @@ public class Alpano extends Application{
         
     }
     
-    private void openUrl(double sceneX, double sceneY,
+    private void openUrl(double x, double y,
             PanoramaParametersBean pUP, PanoramaComputerBean pCB) {
         
         Panorama pano = pCB.getPanorama();
         
         int superSampling = pUP.SuperSamplingExponentProperty().get();
-        double mouseX = Math.scalb(sceneX, superSampling);
-        double mouseY = Math.scalb(sceneY, superSampling);
+        double mouseX = Math.scalb(x, superSampling);
+        double mouseY = Math.scalb(y, superSampling);
         
         double latitude = Math.toDegrees(pano.latitudeAt((int) mouseX, (int)mouseY));
         double longitude = Math.toDegrees(pano.longitudeAt((int) mouseX, (int)mouseY));
