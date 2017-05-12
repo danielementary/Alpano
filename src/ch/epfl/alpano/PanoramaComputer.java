@@ -37,8 +37,6 @@ public final class PanoramaComputer {
      */
     public Panorama computePanorama(PanoramaParameters parameters) {
         
-       double time1 = System.currentTimeMillis();
-        
         Panorama.Builder builder = new Panorama.Builder(parameters);
         
         double x;
@@ -94,7 +92,6 @@ public final class PanoramaComputer {
                 --j;
             }
         }
-     System.out.println(System.currentTimeMillis() -time1);
         return builder.build();
     }
    
