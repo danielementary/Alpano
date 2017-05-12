@@ -7,17 +7,21 @@
 
 package ch.epfl.alpano.dem;
 
-import ch.epfl.alpano.Distance;
-import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Math2;
+import static ch.epfl.alpano.Distance.toMeters;
+import static ch.epfl.alpano.Math2.PI2;
+import static ch.epfl.alpano.Math2.bilerp;
+import static ch.epfl.alpano.Math2.sq;
+import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_RADIAN;
+
 import java.util.Objects;
+
+import ch.epfl.alpano.GeoPoint;
 
 public final class ContinuousElevationModel {
     
     private final DiscreteElevationModel dem;
     
-    private final static double D_NORTH_SUD = Math2.PI2*Distance.EARTH_RADIUS
-                        /(Math2.PI2*DiscreteElevationModel.SAMPLES_PER_RADIAN);
+    private final static double D_NORTH_SUD = toMeters(PI2)/(PI2*SAMPLES_PER_RADIAN);
     
     public ContinuousElevationModel(DiscreteElevationModel dem) {
         this.dem = Objects.requireNonNull(dem);
@@ -47,7 +51,7 @@ public final class ContinuousElevationModel {
         double x = longitudeIndex-longitudeIndexDown;
         double y = latitudeIndex-latitudeIndexDown;
         
-        double elevation = Math2.bilerp(elev00, elev10, elev01, elev11, x, y) ;
+        double elevation = bilerp(elev00, elev10, elev01, elev11, x, y) ;
         
         return elevation;
     }
@@ -62,10 +66,13 @@ public final class ContinuousElevationModel {
     
     private double slopeExtension(int x, int y) {
         if (dem.extent().contains(x, y)) {
-            double deltaZa = elevationExtension(x+1, y)-elevationExtension(x, y);
-            double deltaZb = elevationExtension(x, y+1)-elevationExtension(x, y);
-            double slope = Math.acos(D_NORTH_SUD/(Math.sqrt(Math2.sq(deltaZa)
-                                 +Math2.sq(deltaZb) + Math2.sq(D_NORTH_SUD))));
+            double elevExtXY = elevationExtension(x, y);
+            
+            double deltaZa = elevationExtension(x+1, y)-elevExtXY;
+            double deltaZb = elevationExtension(x, y+1)-elevExtXY;
+            
+            double slope = Math.acos(D_NORTH_SUD/(Math.sqrt(sq(deltaZa)
+                                 +sq(deltaZb) + sq(D_NORTH_SUD))));
             
             return slope;
         }
@@ -97,7 +104,7 @@ public final class ContinuousElevationModel {
         double x = longitudeIndex-longitudeIndexDown;
         double y = latitudeIndex-latitudeIndexDown;
         
-        double slope = Math2.bilerp(slope00, slope10, slope01, slope11, x, y) ;
+        double slope = bilerp(slope00, slope10, slope01, slope11, x, y) ;
         
         return slope;
     }
