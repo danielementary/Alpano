@@ -9,24 +9,22 @@ package ch.epfl.alpano.dem;
 
 import static ch.epfl.alpano.Preconditions.checkArgument;
 
+import java.util.Objects;
+
 import ch.epfl.alpano.Interval2D;
+import static java.util.Objects.requireNonNull;
 
 final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     
     private final DiscreteElevationModel dem1, dem2;
+    private final Interval2D union;
     
     public CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
         
-        if (dem1 == null) {
-            throw new NullPointerException();
-        }
-        
-        if (dem2 == null) {
-            throw new NullPointerException();
-        }
-        
-        if (!(dem1.extent().isUnionableWith(dem2.extent()))) {
+        if (!(requireNonNull(dem1).extent().isUnionableWith(requireNonNull(dem2).extent()))) {
             throw new IllegalArgumentException();
+        } else {
+            union = dem1.extent().union(dem2.extent());
         }
         
         this.dem1 = dem1;
@@ -41,10 +39,7 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
 
     @Override
     public Interval2D extent() {
-        Interval2D inter1 = dem1.extent();
-        Interval2D inter2 = dem2.extent();
-        
-       return inter1.union(inter2);
+        return union;
     }
 
     @Override
