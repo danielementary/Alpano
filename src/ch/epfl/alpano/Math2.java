@@ -108,23 +108,26 @@ public interface Math2 {
      */
     public static double firstIntervalContainingRoot(DoubleUnaryOperator f, 
                                          double minX, double maxX, double dX) {
-        double currentMinX = minX;
-        double currentMaxX = minX + dX;
         
-        do {
-            if (currentMaxX > maxX) {
-                currentMaxX = maxX;
-            }
-            
+        if (f == null) {
+            throw new NullPointerException();
+        }
+        checkArgument(maxX >= minX+dX);
+        checkArgument(dX > 0);
+        
+        double currentMinX = minX;
+        double currentMaxX = minX+dX;
+        
+        while (currentMaxX <= maxX) {
             if (f.applyAsDouble(currentMinX)
                     *f.applyAsDouble(currentMaxX) <= 0) {
                 
-                return currentMaxX - dX;
+                return currentMinX;
             }
             
             currentMinX = currentMaxX;
-            currentMaxX = currentMaxX + dX;
-        } while (currentMinX < maxX);
+            currentMaxX += dX;
+        }
         
         return Double.POSITIVE_INFINITY;
     }
@@ -141,8 +144,7 @@ public interface Math2 {
     public static double improveRoot(DoubleUnaryOperator f, 
                                         double x1, double x2, double epsilon) {
         
-        checkArgument(f.applyAsDouble(x1)
-                                        *f.applyAsDouble(x2) <= 0);
+        checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
         
         if (x1 > x2) {
             double temp = x1;
@@ -151,16 +153,17 @@ public interface Math2 {
             x2 = temp;
         }
         
-        double middle;
-        do {
-            middle = (x1+x2)/2;
-            
-            if (f.applyAsDouble(middle) * f.applyAsDouble(x1) <= 0) {
+        double middle = (x1+x2)/2;
+        
+        while (x2-x1 > epsilon) {
+            if (f.applyAsDouble(middle)*f.applyAsDouble(x1) <= 0) {
                 x2 = middle;
             } else {
                 x1 = middle;
             }
-        } while (x2-x1 > epsilon);
+            
+            middle = (x1+x2)/2;
+        }
         
         return x1;
     } 

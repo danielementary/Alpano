@@ -59,9 +59,9 @@ public final class GeoPoint {
      * @return the distance between these points in double in meters
      */
     public final double distanceTo(GeoPoint that) {
-        double sqrt = sqrt(Math2.haversin(this.latitude - that.latitude)
-                + cos(this.latitude) * cos(that.latitude) 
-                * Math2.haversin(this.longitude - that.longitude));
+        double sqrt = sqrt(Math2.haversin(this.latitude()-that.latitude())
+                + cos(this.latitude())*cos(that.latitude()) 
+                * Math2.haversin(this.longitude()-that.longitude()));
         
         return Distance.toMeters(2*asin(sqrt));
     }
@@ -72,10 +72,10 @@ public final class GeoPoint {
      * @return azimuth in radians
      */
     public final double azimuthTo(GeoPoint that) {
-        double beta = atan2(sin(this.longitude - that.longitude)
-                * cos(that.latitude), cos(this.latitude) 
-                * sin(that.latitude) - sin(this.latitude)
-                * cos(that.latitude) * cos(this.longitude - that.longitude));
+        double beta = atan2(sin(this.longitude()-that.longitude())
+                * cos(that.latitude()), cos(this.latitude()) 
+                * sin(that.latitude())-sin(this.latitude())
+                * cos(that.latitude())*cos(this.longitude()-that.longitude()));
         
         return Azimuth.fromMath(Azimuth.canonicalize(beta));
     }

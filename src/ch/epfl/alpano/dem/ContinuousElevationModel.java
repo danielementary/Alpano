@@ -10,6 +10,7 @@ package ch.epfl.alpano.dem;
 import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Math2;
+import java.util.Objects;
 
 public final class ContinuousElevationModel {
     
@@ -19,14 +20,7 @@ public final class ContinuousElevationModel {
                         /(Math2.PI2*DiscreteElevationModel.SAMPLES_PER_RADIAN);
     
     public ContinuousElevationModel(DiscreteElevationModel dem) {
-//        
-//        checkArgumentNullPointerEx(dem);
-//        
-        if (dem == null) {
-            throw new NullPointerException();
-        }
-        
-        this.dem = dem;
+        this.dem = Objects.requireNonNull(dem);
     }
     
     /**
