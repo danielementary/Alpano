@@ -144,8 +144,7 @@ public interface Math2 {
     public static double improveRoot(DoubleUnaryOperator f, 
                                         double x1, double x2, double epsilon) {
         
-        checkArgument(f.applyAsDouble(x1)
-                                        *f.applyAsDouble(x2) <= 0);
+        checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
         
         if (x1 > x2) {
             double temp = x1;
@@ -154,16 +153,17 @@ public interface Math2 {
             x2 = temp;
         }
         
-        double middle;
-        do {
-            middle = (x1+x2)/2;
-            
-            if (f.applyAsDouble(middle) * f.applyAsDouble(x1) <= 0) {
+        double middle = (x1+x2)/2;
+        
+        while (x2-x1 > epsilon) {
+            if (f.applyAsDouble(middle)*f.applyAsDouble(x1) <= 0) {
                 x2 = middle;
             } else {
                 x1 = middle;
             }
-        } while (x2-x1 > epsilon);
+            
+            middle = (x1+x2)/2;
+        }
         
         return x1;
     } 
