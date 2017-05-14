@@ -41,7 +41,7 @@ public final class PanoramaParameters {
         checkArgument(width > 0, "width < 0");
         checkArgument(height > 0, "height < 0");
         
-        this.observerPosition = observerPosition;
+        this.observerPosition = requireNonNull(observerPosition);
         this.observerElevation = observerElevation;
         this.centerAzimuth = centerAzimuth;
         this.horizontalFieldOfView = horizontalFieldOfView;
