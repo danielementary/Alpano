@@ -1,0 +1,2 @@
+** Class Panorama.Builder [2/3]
++0: Il faudrait mettre les tableaux à null dans build pour libérer de la mémoire.

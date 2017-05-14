@@ -126,9 +126,9 @@ public final class Panorama {
 
     public static final class Builder {
         
-        private PanoramaParameters parameters;
+        private final PanoramaParameters parameters;
         
-        private float[] distance, longitude, latitude, elevation, slope;
+        private final float[] distance, longitude, latitude, elevation, slope;
 
         private boolean flag = false;
         
