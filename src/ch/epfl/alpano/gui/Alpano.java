@@ -17,6 +17,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 
+import javax.imageio.ImageIO;
+
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Panorama;
 import ch.epfl.alpano.PanoramaParameters;
@@ -56,8 +58,11 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.concurrent.Task;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Button;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 
 public class Alpano extends Application{
     
@@ -115,7 +120,7 @@ public class Alpano extends Application{
         
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane, computeNotice);
 
-        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty);
+        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup);
 
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
@@ -252,7 +257,7 @@ public class Alpano extends Application{
     
     private GridPane createParamsGrid(PanoramaParametersBean pUP, 
                                       PanoramaComputerBean pCB, 
-                                      ObjectProperty<String> mouseInfoProp) {
+                                      ObjectProperty<String> mouseInfoProp, Pane panoPane) {
         
         GridPane paramsGrid = new GridPane();
 
@@ -278,6 +283,12 @@ public class Alpano extends Application{
         
         StringConverter<Integer> stringConverterFixedPoint = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
+        
+      //for saving image
+        TextField destinationField = new TextField();
+        
+        Button saveImageButton = new Button("Sauver panorama");
+        saveImageButton.setOnAction((e)-> saveImage(panoPane, destinationField.textProperty().get()));
         
       //For predefined selector
         Label predifinedLab = new Label("Paramètres prédéfinis : ");
@@ -343,7 +354,7 @@ public class Alpano extends Application{
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
-        paramsGrid.addRow(3, predifinedLab, predifinedBox, loadButton);
+        paramsGrid.addRow(3, predifinedLab, predifinedBox, loadButton, saveImageButton, destinationField);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
         
@@ -440,5 +451,20 @@ public class Alpano extends Application{
         } catch (IOException e) {
             e.printStackTrace();
         } 
+    }
+    
+    private void saveImage(Pane panoPane, String fileDestination){
+        Image img = panoPane.snapshot(null, new WritableImage((int)panoPane.widthProperty().get(),
+                (int)panoPane.heightProperty().get()));
+        
+        String dest = fileDestination.replace('\\' , '/');
+        
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(img, null),
+                    "png",
+                    new File(fileDestination + "/test.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
