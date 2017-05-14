@@ -39,31 +39,18 @@ public class GazetteerParser {
             
             while ((line = buffer.readLine()) != null) {
                 
-                double longitude;
-                double latitude;
-                
-                //read the differents informations about the summit
-                try{
-                    longitude = angle(line.substring(0, 9).trim());
-                    latitude = angle(line.substring(10, 18).trim());
-                } catch(NumberFormatException e) {
-                    throw new IOException();
-                } catch(StringIndexOutOfBoundsException e) {
-                    throw new IOException();
-                }
-               
-                String name = toSummit(line);
-                
+                double longitude, latitude;
+                String name;
                 int elevation;
                 
-                try{
-                    elevation = Integer.parseInt(line.substring(20,24).trim());
-                } catch(NumberFormatException e) {
-                    throw new IOException();
-                } catch(StringIndexOutOfBoundsException e) {
-                    throw new IOException();
-                }
+                //read the differents informations about the summit
+                longitude = angle(line.substring(0, 9).trim());
+                latitude = angle(line.substring(10, 18).trim());
                 
+                name = toSummit(line);
+                
+                elevation = Integer.parseInt(line.substring(20,24).trim());
+                    
                 //instansiating the GeoPoint corresponding to the coordinates
                 GeoPoint localisation = new GeoPoint(longitude, latitude);
                 
@@ -73,6 +60,8 @@ public class GazetteerParser {
                 //add the Summit to the list
                 summits.add(summit);
             }
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            throw new IOException();
         }
         
         //returns an unmodifiable version of the array of Summits
