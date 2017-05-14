@@ -27,8 +27,8 @@ public final class PanoramaParameters {
      * @param height of the panorama in pixels
      */
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation,
-            double centerAzimuth, double horizontalFieldOfView, int maxDistance,
-            int width, int height) {
+                              double centerAzimuth, double horizontalFieldOfView,
+                              int maxDistance, int width, int height) {
         
         checkArgument(Azimuth.isCanonical(centerAzimuth),
                                                     "azimuth not canonical");
@@ -152,8 +152,7 @@ public final class PanoramaParameters {
         
         double aziPerUnits = verticalFieldOfView()/(height-1);
 
-        return verticalFieldOfView()/2 -y*aziPerUnits;
-        
+        return verticalFieldOfView()/2 -y*aziPerUnits;  
     }
     
     /**
@@ -164,13 +163,11 @@ public final class PanoramaParameters {
         
         double vFOVOverT = verticalFieldOfView()/2;
         
-        checkArgument(a >= (-1)*vFOVOverT
-                      && a <= vFOVOverT);
+        checkArgument(a >= (-1)*vFOVOverT && a <= vFOVOverT);
         
         double unitsPerAzi = (height-1)/verticalFieldOfView();
         
-        return (vFOVOverT-a)*unitsPerAzi;
-        
+        return (vFOVOverT-a)*unitsPerAzi;        
     }
     
     /**
@@ -190,8 +187,10 @@ public final class PanoramaParameters {
      * @param y vertical index
      * @return int
      */
-  //visibility by defaut -> only in the package
+    //visibility by defaut -> only in the package
     int linearSampleIndex(int x, int y) {
+        
+        checkArgument(y <= width() && x <= height());
         
         return y*width + x;
     }
