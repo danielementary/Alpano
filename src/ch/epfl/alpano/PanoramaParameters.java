@@ -189,6 +189,9 @@ public final class PanoramaParameters {
      */
     //visibility by defaut -> only in the package
     int linearSampleIndex(int x, int y) {
+        
+        checkArgument(isValidSampleIndex(x,y));
+        
         return y*width + x;
     }
 }
