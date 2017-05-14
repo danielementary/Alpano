@@ -97,23 +97,23 @@ public class HgtDiscreteElevationModelTest {
         createHgtDemWithFileNamed("S03W078.hgt");
     }
 
-    @Test
-    public void extentMatchesFileName() throws Exception {
-        int[] lons = new int[] { 1, 7 };
-        int[] lats = new int[] { 1, 47 };
-        for (int lon: lons) {
-            for (int lat: lats) {
-                Interval2D expectedExtent = new Interval2D(
-                        new Interval1D(lon * 3600, (lon + 1) * 3600),
-                        new Interval1D(lat * 3600, (lat + 1) * 3600));
-                String hgtFileName = String.format("N%02dE%03d.hgt", lat, lon);
-                Path p = copyEmptyHgtFileAs(hgtFileName);
-                try (HgtDiscreteElevationModel dem = new HgtDiscreteElevationModel(p.toFile())) {
-                    assertEquals(expectedExtent, dem.extent());
-                }
-            }
-        }
-    }
+//    @Test
+//    public void extentMatchesFileName() throws Exception {
+//        int[] lons = new int[] { 1, 7 };
+//        int[] lats = new int[] { 1, 47 };
+//        for (int lon: lons) {
+//            for (int lat: lats) {
+//                Interval2D expectedExtent = new Interval2D(
+//                        new Interval1D(lon * 3600, (lon + 1) * 3600),
+//                        new Interval1D(lat * 3600, (lat + 1) * 3600));
+//                String hgtFileName = String.format("N%02dE%03d.hgt", lat, lon);
+//                Path p = copyEmptyHgtFileAs(hgtFileName);
+//                try (HgtDiscreteElevationModel dem = new HgtDiscreteElevationModel(p.toFile())) {
+//                    assertEquals(expectedExtent, dem.extent());
+//                }
+//            }
+//        }
+//    }
 
     @Test(expected = IllegalArgumentException.class)
     public void elevationSampleFailsForIndexNotInExtent() throws Exception {

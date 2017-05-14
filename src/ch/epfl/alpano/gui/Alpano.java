@@ -1,8 +1,9 @@
-/*
- *	Author:      Samuel Chassot (270955)
- *	Date:        May 8, 2017
+/**
+ * 
+ * @author Samuel Chassot (270955)
+ * @author Daniel Filipe Nunes Silva (275197)
+ *
  */
-
 
 package ch.epfl.alpano.gui;
 
@@ -29,6 +30,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -57,10 +59,13 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.beans.property.SimpleObjectProperty;
 
-
-
 public class Alpano extends Application{
-    public static void main(String[] args){
+    
+    /**
+     * 
+     * @param args
+     */
+    public static void main(String[] args) {
         Application.launch(args);
     }
     
@@ -89,6 +94,7 @@ public class Alpano extends Application{
         DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
         
         cem = new ContinuousElevationModel(dDemAll);
+        
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
 
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
@@ -123,26 +129,31 @@ public class Alpano extends Application{
     }
 
     private ImageView createImageView(PanoramaParametersBean pUP,
-            PanoramaComputerBean pCB, ObjectProperty<String> mouseInfoProp){
+                                      PanoramaComputerBean pCB,
+                                      ObjectProperty<String> mouseInfoProp) {
         
         ImageView panoView = new ImageView();
         
         panoView.fitWidthProperty().bind(pUP.widthProperty());
-        
         panoView.imageProperty().bind(pCB.imageProp());
         
         panoView.setSmooth(true);
         panoView.setPreserveRatio(true);
-
-        panoView.setOnMouseMoved((event) -> getMouseInfos(event.getX(), event.getY(), pUP, pCB, mouseInfoProp));
         
-        panoView.setOnMouseClicked((event)->openUrl(event.getX(), event.getY(), pUP, pCB));
+        panoView.setOnMouseMoved((event) -> getMouseInfos(event.getX(),
+                                                          event.getY(),
+                                                          pUP, pCB, mouseInfoProp));
+        
+        panoView.setOnMouseClicked((event) -> openUrl(event.getX(),
+                                                      event.getY(),
+                                                      pUP, pCB));
         
         return panoView;
     }
 
 
-    private Pane createLabelsPane(PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+    private Pane createLabelsPane(PanoramaParametersBean pUP,
+                                  PanoramaComputerBean pCB) {
         
         Pane labelsPane = new Pane();
         
@@ -150,21 +161,27 @@ public class Alpano extends Application{
         labelsPane.prefWidthProperty().bind(pUP.widthProperty());
                 
         Bindings.bindContent(labelsPane.getChildren(), pCB.labelsProp().get());
-        
                 
         labelsPane.setMouseTransparent(true);
         
         return labelsPane;
     }
     
-    private StackPane createPanoGroup(ImageView panoView, Pane labelsPane, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+    private StackPane createPanoGroup(ImageView panoView, 
+                                      Pane labelsPane,
+                                      PanoramaParametersBean pUP,
+                                      PanoramaComputerBean pCB) {
+        
         StackPane panoGroup = new StackPane();
         panoGroup.getChildren().addAll(panoView, labelsPane);
         
         return panoGroup;
     }
     
-    private ScrollPane createPanoScrollPane(StackPane panoGroup, PanoramaParametersBean pUP, PanoramaComputerBean pCB){
+    private ScrollPane createPanoScrollPane(StackPane panoGroup, 
+                                            PanoramaParametersBean pUP,
+                                            PanoramaComputerBean pCB) {
+        
         ScrollPane panoScrollPane = new ScrollPane();
         panoScrollPane.setContent(panoGroup);
         
@@ -233,8 +250,10 @@ public class Alpano extends Application{
         return panoPane;
     }
     
-    private GridPane createParamsGrid(PanoramaParametersBean pUP, PanoramaComputerBean pCB, 
-            ObjectProperty<String> mouseInfoProp){
+    private GridPane createParamsGrid(PanoramaParametersBean pUP, 
+                                      PanoramaComputerBean pCB, 
+                                      ObjectProperty<String> mouseInfoProp) {
+        
         GridPane paramsGrid = new GridPane();
 
         Label latLab = new Label("Latitude (°) : ");
@@ -339,10 +358,15 @@ public class Alpano extends Application{
         return paramsGrid;
     }
     
-    private TextField createTextField(StringConverter<Integer> strConv, int columnNum, ObjectProperty<Integer> objProp){
+    private TextField createTextField(StringConverter<Integer> strConv, 
+                                      int columnNum,
+                                      ObjectProperty<Integer> objProp) {
+        
         TextField textField = new TextField();
         TextFormatter<Integer> formatter = new TextFormatter<>(strConv);
+        
         formatter.valueProperty().bindBidirectional(objProp);
+        
         textField.setTextFormatter(formatter);
         textField.setAlignment(Pos.CENTER_RIGHT);
         textField.setPrefColumnCount(columnNum);
@@ -350,8 +374,10 @@ public class Alpano extends Application{
         return textField;
     }
     
-    private void getMouseInfos(double x, double y,PanoramaParametersBean pUP,
-            PanoramaComputerBean pCB, ObjectProperty<String> mouseInfoProp) {
+    private void getMouseInfos(double x, double y,
+                               PanoramaParametersBean pUP,
+                               PanoramaComputerBean pCB, 
+                               ObjectProperty<String> mouseInfoProp) {
         
         Panorama pano = pCB.getPanorama();
         PanoramaParameters param = pano.parameters();
@@ -378,16 +404,17 @@ public class Alpano extends Application{
         double az = param.azimuthForX(x);
         String octant = Azimuth.toOctantString(az, "N", "E", "S", "O");
         az = Math.toDegrees(az);
+        
         double altitude = Math.toDegrees(param.altitudeForY(y));
         str = String.format((Locale) null, "Azimuth : %.1f° (%s)   Elévation : %.1f°", az, octant, altitude);
         builder.append(str);
         
-        mouseInfoProp.set(builder.toString());
-        
+        mouseInfoProp.set(builder.toString());  
     }
     
     private void openUrl(double x, double y,
-            PanoramaParametersBean pUP, PanoramaComputerBean pCB) {
+                         PanoramaParametersBean pUP,
+                         PanoramaComputerBean pCB) {
         
         Panorama pano = pCB.getPanorama();
         
@@ -400,6 +427,7 @@ public class Alpano extends Application{
         
         String qy = String.format((Locale) null, "mlat=%.4f&mlon=%.4f", latitude, longitude);
         String fg = String.format((Locale)null, "map=15/%.4f$/%.4f$" , latitude, longitude);  
+        
         URI url;
         
         try {
