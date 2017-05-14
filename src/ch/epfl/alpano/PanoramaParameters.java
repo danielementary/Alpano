@@ -8,13 +8,13 @@
 package ch.epfl.alpano;
 
 import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
 
 public final class PanoramaParameters {
     
-    private GeoPoint observerPosition;
-    
-    private double centerAzimuth, horizontalFieldOfView;
-    private int observerElevation, maxDistance, width, height;
+    private final GeoPoint observerPosition;
+    private final double centerAzimuth, horizontalFieldOfView, verticalFieldOfView;
+    private final int observerElevation, maxDistance, width, height;
     
     /**
      * instantiate a panorama
@@ -29,12 +29,6 @@ public final class PanoramaParameters {
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation,
             double centerAzimuth, double horizontalFieldOfView, int maxDistance,
             int width, int height) {
-//        
-//        checkArgumentNullPointerEx(observerPosition);
-//        
-        if (observerPosition == null) {
-            throw new NullPointerException();
-        }
         
         checkArgument(Azimuth.isCanonical(centerAzimuth),
                                                     "azimuth not canonical");
@@ -127,9 +121,9 @@ public final class PanoramaParameters {
     public double azimuthForX(double x) {
         checkArgument(x >= 0 && x < width);
         
-        double aziPerUnit = horizontalFieldOfView/(width-1);
+        double aziPerUnit = horizontalFieldOfView()/(width-1);
         
-        return Azimuth.canonicalize((centerAzimuth - (horizontalFieldOfView/2)) + x*aziPerUnit);
+        return Azimuth.canonicalize((centerAzimuth()-(horizontalFieldOfView()/2)) + x*aziPerUnit);
     }
 
     /**
@@ -187,7 +181,7 @@ public final class PanoramaParameters {
      */
     //visibility by defaut -> only in the package
     boolean isValidSampleIndex(int x, int y) {
-        return (x >= 0 && x < width) && (y >= 0 && y < height); 
+        return (x >= 0 && x < width()) && (y >= 0 && y < height()); 
     }
     
     /**
