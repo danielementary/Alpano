@@ -13,7 +13,7 @@ public final class Panorama {
     
     private PanoramaParameters parameters;
 
-    private float[] distance, longitude, latitude, elevation , slope;
+    private final float[] distance, longitude, latitude, elevation , slope;
 
     /**
      * instantiate a panorama with arrays of all infos listed below
@@ -28,8 +28,8 @@ public final class Panorama {
      * @param slope
      */
     private Panorama(PanoramaParameters parameters, float[] distance,
-            float[] longitude, float[] latitude, float[] elevation,
-            float[] slope) {
+                     float[] longitude, float[] latitude, float[] elevation,
+                     float[] slope) {
         
         this.parameters = parameters;
         this.distance = distance;
@@ -315,5 +315,14 @@ public final class Panorama {
             return new Panorama(parameters, distance, longitude, 
                                             latitude, elevation, slope);
         }  
+        
+    }
+    
+    private int requireValidIndex(int x, int y) {
+        if (!parameters.isValidSampleIndex(x,y)) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        return parameters.linearSampleIndex(x, y);
     }
 }
