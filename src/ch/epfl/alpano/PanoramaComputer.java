@@ -36,7 +36,6 @@ public final class PanoramaComputer {
      * @return instance of Panorama
      */
     public Panorama computePanorama(PanoramaParameters parameters) {
-        
         Panorama.Builder builder = new Panorama.Builder(parameters);
         
         for (int i = 0 ; i < parameters.width() ; ++i) {
@@ -90,6 +89,7 @@ public final class PanoramaComputer {
                 --j;
             }
         }
+        
         return builder.build();
     }
    

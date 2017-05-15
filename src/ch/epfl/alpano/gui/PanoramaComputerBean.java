@@ -145,7 +145,6 @@ public final class PanoramaComputerBean {
      * 
      */
     private void update() {
-        
         computeInProg.set(true);
         
         PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
