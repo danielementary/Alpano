@@ -112,7 +112,6 @@ public interface Math2 {
         if (f == null) {
             throw new NullPointerException();
         }
-        checkArgument(maxX >= minX+dX);
         checkArgument(dX > 0);
         
         double currentMinX = minX;
