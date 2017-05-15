@@ -63,6 +63,9 @@ import javafx.scene.control.Button;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.stage.FileChooser;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class Alpano extends Application{
     
@@ -120,13 +123,15 @@ public class Alpano extends Application{
         
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane, computeNotice);
 
-        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup);
+        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup, primaryStage);
 
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
         root.setBottom(paramsGrid);
 
         Scene scene = new Scene(root);
+        
+        primaryStage.setMaximized(true);
 
         primaryStage.setTitle("Alpano ⛰ 💻");
         primaryStage.setScene(scene);
@@ -257,7 +262,7 @@ public class Alpano extends Application{
     
     private GridPane createParamsGrid(PanoramaParametersBean pUP, 
                                       PanoramaComputerBean pCB, 
-                                      ObjectProperty<String> mouseInfoProp, Pane panoPane) {
+                                      ObjectProperty<String> mouseInfoProp, Pane panoPane, Stage primary) {
         
         GridPane paramsGrid = new GridPane();
 
@@ -285,10 +290,17 @@ public class Alpano extends Application{
         StringConverter<Integer> stringConverterFixedPointZero = new FixedPointStringConverter(0);
         
       //for saving image
-        TextField destinationField = new TextField();
-        
         Button saveImageButton = new Button("Sauver panorama");
-        saveImageButton.setOnAction((e)-> saveImage(panoPane, destinationField.textProperty().get()));
+        saveImageButton.setOnAction((e)-> {
+            if(pUP.parametersProperty().isEqualTo(pCB.parametersProp()).get() && !pCB.getComputeInProg().get()){
+                saveImage(panoPane, primary);
+            }else{
+                Alert warning = new Alert(AlertType.WARNING);
+                warning.setHeaderText("");
+                warning.setContentText("Veuillez d'abord calculer le panorama");
+                warning.show();
+            }
+        });
         
       //For predefined selector
         Label predifinedLab = new Label("Paramètres prédéfinis : ");
@@ -302,18 +314,17 @@ public class Alpano extends Application{
         predifinedBox.setConverter(stringPredifined);
         Button loadButton = new Button("Charger les paramètres");
         loadButton.setOnAction((e)-> {
-            List<PanoramaUserParameters> predifined = new ArrayList<>();
-            predifined.add(PredefinedPanoramas.NIESEN);
-            predifined.add(PredefinedPanoramas.ALPES_DU_JURA);
-            predifined.add(PredefinedPanoramas.MONT_RACINE);
-            predifined.add(PredefinedPanoramas.FINSTERAARHORN);
-            predifined.add(PredefinedPanoramas.TOUR_DE_SAUVABELIN);
-            predifined.add(PredefinedPanoramas.PLAGE_DU_PELICAN);
-            predifined.add(PredefinedPanoramas.BULLE);
-            predifined.add(PredefinedPanoramas.LE_JORDIL);
+            List<PanoramaUserParameters> predefined = new ArrayList<>();
+            predefined.add(PredefinedPanoramas.NIESEN);
+            predefined.add(PredefinedPanoramas.ALPES_DU_JURA);
+            predefined.add(PredefinedPanoramas.MONT_RACINE);
+            predefined.add(PredefinedPanoramas.FINSTERAARHORN);
+            predefined.add(PredefinedPanoramas.TOUR_DE_SAUVABELIN);
+            predefined.add(PredefinedPanoramas.PLAGE_DU_PELICAN);
+            predefined.add(PredefinedPanoramas.BULLE);
+            predefined.add(PredefinedPanoramas.LE_JORDIL);
             
-            
-            PanoramaUserParameters choosen = predifined.get((int)predifinedBox.valueProperty().get());
+            PanoramaUserParameters choosen = predefined.get((int)predifinedBox.valueProperty().get());
             pUP.widthProperty().set(choosen.getWidth());
             pUP.heightProperty().set(choosen.getHeight());
             pUP.observerLatitudeProperty().set(choosen.getOberserverLati());
@@ -354,7 +365,7 @@ public class Alpano extends Application{
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
-        paramsGrid.addRow(3, predifinedLab, predifinedBox, loadButton, saveImageButton, destinationField);
+        paramsGrid.addRow(3, predifinedLab, predifinedBox, loadButton, saveImageButton);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
         
@@ -453,18 +464,43 @@ public class Alpano extends Application{
         } 
     }
     
-    private void saveImage(Pane panoPane, String fileDestination){
+    private void saveImage(Pane panoPane, Stage stage){
+        FileChooser fileChooser = new FileChooser();
         Image img = panoPane.snapshot(null, new WritableImage((int)panoPane.widthProperty().get(),
                 (int)panoPane.heightProperty().get()));
         
-        String dest = fileDestination.replace('\\' , '/');
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Images", "*.png");
+        
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+        fileChooser.setInitialFileName("monPanorama");
+        
+        Alert successful = new Alert(AlertType.INFORMATION);
+        successful.setHeaderText("");
+        successful.setContentText("Sauvegarde réussie !");
+        
+        
+        Alert error = new Alert(AlertType.ERROR);
+        error.setContentText("La sauvegarde a échouée ! Vous n'avez probablement pas sélectionné de fichier");
+        error.setHeaderText("");
+        
+        Alert error2 = new Alert(AlertType.ERROR);
+        error2.setContentText("La sauvegarde a échouée. Veuillez réessayer");
+        error2.setHeaderText("Erreur");
         
         try {
-            ImageIO.write(SwingFXUtils.fromFXImage(img, null),
+            
+            File file = fileChooser.showSaveDialog(stage);
+            
+            if(ImageIO.write(SwingFXUtils.fromFXImage(img, null),
                     "png",
-                    new File(fileDestination + "/test.png"));
+                    file)){
+                successful.show();
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            error2.show();
+        }catch (IllegalArgumentException e){
+            error.show();
         }
     }
 }

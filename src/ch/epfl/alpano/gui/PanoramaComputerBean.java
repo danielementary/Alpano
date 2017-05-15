@@ -145,7 +145,6 @@ public final class PanoramaComputerBean {
      * 
      */
     private void update() {
-        double time = System.currentTimeMillis();
         computeInProg.set(true);
         
         PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
@@ -167,7 +166,6 @@ public final class PanoramaComputerBean {
         
         computeInProg.set(false);
 
-        System.out.println(System.currentTimeMillis()-time);
         
         
     }
