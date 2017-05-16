@@ -170,7 +170,7 @@ public class Alpano extends Application{
         labelsPane.prefHeightProperty().bind(pUP.heightProperty());
         labelsPane.prefWidthProperty().bind(pUP.widthProperty());
                 
-        Bindings.bindContent(labelsPane.getChildren(), pCB.labelsProp().get());
+        Bindings.bindContent(labelsPane.getChildren(), pCB.labelsList());
                 
         labelsPane.setMouseTransparent(true);
         
