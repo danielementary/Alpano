@@ -35,12 +35,14 @@ public final class PanoramaComputerBean {
     private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
     private ObjectProperty<Panorama> panoramaProperty;
     private ObjectProperty<Image> imageProperty;
-    private ObjectProperty<ObservableList<Node>> labelsProperty;
+    private ObservableList<Node> labelsList;
+    private ObservableList<Node> labels;
     private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
     private final PanoramaComputer panoComp;
     private final Labelizer labelizer;
     private SimpleBooleanProperty computeInProg;
+   
     
     /***
      * constructs an instance of drawed panorama parameters
@@ -56,7 +58,9 @@ public final class PanoramaComputerBean {
         
         this.panoramaProperty = new SimpleObjectProperty<>(); 
         this.imageProperty = new SimpleObjectProperty<>();
-        this.labelsProperty = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+        
+        this.labels = FXCollections.observableArrayList();
+        this.labelsList = FXCollections.unmodifiableObservableList(labels);
         
         this.cem = cem;
         this.summitsList = Objects.requireNonNull(summitsList);
@@ -125,17 +129,17 @@ public final class PanoramaComputerBean {
      * getter : labelsProperty
      * @return ReadOnlyObjectProperty<ObservableList<Node>>
      */
-    public ReadOnlyObjectProperty<ObservableList<Node>> labelsProp() {
-        return labelsProperty;
+    public ObservableList<Node> labelsList() {
+        return labelsList;
     }
     
-    /**
-     * getter : labelsProperty
-     * @return ObservableList<Node>
-     */
-    public ObservableList<Node> getLabels() {
-        return FXCollections.unmodifiableObservableList(labelsProperty.get());
-    }
+//    /**
+//     * getter : labelsProperty
+//     * @return ObservableList<Node>
+//     */
+//    public ObservableList<Node> getLabels() {
+//        return FXCollections.unmodifiableObservableList(labelsList.get());
+//    }
     
     public ObservableBooleanValue getComputeInProg(){
         return computeInProg;
@@ -159,7 +163,7 @@ public final class PanoramaComputerBean {
 
             public void run() {
                 imageProperty.set(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
-                labelsProperty.get().setAll(FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(newList)));
+                labels.setAll(newList);
                 
             }
         });
