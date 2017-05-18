@@ -7,7 +7,6 @@
 
 package ch.epfl.alpano.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,8 +28,10 @@ public final class PanoramaComputerBean {
     private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
     private ObjectProperty<Panorama> panoramaProperty;
     private ObjectProperty<Image> imageProperty;
+    
     private ObservableList<Node> labelsList;
     private ObservableList<Node> labels;
+    
     private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
     
@@ -131,42 +132,11 @@ public final class PanoramaComputerBean {
         Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
         panoramaProperty.set(newPano);
         
-        imageProperty.set(PanoramaRenderer.renderPanorama(imgPainter(newPano), newPano));
+        imageProperty.set(PanoramaRenderer.renderPanorama(ImagePainter.stdPainter(newPano), newPano));
         
         
         Labelizer lab = new Labelizer(cem, summitsList);
         List<Node> newList = lab.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
         labels.setAll(newList);
-    }
-    
-    /**
-     * 
-     * @param p
-     * @return
-     */
-    private ImagePainter imgPainter(Panorama p){
-        
-        ChannelPainter hue, saturation, brightness, opacity;
-
-        hue = ChannelPainter.distance(p)
-                            .div(100000)
-                            .cycle()
-                            .mul(360);
-
-        saturation = ChannelPainter.distance(p)
-                                   .div(200000)
-                                   .clamp()
-                                   .invert();
-
-        brightness = ChannelPainter.slope(p)
-                                   .mul(2)
-                                   .div((float) Math.PI)
-                                   .invert()
-                                   .mul((float) 0.7)
-                                   .add((float) 0.3);
-
-        opacity = ChannelPainter.opacity(p);
-
-        return ImagePainter.hsb(hue, saturation, brightness, opacity);
     }
 }

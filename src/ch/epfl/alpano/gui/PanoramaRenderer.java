@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-@SuppressWarnings("restriction")
+
 public interface PanoramaRenderer {
    
     /**
@@ -30,8 +30,9 @@ public interface PanoramaRenderer {
         
         PixelWriter writer = img.getPixelWriter();
         
-        for (int x = 0 ; x < width ; ++x)  {
-            for (int y = 0 ; y < height ; ++y){
+        for (int x = 0 ; x < width ; ++x) {
+            for (int y = 0 ; y < height ; ++y) {
+                
                 writer.setColor(x, y, painter.colorAt(x, y));
             }
         }
