@@ -66,6 +66,7 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
 
 public class Alpano extends Application{
     
@@ -116,6 +117,8 @@ public class Alpano extends Application{
         predefined.add(PredefinedPanoramas.BULLE);
         predefined.add(PredefinedPanoramas.LE_JORDIL);
 
+        
+        
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
         
@@ -134,7 +137,7 @@ public class Alpano extends Application{
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane, computeNotice);
 
         GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup, primaryStage,
-                predefined);
+                predefined, labelsPane);
 
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
@@ -274,7 +277,8 @@ public class Alpano extends Application{
     private GridPane createParamsGrid(PanoramaParametersBean pUP, 
                                       PanoramaComputerBean pCB, 
                                       ObjectProperty<String> mouseInfoProp, Pane panoPane,
-                                      Stage primary, List<PanoramaUserParameters> predefined) {
+                                      Stage primary, List<PanoramaUserParameters> predefined,
+                                      Pane labelsPane) {
         
         GridPane paramsGrid = new GridPane();
 
@@ -314,6 +318,14 @@ public class Alpano extends Application{
             }
         });
         
+        //For labels visible or not
+        CheckBox labelsVisibleCheck = new CheckBox();
+        Label labelsVisibleLabel = new Label("Afficher les labels : ");
+        labelsVisibleCheck.selectedProperty().set(true);
+        labelsPane.visibleProperty().bind(labelsVisibleCheck.selectedProperty());
+        
+
+        
       //For changing ImagePainter
         Label painterChoiceLabel = new Label("Peintre d'image : ");
         ChoiceBox painterChoiceBox = new ChoiceBox<>();
@@ -342,12 +354,14 @@ public class Alpano extends Application{
             }
         });
         
-      //For predefined selector
+        
+
+        //For predefined selector
         Label predifinedLab = new Label("Paramètres prédéfinis : ");
         ChoiceBox predefinedBox = new ChoiceBox<>();
         predefinedBox.getItems().addAll(0,1,2,3,4,5,6,7);
         predefinedBox.getSelectionModel().select(1);
-        
+
         StringConverter<Integer> stringPredifined =
                 new LabeledListStringConverter("Niesen","Alpes du Jura", "Mont Racine", "Finsteraarhorn",
                         "Tour de Sauvabelin", "Plage du pélican", "Bulle", "Le Jordil");
@@ -397,8 +411,10 @@ public class Alpano extends Application{
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
-        paramsGrid.addRow(3, predifinedLab, predefinedBox, loadButton, saveImageButton);
+        paramsGrid.addRow(3, predifinedLab, predefinedBox, loadButton);
         paramsGrid.addRow(4, painterChoiceLabel, painterChoiceBox, refreshPanoButton);
+        paramsGrid.add(saveImageButton, 5, 4);
+        paramsGrid.addRow(5, labelsVisibleLabel, labelsVisibleCheck);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
         
