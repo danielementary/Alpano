@@ -333,18 +333,19 @@ public class Alpano extends Application{
         
       //For predefined selector
         Label predifinedLab = new Label("Paramètres prédéfinis : ");
-        ChoiceBox predifinedBox = new ChoiceBox<>();
-        predifinedBox.getItems().addAll(0,1,2,3,4,5,6,7);
+        ChoiceBox predefinedBox = new ChoiceBox<>();
+        predefinedBox.getItems().addAll(0,1,2,3,4,5,6,7);
+        predefinedBox.getSelectionModel().select(1);
         
         StringConverter<Integer> stringPredifined =
                 new LabeledListStringConverter("Niesen","Alpes du Jura", "Mont Racine", "Finsteraarhorn",
                         "Tour de Sauvabelin", "Plage du pélican", "Bulle", "Le Jordil");
         
-        predifinedBox.setConverter(stringPredifined);
+        predefinedBox.setConverter(stringPredifined);
         Button loadButton = new Button("Charger les paramètres");
         loadButton.setOnAction((e)-> {
                       
-            PanoramaUserParameters choosen = predefined.get((int)predifinedBox.valueProperty().get());
+            PanoramaUserParameters choosen = predefined.get((int)predefinedBox.valueProperty().get());
             pUP.widthProperty().set(choosen.getWidth());
             pUP.heightProperty().set(choosen.getHeight());
             pUP.observerLatitudeProperty().set(choosen.getOberserverLati());
@@ -385,7 +386,7 @@ public class Alpano extends Application{
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
-        paramsGrid.addRow(3, predifinedLab, predifinedBox, loadButton, saveImageButton);
+        paramsGrid.addRow(3, predifinedLab, predefinedBox, loadButton, saveImageButton);
         paramsGrid.addRow(4, painterChoiceLabel, painterChoiceBox, refreshPanoButton);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
