@@ -104,13 +104,23 @@ public class Alpano extends Application{
         cem = new ContinuousElevationModel(dDemAll);
         
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
+        
+        List<PanoramaUserParameters> predefined = new ArrayList<>();
+        
+        predefined.add(PredefinedPanoramas.NIESEN);
+        predefined.add(PredefinedPanoramas.ALPES_DU_JURA);
+        predefined.add(PredefinedPanoramas.MONT_RACINE);
+        predefined.add(PredefinedPanoramas.FINSTERAARHORN);
+        predefined.add(PredefinedPanoramas.TOUR_DE_SAUVABELIN);
+        predefined.add(PredefinedPanoramas.PLAGE_DU_PELICAN);
+        predefined.add(PredefinedPanoramas.BULLE);
+        predefined.add(PredefinedPanoramas.LE_JORDIL);
 
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
         
         ObjectProperty<String> mouseInfoProperty = new SimpleObjectProperty<>();
 
-//        panoCompBean.setParameters(panoParamBean.parametersProperty().get());
 
         ImageView panoView = createImageView(panoParamBean, panoCompBean, mouseInfoProperty);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
@@ -123,7 +133,8 @@ public class Alpano extends Application{
         
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane, computeNotice);
 
-        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup, primaryStage);
+        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup, primaryStage,
+                predefined);
 
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
@@ -262,7 +273,8 @@ public class Alpano extends Application{
     
     private GridPane createParamsGrid(PanoramaParametersBean pUP, 
                                       PanoramaComputerBean pCB, 
-                                      ObjectProperty<String> mouseInfoProp, Pane panoPane, Stage primary) {
+                                      ObjectProperty<String> mouseInfoProp, Pane panoPane,
+                                      Stage primary, List<PanoramaUserParameters> predefined) {
         
         GridPane paramsGrid = new GridPane();
 
@@ -302,6 +314,23 @@ public class Alpano extends Application{
             }
         });
         
+      //For changing ImagePainter
+        Label painterChoiceLabel = new Label("Peintre d'image : ");
+        ChoiceBox painterChoiceBox = new ChoiceBox<>();
+        painterChoiceBox.getItems().addAll(0, 1);
+        StringConverter<Integer> stringPainterChoice = new LabeledListStringConverter("Défaut", "Minimaliste");
+        painterChoiceBox.setConverter(stringPainterChoice);
+        painterChoiceBox.getSelectionModel().selectFirst();
+        pCB.getChoicePainterProp().bind(painterChoiceBox.valueProperty());
+        
+        Button refreshPanoButton = new Button("Changer le peintre");
+        refreshPanoButton.setOnAction(e-> {
+            if(!pCB.getComputeInProg().get() && pCB.getPanorama() != null){
+                
+                pCB.updateImage();
+            }
+        });
+        
       //For predefined selector
         Label predifinedLab = new Label("Paramètres prédéfinis : ");
         ChoiceBox predifinedBox = new ChoiceBox<>();
@@ -314,16 +343,7 @@ public class Alpano extends Application{
         predifinedBox.setConverter(stringPredifined);
         Button loadButton = new Button("Charger les paramètres");
         loadButton.setOnAction((e)-> {
-            List<PanoramaUserParameters> predefined = new ArrayList<>();
-            predefined.add(PredefinedPanoramas.NIESEN);
-            predefined.add(PredefinedPanoramas.ALPES_DU_JURA);
-            predefined.add(PredefinedPanoramas.MONT_RACINE);
-            predefined.add(PredefinedPanoramas.FINSTERAARHORN);
-            predefined.add(PredefinedPanoramas.TOUR_DE_SAUVABELIN);
-            predefined.add(PredefinedPanoramas.PLAGE_DU_PELICAN);
-            predefined.add(PredefinedPanoramas.BULLE);
-            predefined.add(PredefinedPanoramas.LE_JORDIL);
-            
+                      
             PanoramaUserParameters choosen = predefined.get((int)predifinedBox.valueProperty().get());
             pUP.widthProperty().set(choosen.getWidth());
             pUP.heightProperty().set(choosen.getHeight());
@@ -366,6 +386,7 @@ public class Alpano extends Application{
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
         paramsGrid.addRow(3, predifinedLab, predifinedBox, loadButton, saveImageButton);
+        paramsGrid.addRow(4, painterChoiceLabel, painterChoiceBox, refreshPanoButton);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
         
@@ -503,4 +524,5 @@ public class Alpano extends Application{
             error.show();
         }
     }
+    
 }

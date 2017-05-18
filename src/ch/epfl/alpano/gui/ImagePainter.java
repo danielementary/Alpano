@@ -41,6 +41,7 @@ public interface ImagePainter {
                                    brightness.valueAt(x, y),
                                    opacity.valueAt(x, y));
     }
+    
     /**
      * create a new imagePainter. the Color is in gray variation.
      * @param gray
@@ -50,4 +51,7 @@ public interface ImagePainter {
     public static ImagePainter gray(ChannelPainter gray, ChannelPainter opacity) {
         return (x,y) -> Color.gray(gray.valueAt(x, y), opacity.valueAt(x, y));
     }
+    
+    
+    
 }

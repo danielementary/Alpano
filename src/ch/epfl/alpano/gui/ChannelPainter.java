@@ -136,4 +136,6 @@ public interface ChannelPainter {
     public default ChannelPainter cycle() {
         return (x,y) -> valueAt(x,y) % 1;
     }
+    
+   
 }
