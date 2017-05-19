@@ -280,7 +280,7 @@ public class Alpano extends Application{
         Insets margin = new Insets(2);
         
         for (Node n : paramsGrid.getChildren()) {
-            paramsGrid.setMargin(n, margin);
+            GridPane.setMargin(n, margin);
         }
         
         return paramsGrid;
