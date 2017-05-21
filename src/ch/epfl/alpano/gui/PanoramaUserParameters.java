@@ -21,9 +21,11 @@ public final class PanoramaUserParameters {
     private Map<UserParameter, Integer> parameters =
                             new EnumMap<>(UserParameter.class);
     
-    /*
+    
+    /**
      * construct an instance of PanoramaUserParameters with the given map
      * after having corrected all values
+     * @param parameters
      */
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
         
@@ -38,10 +40,19 @@ public final class PanoramaUserParameters {
         
         this.parameters = Collections.unmodifiableMap(new EnumMap<>(parameters));
     }
-    
-    /*
+
+    /**
      * construct an instance of PanoramaUserParameters with the given elements
      * after having collected them in a map
+     * @param longitude
+     * @param lattitude
+     * @param elevation
+     * @param centerAzimuth
+     * @param horizontalFieldOfView
+     * @param maxDist
+     * @param width
+     * @param height
+     * @param superSampling
      */
     public PanoramaUserParameters(int longitude, int lattitude, int elevation, 
                                   int centerAzimuth, int horizontalFieldOfView,
@@ -129,17 +140,14 @@ public final class PanoramaUserParameters {
     public int getSuperSamp() {
         return parameters.get(UserParameter.SUPER_SAMPLING_EXPONENT);
     }
+    //End of getters
+    
     
     /**
-     * @return the parameters of the instance after scaling the dimensions
+     * @return the parameters of the instance, after scaling the dimensions, as an instance of PanoramaParameters
+     * regarding of the SuperSampling (height * 2^superSampling, width*2^superSampling)
      */
     public PanoramaParameters panoramaParameters() {
-//        Map<UserParameter, Integer> paramMap = new EnumMap<>(parameters);
-//        
-//        paramMap.replace(UserParameter.HEIGHT, (int) (getHeight()*scalb(1, getSuperSamp())));
-//        paramMap.replace(UserParameter.WIDTH, (int) (getWidth()*scalb(1, getSuperSamp())));
-//        
-//        return Collections.unmodifiableMap(new EnumMap<>(paramMap));
         
         int newHeight = (int) (scalb(getHeight(), getSuperSamp()));
         int newWidth= (int) (scalb(getWidth(), getSuperSamp()));
@@ -153,10 +161,9 @@ public final class PanoramaUserParameters {
 }
     
     /**
-     * @return the parameters of the instance
+     * @return the parameters of the instance without regarding the SuperSampling (width and height of the real image)
      */
     public PanoramaParameters panoramaDisplayParameters() {
-//        return Collections.unmodifiableMap(new EnumMap<>(parameters));
         return new PanoramaParameters(
                 new GeoPoint(Math.toRadians(getOberserverLong()*1e-4), Math.toRadians(getOberserverLati()*1e-4)), 
                 getObserverElev(),
@@ -165,8 +172,8 @@ public final class PanoramaUserParameters {
         
     }
     
-    // defines how PanoramaUserParameters should be compared
     
+    // defines how PanoramaUserParameters should be compared
     @Override
     public boolean equals(Object that) {
         
