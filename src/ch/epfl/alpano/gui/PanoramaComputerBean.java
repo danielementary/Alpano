@@ -25,12 +25,12 @@ import javafx.scene.image.Image;
 
 public final class PanoramaComputerBean {
     
-    private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
-    private ObjectProperty<Panorama> panoramaProperty;
-    private ObjectProperty<Image> imageProperty;
+    private final ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
+    private final ObjectProperty<Panorama> panoramaProperty;
+    private final ObjectProperty<Image> imageProperty;
     
-    private ObservableList<Node> labelsList;
-    private ObservableList<Node> labels;
+    private final ObservableList<Node> labelsList;
+    private final ObservableList<Node> labels;
     
     private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
