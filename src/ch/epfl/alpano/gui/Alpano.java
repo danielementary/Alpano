@@ -57,7 +57,7 @@ import javafx.util.StringConverter;
 public class Alpano extends Application{
     
     /**
-     * 
+     * launch the application Alpano
      * @param args
      */
     public static void main(String[] args) {
