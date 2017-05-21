@@ -26,11 +26,13 @@ public final class LabeledListStringConverter extends StringConverter<Integer> {
 
     @Override
     public Integer fromString(String s) {
+        
         return labeledList.indexOf(s);
     }
 
     @Override
     public String toString(Integer n) {
+        
         return labeledList.get(n);
     }
 

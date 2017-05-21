@@ -172,7 +172,6 @@ public final class Labelizer {
     }
     
     /**
-     * 
      * @param summit
      * @param param
      * @return
@@ -182,7 +181,7 @@ public final class Labelizer {
         GeoPoint obsPos = param.observerPosition();
         
         return (int) Math.round(param.yForAltitude(Math.atan2((elevationDifference(summit, param)),
-                                summit.position().distanceTo(obsPos))));
+                                                               summit.position().distanceTo(obsPos))));
     }
     
     /**
