@@ -21,6 +21,9 @@ public final class PanoramaUserParameters {
     private Map<UserParameter, Integer> parameters =
                             new EnumMap<>(UserParameter.class);
     
+    private final GeoPoint point;
+    private final int distMeter;
+    private final double centAzim, hFOV;
     
     /**
      * construct an instance of PanoramaUserParameters with the given map
@@ -31,14 +34,22 @@ public final class PanoramaUserParameters {
         
         parameters.replaceAll((k, v) -> k.sanitize(v));
         
+        //height correction
         int maxHeight = ((170*(parameters.get(UserParameter.WIDTH)-1))
-                            /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW))+1;
+                         /parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW))+1;
         
         if (parameters.get(UserParameter.HEIGHT) > maxHeight) {
             parameters.replace(UserParameter.HEIGHT, UserParameter.HEIGHT.sanitize(maxHeight)); 
         }
         
         this.parameters = Collections.unmodifiableMap(new EnumMap<>(parameters));
+        
+        this.point = new GeoPoint(Math.toRadians(getOberserverLong()*1e-4),
+                                  Math.toRadians(getOberserverLati()*1e-4));
+        
+        this.distMeter = getMaxDist()*1000;
+        this.centAzim = Math.toRadians(getCenterAzim());
+        this.hFOV = Math.toRadians(getHoriFieldOfView());
     }
 
     /**
@@ -79,10 +90,10 @@ public final class PanoramaUserParameters {
      * @return an Map with all the given element
      */
     private static Map<UserParameter, Integer> asEnumIntMap (int longitude, int lattitude,
-                                                 int elevation, int centerAzimuth,
-                                                 int horizontalFieldOfView,
-                                                 int maxDist, int width, int height,
-                                                 int superSampling) {
+                                                             int elevation, int centerAzimuth,
+                                                             int horizontalFieldOfView,
+                                                             int maxDist, int width, int height,
+                                                             int superSampling) {
         
         Map<UserParameter, Integer>  paramMap = new EnumMap<>(UserParameter.class);
         
@@ -152,36 +163,36 @@ public final class PanoramaUserParameters {
         int newHeight = (int) (scalb(getHeight(), getSuperSamp()));
         int newWidth= (int) (scalb(getWidth(), getSuperSamp()));
         
-        return new PanoramaParameters(new GeoPoint(Math.toRadians(getOberserverLong()*1e-4),
-                                                   Math.toRadians(getOberserverLati()*1e-4)), 
+        return new PanoramaParameters(point, 
                                       getObserverElev(),
-                                      Math.toRadians(getCenterAzim()),
-                                      Math.toRadians(getHoriFieldOfView()),
-                                      getMaxDist()*1000, newWidth, newHeight);
+                                      centAzim,
+                                      hFOV,
+                                      distMeter,
+                                      newWidth,
+                                      newHeight);
 }
     
     /**
-     * @return the parameters of the instance without regarding the SuperSampling (width and height of the real image)
+     * @return the parameters of the instance 
+     * without regarding the SuperSampling (width and height of the real image)
      */
     public PanoramaParameters panoramaDisplayParameters() {
-        return new PanoramaParameters(
-                new GeoPoint(Math.toRadians(getOberserverLong()*1e-4), Math.toRadians(getOberserverLati()*1e-4)), 
-                getObserverElev(),
-                Math.toRadians(getCenterAzim()), Math.toRadians(getHoriFieldOfView()),
-                getMaxDist()*1000, getWidth(), getHeight());
         
+        return new PanoramaParameters(point, 
+                                      getObserverElev(),
+                                      centAzim,
+                                      hFOV,
+                                      distMeter,
+                                      getWidth(),
+                                      getHeight());
     }
     
-    
-    // defines how PanoramaUserParameters should be compared
     @Override
     public boolean equals(Object that) {
         
-        if (that == null || that.getClass() != this.getClass()) {
-            return false;
-        }
-        
-        return parameters.equals(((PanoramaUserParameters) that).parameters);
+        return that != null 
+               && that.getClass() == this.getClass()
+               && parameters.equals(((PanoramaUserParameters) that).parameters);
     }
     
     @Override
