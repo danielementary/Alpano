@@ -30,19 +30,23 @@ public final class Labelizer {
     
     private final ContinuousElevationModel hgt;
     private final List<Summit> summits;
-    private final static int vertLim = 170; //limit of height for summits to be labeled
+    
+    private final static int vertLim = 170;
     private final static int bound = 20;
     private final static int rotationAng = -60;
     private final static int tolerance = 200;
+    
     private final static double step = PanoramaComputer.getStep();
     
     Labelizer(ContinuousElevationModel hgt, List<Summit> summits) {
+        
         this.hgt = hgt;
         this.summits = new ArrayList<>(summits);
     }
     
     /**
-     * Create a list of Node which are the line and the name of the summits which are visible on the panorama
+     * Create a list of Node which are the line and the name
+     * of the summits which are visible on the panorama
      * represented by the PanoramaParameters given in argument
      * @param param
      * @return
@@ -50,10 +54,11 @@ public final class Labelizer {
     public List<Node> labels(PanoramaParameters param) {
         
         int width = param.width();
+        
         //false if the column is free, true if it is busy
         BitSet column = new BitSet(width);
         
-        for (int i=0; i < bound; ++i) {
+        for (int i = 0; i < bound; ++i) {
             column.set(i);
         }
         
@@ -63,7 +68,6 @@ public final class Labelizer {
         
         List<Node> nodes = new ArrayList<>();
         List<Summit> visible = visibleSummits(hgt, param);
-        
         
         visible.sort((s1, s2) -> {
             int y1 = yForSummit(s1, param);
@@ -82,20 +86,23 @@ public final class Labelizer {
             if (y > vertLim) {
                 
                 if (!column.get(x)) {
+                    
                     //create a node, add it to the list and change column
                     if (yLabel < 0) {
                         yLabel = y-22;
                     }
+                    
                     //adding the Text Node
-                    String str = summit.name() + " (" + summit.elevation() + " m)";
-                    Text t = new Text(str);
+                    Text t = new Text(String.format("%s (%d m)", summit.name(), summit.elevation()));
                     
                     t.getTransforms().addAll(new Translate(x, yLabel), new Rotate(rotationAng, 0,0));
+                    
                     //adding the Line
                     Line l = new Line(x, y, x, yLabel+2);
                     
                     nodes.add(t);
                     nodes.add(l);
+                    
                     //we put the column x to true and the 19 on right and 19 on the left to true too
                     //because these are now full and can't get a label
                     column.set(x);
@@ -126,36 +133,35 @@ public final class Labelizer {
             double summitAzimuth = observerPosition.azimuthTo(summit.position());
 
             if (Math.abs(Math2.angularDistance(summitAzimuth, param.centerAzimuth()))
-                    <= param.horizontalFieldOfView()/2) {
+                <= param.horizontalFieldOfView()/2) {
 
                 GeoPoint summitPosition = summit.position();
                 double distanceObserverSummit = observerPosition.distanceTo(summitPosition);
                 
                 double tan = elevationDifference(summit, param)/ distanceObserverSummit;
                 double angle = Math.atan(tan);
-                if (distanceObserverSummit/1000 <= param.maxDistance() &&
-                        Math.abs(angle) <= param.verticalFieldOfView()/2) {
+                
+                if (distanceObserverSummit/1000 <= param.maxDistance()
+                    && Math.abs(angle) <= param.verticalFieldOfView()/2) {
                     
-                    ElevationProfile profile = 
-                            new ElevationProfile(hgt, 
-                                                 observerPosition,
-                                                 observerPosition.azimuthTo(summitPosition),
-                                                 distanceObserverSummit);
+                    ElevationProfile profile = new ElevationProfile(hgt, 
+                                                                    observerPosition,
+                                                                    observerPosition.azimuthTo(summitPosition),
+                                                                    distanceObserverSummit);
 
-                    DoubleUnaryOperator distanceFunction = 
-                            PanoramaComputer.rayToGroundDistance(profile, 
-                                                                 param.observerElevation(), 
-                                                                 tan);
+                    DoubleUnaryOperator distanceFunction = PanoramaComputer.rayToGroundDistance(profile, 
+                                                                                                param.observerElevation(), 
+                                                                                                tan);
 
-                    double lowerBoundRoot = 
-                            Math2.firstIntervalContainingRoot(distanceFunction,
-                                                              0,
-                                                              distanceObserverSummit,
-                                                              step);
+                    double lowerBoundRoot = Math2.firstIntervalContainingRoot(distanceFunction,
+                                                                              0,
+                                                                              distanceObserverSummit,
+                                                                              step);
                     
                     if (!(lowerBoundRoot < Double.POSITIVE_INFINITY)
-                            || profile.positionAt(lowerBoundRoot).distanceTo(observerPosition) >=
-                            distanceObserverSummit-tolerance) {
+                        || profile.positionAt(lowerBoundRoot).distanceTo(observerPosition)
+                           >= distanceObserverSummit-tolerance) {
+                        
                         visibleSummits.add(summit);
                     } 
                 }
@@ -192,16 +198,15 @@ public final class Labelizer {
         
         double dist = param.observerPosition().distanceTo(summit.position());
         GeoPoint observerPosition = param.observerPosition();
+        
         ElevationProfile profile = new ElevationProfile(hgt, 
                                                         observerPosition,
                                                         observerPosition.azimuthTo(summit.position()),
                                                         dist);
         
-        DoubleUnaryOperator distanceFunction = 
-                PanoramaComputer.rayToGroundDistance(profile, 
-                                                     param.observerElevation(), 
-                                                     0);
-        
+        DoubleUnaryOperator distanceFunction = PanoramaComputer.rayToGroundDistance(profile, 
+                                                                                    param.observerElevation(), 
+                                                                                    0);
         return  -(distanceFunction.applyAsDouble(dist));
     }
 }
