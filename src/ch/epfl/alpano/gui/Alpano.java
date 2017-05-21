@@ -71,7 +71,6 @@ import javafx.scene.control.CheckBox;
 public class Alpano extends Application{
     
     /**
-     * 
      * @param args
      */
     public static void main(String[] args) {
