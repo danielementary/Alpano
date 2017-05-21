@@ -30,7 +30,7 @@ public final class Labelizer {
     
     private final ContinuousElevationModel hgt;
     private final List<Summit> summits;
-    private final static int vertLim = 170; //limit of height for summits
+    private final static int vertLim = 170; //limit of height for summits to be labeled
     private final static int bound = 20;
     private final static int rotationAng = -60;
     private final static int tolerance = 200;
@@ -42,7 +42,8 @@ public final class Labelizer {
     }
     
     /**
-     * 
+     * Create a list of Node which are the line and the name of the summits which are visible on the panorama
+     * represented by the PanoramaParameters given in argument
      * @param param
      * @return
      */

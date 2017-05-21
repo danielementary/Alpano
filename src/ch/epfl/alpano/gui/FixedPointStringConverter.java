@@ -14,6 +14,10 @@ import javafx.util.StringConverter;
 public final class FixedPointStringConverter extends StringConverter<Integer> {
     private final int dec;
     
+    /**
+     * create an instance of FixedPointStringConverter with the number of decimal given in argument
+     * @param dec
+     */
     public FixedPointStringConverter(int dec) {
         this.dec = dec;
     }

@@ -16,6 +16,10 @@ public final class LabeledListStringConverter extends StringConverter<Integer> {
     
     private final List<String> labeledList;
     
+    /**
+     * create a new instance of LabeledStringConverter with the strings given in argument
+     * @param labeledList
+     */
     public LabeledListStringConverter(String... labeledList) {
         this.labeledList = Arrays.asList(labeledList);
     }
