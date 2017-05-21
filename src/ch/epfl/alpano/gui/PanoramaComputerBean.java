@@ -42,7 +42,7 @@ public final class PanoramaComputerBean {
      */
     public PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summitsList) {
         
-        this.panoramaUserParamProperty = new SimpleObjectProperty<>(null);
+        this.panoramaUserParamProperty = new SimpleObjectProperty<>();
         this.panoramaUserParamProperty.addListener((p, o, n) -> update());
         
         this.panoramaProperty = new SimpleObjectProperty<>(); 
@@ -121,19 +121,17 @@ public final class PanoramaComputerBean {
     }
     
     /**
-     * 
+     * update the properties
      */
     private void update() {
         
         PanoramaComputer newPanoComputer = new PanoramaComputer(cem);
         PanoramaParameters panoramaParameters = panoramaUserParamProperty.get().panoramaParameters();
         
-        
         Panorama newPano = newPanoComputer.computePanorama(panoramaParameters);
         panoramaProperty.set(newPano);
         
         imageProperty.set(PanoramaRenderer.renderPanorama(ImagePainter.stdPainter(newPano), newPano));
-        
         
         Labelizer lab = new Labelizer(cem, summitsList);
         List<Node> newList = lab.labels(panoramaUserParamProperty.get().panoramaDisplayParameters());
