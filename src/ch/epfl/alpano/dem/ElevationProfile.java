@@ -7,12 +7,13 @@
 
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.PI;
-import static java.util.Objects.requireNonNull;
 import static java.lang.Math.asin;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
+
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;

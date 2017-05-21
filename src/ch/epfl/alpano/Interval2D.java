@@ -7,9 +7,9 @@
 
 package ch.epfl.alpano;
 
-import java.util.Objects;
-
 import static ch.epfl.alpano.Preconditions.checkArgument;
+
+import java.util.Objects;
 
 public final class Interval2D {
     
@@ -128,7 +128,10 @@ public final class Interval2D {
         
         Interval2D that = (Interval2D)thatO;
         
-        return ((this.iX().equals(that.iX())) && this.iY().equals(that.iY()));
+        return thatO != null
+               && thatO.getClass() == this.getClass()
+               && this.iX().equals(that.iX())
+               && this.iY().equals(that.iY());
     }
     
     /**
