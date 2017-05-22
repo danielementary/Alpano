@@ -168,9 +168,11 @@ public class Alpano extends Application{
                                                           event.getY(),
                                                           pUP, pCB, mouseInfoProp));
         
-        panoView.setOnMouseClicked((event) -> openUrl(event.getX(),
-                                                      event.getY(),
-                                                      pUP, pCB));
+        panoView.setOnMouseClicked((event) -> {
+            if(event.getClickCount() ==2){
+                openUrl(event.getX(), event.getY(), pUP, pCB);
+                }
+        });
         
         return panoView;
     }
