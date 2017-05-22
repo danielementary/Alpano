@@ -86,6 +86,135 @@ public interface ImagePainter {
         return ImagePainter.hsb(hue, saturation, brightness, opacity);
     }
     
+    /**
+     * return a new ImagePainter drawing lines (given at step 7)
+     * @param p
+     * @return a new ImagePainter
+     */
+    public static ImagePainter linePainter(Panorama p){
+        ChannelPainter gray =
+                ChannelPainter.maxDistanceToNeighbors(p)
+                .sub(500)
+                .div(4500)
+                .clamp()
+                .invert();
+
+        ChannelPainter distance = p::distanceAt;
+        ChannelPainter opacity =
+                distance.map(d -> d == Float.POSITIVE_INFINITY ? 0 : 1);
+
+        return ImagePainter.gray(gray, opacity);
+
+
+    }
     
+    /**
+     * personalized ImagePainter
+     * @param panorama the ImagePainter will color according to
+     * @return ImagePainter for panorama draw corresponding to a very colorful painter
+     */
+    public static ImagePainter colorPainter(Panorama p){
+        
+        ChannelPainter hue, saturation, brightness, opacity;
+
+        hue = ChannelPainter.distance(p)
+                            .div(100000)
+                            .cycle()
+                            .mul(36000);
+
+        saturation = ChannelPainter.distance(p)
+                                   .div(200000)
+                                   .clamp()
+                                   .invert();
+
+        brightness = ChannelPainter.slope(p)
+                                   .mul(2)
+                                   .div((float) Math.PI)
+                                   .invert()
+                                   .mul((float) 0.7)
+                                   .add((float) 0.3);
+
+        opacity = ChannelPainter.opacity(p);
+
+        return ImagePainter.hsb(hue, saturation, brightness, opacity);
+    }
     
+    public static ImagePainter rndPainter(Panorama p){
+        
+        ChannelPainter hue, saturation, brightness, opacity;
+
+        hue = (x,y)-> (int) Math.floor(Math.random() * 360);
+
+        saturation = ChannelPainter.distance(p)
+                                   .div(200000)
+                                   .clamp()
+                                   .invert();
+
+        brightness = ChannelPainter.slope(p)
+                                   .mul(2)
+                                   .div((float) Math.PI)
+                                   .invert()
+                                   .mul((float) 0.7)
+                                   .add((float) 0.3);
+
+        opacity = ChannelPainter.opacity(p);
+
+        return ImagePainter.hsb(hue, saturation, brightness, opacity);
+    }
+    
+    public static ImagePainter smallPainter(Panorama p){
+        
+        ChannelPainter hue, saturation, brightness, opacity;
+
+        hue = ChannelPainter.distance(p)
+                            .div(100000)
+                            .cycle()
+                            .mul(1500);
+        
+        saturation = ChannelPainter.distance(p)
+                                   .div(200000)
+                                   .clamp()
+                                   .invert();
+
+        brightness = ChannelPainter.slope(p)
+                                   .mul(2)
+                                   .div((float) Math.PI)
+                                   .invert()
+                                   .mul((float) 0.7)
+                                   .add((float) 0.3);
+        
+
+        opacity = ChannelPainter.opacity(p);
+
+        return ImagePainter.hsb(hue, saturation, brightness, opacity);
+    }
+    
+    public static ImagePainter verticalPainter(Panorama p){
+
+        ChannelPainter hue, saturation, brightness, opacity;
+
+        hue = ChannelPainter.elevation(p)
+                .div(100000)
+                .cycle()
+                .mul(9000);
+
+        saturation = ChannelPainter.distance(p)
+                .div(200000)
+                .clamp()
+                .invert();
+
+        brightness = ChannelPainter.slope(p)
+                .mul(2)
+                .div((float) Math.PI)
+                .invert()
+                .mul((float) 0.7)
+                .add((float) 0.3);
+
+
+        opacity = ChannelPainter.opacity(p);
+
+        return ImagePainter.hsb(hue, saturation, brightness, opacity);
+    }
+
+
 }

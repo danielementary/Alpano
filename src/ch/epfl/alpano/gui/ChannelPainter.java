@@ -44,6 +44,20 @@ public interface ChannelPainter {
 
         return (x,y) -> pano.distanceAt(x, y);
     }
+   
+    
+    
+    /**
+     * return the distance of the pixel(x,y) from the observator
+     * @param pano the panorama in which you want to work
+     * @return a distance
+     */
+    public static ChannelPainter elevation(Panorama pano) {
+
+        return (x,y) -> pano.elevationAt(x, y);
+    }
+    
+    
     
     /**
      * return the slope of the pixel (x,y)

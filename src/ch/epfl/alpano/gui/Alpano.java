@@ -31,7 +31,6 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -57,10 +56,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Button;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
@@ -86,7 +83,6 @@ public class Alpano extends Application{
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
         
         List<PanoramaUserParameters> predefined = new ArrayList<>();
-        
         predefined.add(PredefinedPanoramas.NIESEN);
         predefined.add(PredefinedPanoramas.ALPES_DU_JURA);
         predefined.add(PredefinedPanoramas.MONT_RACINE);
@@ -94,7 +90,9 @@ public class Alpano extends Application{
         predefined.add(PredefinedPanoramas.TOUR_DE_SAUVABELIN);
         predefined.add(PredefinedPanoramas.PLAGE_DU_PELICAN);
         predefined.add(PredefinedPanoramas.BULLE);
+        predefined.add(PredefinedPanoramas.LA_ROCHE);
         predefined.add(PredefinedPanoramas.LE_JORDIL);
+        
 
         
         
@@ -310,8 +308,10 @@ public class Alpano extends Application{
       //For changing ImagePainter
         Label painterChoiceLabel = new Label("Peintre d'image : ");
         ChoiceBox painterChoiceBox = new ChoiceBox<>();
-        painterChoiceBox.getItems().addAll(0, 1);
-        StringConverter<Integer> stringPainterChoice = new LabeledListStringConverter("Défaut", "Minimaliste");
+        painterChoiceBox.getItems().addAll(0, 1, 2, 3, 4, 5);
+        StringConverter<Integer> stringPainterChoice = new LabeledListStringConverter("Défaut", "Minimaliste",
+                                                                    "Coloré", "Aléatoire", "Petites distances", 
+                                                                    "Couleurs verticales");
         painterChoiceBox.setConverter(stringPainterChoice);
         painterChoiceBox.getSelectionModel().selectFirst();
         pCB.getChoicePainterProp().bind(painterChoiceBox.valueProperty());
@@ -337,12 +337,12 @@ public class Alpano extends Application{
         //For predefined selector
         Label predefinedLab = new Label("Paramètres prédéfinis : ");
         ChoiceBox predefinedBox = new ChoiceBox<>();
-        predefinedBox.getItems().addAll(0,1,2,3,4,5,6,7);
+        predefinedBox.getItems().addAll(0,1,2,3,4,5,6,7,8);
         predefinedBox.getSelectionModel().select(1);
 
         StringConverter<Integer> stringPredifined =
                 new LabeledListStringConverter("Niesen","Alpes du Jura", "Mont Racine", "Finsteraarhorn",
-                        "Tour de Sauvabelin", "Plage du pélican", "Bulle", "Le Jordil");
+                        "Tour de Sauvabelin", "Plage du pélican", "Bulle", "La Roche", "Le Jordil");
         
         predefinedBox.setConverter(stringPredifined);
 

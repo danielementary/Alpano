@@ -74,6 +74,11 @@ public interface PredefinedPanoramas {
                                                     MAIN_MAX_DIST, MAIN_WIDTH,
                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
     
+    public static final PanoramaUserParameters LA_ROCHE 
+                        = new PanoramaUserParameters(71301, 466910 , 970, 220, 115,
+                                                    MAIN_MAX_DIST, MAIN_WIDTH,
+                                                    MAIN_HEIGHT, MAIN_SUPER_SAMP);
+
     public static final PanoramaUserParameters LE_JORDIL 
                         = new PanoramaUserParameters(68844, 465664, 870, 180, 120,
                                                      MAIN_MAX_DIST, MAIN_WIDTH,

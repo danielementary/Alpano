@@ -136,7 +136,7 @@ public final class PanoramaComputerBean {
      * getter : labelsProperty
      * @return ReadOnlyObjectProperty<ObservableList<Node>>
      */
-    public ObservableList<Node> labelsList() {
+    public ObservableList<Node> getLabels() {
         return labelsList;
     }
 
@@ -191,58 +191,24 @@ public final class PanoramaComputerBean {
     private ImagePainter imgPainter(Panorama p){
         switch(choicePainterProp.get()){
         case 0:
-            return imgPainterDefault(p);
+            return ImagePainter.stdPainter(p);
         case 1:
-            return imgPainterLine(p);
+            return ImagePainter.linePainter(p);
+        case 2:
+            return ImagePainter.colorPainter(p);
+        case 3:
+            return ImagePainter.rndPainter(p);
+        case 4:
+            return ImagePainter.smallPainter(p);
+        case 5:
+            return ImagePainter.verticalPainter(p);
         }
-        return imgPainterDefault(p);
+        return ImagePainter.stdPainter(p);
     }
+    
+    
 
-    /**
-     * 
-     * @param p
-     * @return
-     */
-    private ImagePainter imgPainterDefault(Panorama p){
+   
 
-        ChannelPainter hue, saturation, brightness, opacity;
-
-        hue = ChannelPainter.distance(p)
-                .div(100000)
-                .cycle()
-                .mul(360);
-
-        saturation = ChannelPainter.distance(p)
-                .div(200000)
-                .clamp()
-                .invert();
-
-        brightness = ChannelPainter.slope(p)
-                .mul(2)
-                .div((float) Math.PI)
-                .invert()
-                .mul((float) 0.7)
-                .add((float) 0.3);
-
-        opacity = ChannelPainter.opacity(p);
-
-        return ImagePainter.hsb(hue, saturation, brightness, opacity);
-    }
-
-    private ImagePainter imgPainterLine(Panorama p){
-        ChannelPainter gray =
-                ChannelPainter.maxDistanceToNeighbors(p)
-                .sub(500)
-                .div(4500)
-                .clamp()
-                .invert();
-
-        ChannelPainter distance = p::distanceAt;
-        ChannelPainter opacity =
-                distance.map(d -> d == Float.POSITIVE_INFINITY ? 0 : 1);
-
-        return ImagePainter.gray(gray, opacity);
-
-
-    }
+    
 }
