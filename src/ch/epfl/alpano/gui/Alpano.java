@@ -335,8 +335,7 @@ public class Alpano extends Application{
         painterChoiceBox.getSelectionModel().selectFirst();
         pCB.getChoicePainterProp().bind(painterChoiceBox.valueProperty());
         
-        Button refreshPanoButton = new Button("Changer le peintre");
-        refreshPanoButton.setOnAction(e-> {
+        painterChoiceBox.valueProperty().addListener(e-> {
             if(!pCB.getComputeInProg().get()){
                 if(pCB.getPanorama() != null){
                     pCB.updateImage();
@@ -353,11 +352,9 @@ public class Alpano extends Application{
                 waitDuringCompute.show();
             }
         });
-        
-        
 
         //For predefined selector
-        Label predifinedLab = new Label("Paramètres prédéfinis : ");
+        Label predefinedLab = new Label("Paramètres prédéfinis : ");
         ChoiceBox predefinedBox = new ChoiceBox<>();
         predefinedBox.getItems().addAll(0,1,2,3,4,5,6,7);
         predefinedBox.getSelectionModel().select(1);
@@ -367,9 +364,9 @@ public class Alpano extends Application{
                         "Tour de Sauvabelin", "Plage du pélican", "Bulle", "Le Jordil");
         
         predefinedBox.setConverter(stringPredifined);
-        Button loadButton = new Button("Charger les paramètres");
-        loadButton.setOnAction((e)-> {
-                      
+
+        predefinedBox.valueProperty().addListener((e)-> {
+
             PanoramaUserParameters choosen = predefined.get((int)predefinedBox.valueProperty().get());
             pUP.widthProperty().set(choosen.getWidth());
             pUP.heightProperty().set(choosen.getHeight());
@@ -380,7 +377,7 @@ public class Alpano extends Application{
             pUP.CenterAzimuthProperty().set(choosen.getCenterAzim());
             pUP.observerElevationProperty().set(choosen.getObserverElev());
             pUP.SuperSamplingExponentProperty().set(choosen.getSuperSamp());
-            
+
         });
         
         //end of predefined selector
@@ -411,10 +408,17 @@ public class Alpano extends Application{
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
-        paramsGrid.addRow(3, predifinedLab, predefinedBox, loadButton);
-        paramsGrid.addRow(4, painterChoiceLabel, painterChoiceBox, refreshPanoButton);
-        paramsGrid.add(saveImageButton, 5, 4);
-        paramsGrid.addRow(5, labelsVisibleLabel, labelsVisibleCheck);
+//        paramsGrid.addRow(3, predefinedLab, predefinedBox);
+//        paramsGrid.addRow(4, painterChoiceLabel, painterChoiceBox);
+        
+        
+        paramsGrid.add(painterChoiceLabel, 9, 1);
+        paramsGrid.add(painterChoiceBox, 10, 1);
+        paramsGrid.add(predefinedLab, 9, 0);
+        paramsGrid.add(predefinedBox, 10, 0);
+        
+        paramsGrid.add(saveImageButton, 9, 2);
+        paramsGrid.addRow(3, labelsVisibleLabel, labelsVisibleCheck);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
         
