@@ -7,7 +7,6 @@
 
 package ch.epfl.alpano.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,12 +30,14 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 
 public final class PanoramaComputerBean {
-
-    private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
-    private ObjectProperty<Panorama> panoramaProperty;
-    private ObjectProperty<Image> imageProperty;
-    private ObservableList<Node> labelsList;
-    private ObservableList<Node> labels;
+    
+    private final ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
+    private final ObjectProperty<Panorama> panoramaProperty;
+    private final ObjectProperty<Image> imageProperty;
+    
+    private final ObservableList<Node> labelsList;
+    private final ObservableList<Node> labels;
+    
     private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
     private final PanoramaComputer panoComp;
@@ -53,18 +54,18 @@ public final class PanoramaComputerBean {
      * @param summitsList
      */
     public PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summitsList) {
-
-        this.panoramaUserParamProperty = new SimpleObjectProperty<>(null);
+        
+        this.panoramaUserParamProperty = new SimpleObjectProperty<>();
         this.panoramaUserParamProperty.addListener((p, o, n) -> update());
 
         this.computeInProg = new SimpleBooleanProperty(false);
 
         this.panoramaProperty = new SimpleObjectProperty<>(); 
         this.imageProperty = new SimpleObjectProperty<>();
-
+        
         this.labels = FXCollections.observableArrayList();
         this.labelsList = FXCollections.unmodifiableObservableList(labels);
-
+        
         this.cem = cem;
         this.summitsList = Objects.requireNonNull(summitsList);
 
@@ -156,7 +157,7 @@ public final class PanoramaComputerBean {
     }
 
     /**
-     * 
+     * update the properties
      */
     private void update() {
         computeInProg.set(true);

@@ -7,15 +7,16 @@
 
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ShortBuffer;
 import java.nio.channels.FileChannel.MapMode;
+
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
-
-import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 

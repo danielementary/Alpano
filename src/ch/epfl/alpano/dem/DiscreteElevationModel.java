@@ -7,10 +7,11 @@
 
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import java.util.Objects;
 
 import ch.epfl.alpano.Interval2D;
-import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public interface DiscreteElevationModel extends AutoCloseable {
     

@@ -71,7 +71,7 @@ import javafx.scene.control.CheckBox;
 public class Alpano extends Application{
     
     /**
-     * 
+     * launch the application Alpano
      * @param args
      */
     public static void main(String[] args) {
@@ -81,28 +81,7 @@ public class Alpano extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        ContinuousElevationModel cem;
-        
-        DiscreteElevationModel dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
-        DiscreteElevationModel dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
-        DiscreteElevationModel dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
-        DiscreteElevationModel dDem4 = new HgtDiscreteElevationModel(new File("N45E009.hgt"));
-        DiscreteElevationModel dDem5 = new HgtDiscreteElevationModel(new File("N46E006.hgt"));
-        DiscreteElevationModel dDem6 = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
-        DiscreteElevationModel dDem7 = new HgtDiscreteElevationModel(new File("N46E008.hgt"));
-        DiscreteElevationModel dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"));
-
-        DiscreteElevationModel dDem12 = dDem1.union(dDem2);
-        DiscreteElevationModel dDem34 = dDem3.union(dDem4);
-        DiscreteElevationModel dDem56 = dDem5.union(dDem6);
-        DiscreteElevationModel dDem78 = dDem7.union(dDem8);
-
-        DiscreteElevationModel dDem1234 = dDem12.union(dDem34);
-        DiscreteElevationModel dDem5678 = dDem56.union(dDem78);
-
-        DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
-        
-        cem = new ContinuousElevationModel(dDemAll);
+        ContinuousElevationModel cem = loadHGT();
         
         List<Summit> summitsList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
         
@@ -147,7 +126,7 @@ public class Alpano extends Application{
         
         primaryStage.setMaximized(true);
 
-        primaryStage.setTitle("Alpano ⛰ 💻");
+        primaryStage.setTitle("Alpano");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -186,8 +165,8 @@ public class Alpano extends Application{
         labelsPane.prefHeightProperty().bind(pUP.heightProperty());
         labelsPane.prefWidthProperty().bind(pUP.widthProperty());
                 
-        Bindings.bindContent(labelsPane.getChildren(), pCB.labelsList());
-                
+        Bindings.bindContent(labelsPane.getChildren(), pCB.getLabels());
+          
         labelsPane.setMouseTransparent(true);
         
         return labelsPane;
@@ -239,7 +218,7 @@ public class Alpano extends Application{
         
         Text text = new Text();
         text.setText("Les paramètres du panorama ont changé.\nCliquez ici pour mettre le dessin à jour.");
-        text.setFont(new Font(textSize));
+        text.setFont(new Font(40));
         text.setTextAlignment(TextAlignment.CENTER);
         
         updateNotice.getChildren().add(text);
@@ -394,6 +373,7 @@ public class Alpano extends Application{
         TextField heightField = createTextField(stringConverterFixedPointZero, 4, pUP.heightProperty());
         
         TextArea mouseInfo = new TextArea();
+        
         mouseInfo.setEditable(false);
         mouseInfo.setPrefRowCount(2);
         mouseInfo.textProperty().bind(mouseInfoProp);
@@ -402,9 +382,7 @@ public class Alpano extends Application{
         superSamplingBox.getItems().addAll(0,1,2);
 
         StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "2x", "4x");
-
         superSamplingBox.valueProperty().bindBidirectional(pUP.SuperSamplingExponentProperty());
-        
         superSamplingBox.setConverter(stringConverterSampling);
         
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
@@ -423,13 +401,11 @@ public class Alpano extends Application{
         paramsGrid.addRow(3, labelsVisibleLabel, labelsVisibleCheck);
         
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
-        
         paramsGrid.setAlignment(Pos.CENTER);
         
-        Insets margin = new Insets(2);
-        
+        //little margin between texts and fields
         for (Node n : paramsGrid.getChildren()) {
-            paramsGrid.setMargin(n, margin);
+            GridPane.setMargin(n, new Insets(2));
         }
         
         return paramsGrid;
@@ -509,13 +485,14 @@ public class Alpano extends Application{
         
         try {
             url = new URI("http", "www.openstreetmap.org", "/", qy, fg);
-            
             java.awt.Desktop.getDesktop().browse(url);
-
+            
         } catch (URISyntaxException e) {
             e.printStackTrace();
+            
         } catch (IOException e) {
             e.printStackTrace();
+            
         } 
     }
     
@@ -559,4 +536,27 @@ public class Alpano extends Application{
         }
     }
     
+    
+    private final static ContinuousElevationModel loadHGT() {
+        DiscreteElevationModel dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
+        DiscreteElevationModel dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
+        DiscreteElevationModel dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
+        DiscreteElevationModel dDem4 = new HgtDiscreteElevationModel(new File("N45E009.hgt"));
+        DiscreteElevationModel dDem5 = new HgtDiscreteElevationModel(new File("N46E006.hgt"));
+        DiscreteElevationModel dDem6 = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
+        DiscreteElevationModel dDem7 = new HgtDiscreteElevationModel(new File("N46E008.hgt"));
+        DiscreteElevationModel dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"));
+
+        DiscreteElevationModel dDem12 = dDem1.union(dDem2);
+        DiscreteElevationModel dDem34 = dDem3.union(dDem4);
+        DiscreteElevationModel dDem56 = dDem5.union(dDem6);
+        DiscreteElevationModel dDem78 = dDem7.union(dDem8);
+
+        DiscreteElevationModel dDem1234 = dDem12.union(dDem34);
+        DiscreteElevationModel dDem5678 = dDem56.union(dDem78);
+
+        DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
+        
+        return new ContinuousElevationModel(dDemAll);
+    }
 }

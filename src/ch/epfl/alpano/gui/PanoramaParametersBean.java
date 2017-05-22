@@ -16,18 +16,18 @@ import javafx.beans.property.SimpleObjectProperty;
 public final class PanoramaParametersBean {
     
     //property for parameters
-    private ObjectProperty parametersProperty;
+    private final ObjectProperty parametersProperty;
     
     //properties for each modifiable parameter
-    private ObjectProperty<Integer> observerLongitudeProperty;
-    private ObjectProperty<Integer> observerLatitudeProperty;
-    private ObjectProperty<Integer> observerElevationProperty;
-    private ObjectProperty<Integer> centerAzimuthProperty;
-    private ObjectProperty<Integer> horizontalFieldOfViewProperty;
-    private ObjectProperty<Integer> maxDistanceProperty;
-    private ObjectProperty<Integer> widthProperty;
-    private ObjectProperty<Integer> heightProperty;
-    private ObjectProperty<Integer> superSamplingExponentProperty;
+    private final ObjectProperty<Integer> observerLongitudeProperty,
+                                          observerLatitudeProperty,
+                                          observerElevationProperty,
+                                          centerAzimuthProperty,
+                                          horizontalFieldOfViewProperty,
+                                          maxDistanceProperty,
+                                          widthProperty,
+                                          heightProperty,
+                                          superSamplingExponentProperty;
     
     /**
      * constructs an instance of PanoramaParametersBean with parameters pUP
@@ -164,8 +164,6 @@ public final class PanoramaParametersBean {
                                                                  heightProperty.get(),
                                                                  superSamplingExponentProperty.get());
         
-        //change the property's value with the new instance
-//        parametersProperty = new SimpleObjectProperty<>(nPUP); 
         parametersProperty.set(nPUP);
         
         //update all properties
@@ -178,6 +176,5 @@ public final class PanoramaParametersBean {
         widthProperty.set(nPUP.getWidth());
         heightProperty.set(nPUP.getHeight());
         superSamplingExponentProperty.set(nPUP.getSuperSamp());
-        
     }  
 }

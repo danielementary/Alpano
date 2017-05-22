@@ -9,7 +9,6 @@ package ch.epfl.alpano;
 
 
 import static ch.epfl.alpano.Preconditions.checkArgument;
-
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
 import static java.lang.Math.atan2;
@@ -60,8 +59,8 @@ public final class GeoPoint {
      */
     public final double distanceTo(GeoPoint that) {
         double sqrt = sqrt(Math2.haversin(this.latitude()-that.latitude())
-                + cos(this.latitude())*cos(that.latitude()) 
-                * Math2.haversin(this.longitude()-that.longitude()));
+                      + cos(this.latitude())*cos(that.latitude()) 
+                      * Math2.haversin(this.longitude()-that.longitude()));
         
         return Distance.toMeters(2*asin(sqrt));
     }
@@ -73,9 +72,9 @@ public final class GeoPoint {
      */
     public final double azimuthTo(GeoPoint that) {
         double beta = atan2(sin(this.longitude()-that.longitude())
-                * cos(that.latitude()), cos(this.latitude()) 
-                * sin(that.latitude())-sin(this.latitude())
-                * cos(that.latitude())*cos(this.longitude()-that.longitude()));
+                      * cos(that.latitude()), cos(this.latitude()) 
+                      * sin(that.latitude())-sin(this.latitude())
+                      * cos(that.latitude())*cos(this.longitude()-that.longitude()));
         
         return Azimuth.fromMath(Azimuth.canonicalize(beta));
     }

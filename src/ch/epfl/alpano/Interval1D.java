@@ -109,14 +109,10 @@ public final class Interval1D {
      */
     @Override
     public final boolean equals(Object that) {
-        if (that == null || that.getClass() != this.getClass()) {
-            return false;
-        }
-        
-        Interval1D thatInter = (Interval1D)that;
-        
-       return (thatInter.includedFrom() == this.includedFrom() && 
-               thatInter.includedTo() == this.includedTo());
+        return that != null
+               && that.getClass() == this.getClass()
+               && ((Interval1D)that).includedFrom() == this.includedFrom()
+               && ((Interval1D)that).includedTo() == this.includedTo();
     }
     
     /**
