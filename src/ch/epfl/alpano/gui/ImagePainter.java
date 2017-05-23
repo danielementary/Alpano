@@ -215,6 +215,33 @@ public interface ImagePainter {
 
         return ImagePainter.hsb(hue, saturation, brightness, opacity);
     }
+    
+    /**
+     * personalized ImagePainter
+     * @param panorama the ImagePainter will color according to
+     * @return ImagePainter for panorama draw corresponding to teacher's parameters
+     */
+    public static ImagePainter chessboardPainter(Panorama p){
+            
+        ChannelPainter hue, saturation, brightness, opacity;
 
+        hue = ChannelPainter.distance(p)
+                            .div(100000)
+                            .cycle()
+                            .mul(360);
+
+        saturation = ChannelPainter.longLat(p);
+
+        brightness = ChannelPainter.slope(p)
+                                   .mul(2)
+                                   .div((float) Math.PI)
+                                   .invert()
+                                   .mul((float) 0.7)
+                                   .add((float) 0.3);
+
+        opacity = ChannelPainter.opacity(p);
+
+        return ImagePainter.hsb(hue, saturation, brightness, opacity);
+    }
 
 }

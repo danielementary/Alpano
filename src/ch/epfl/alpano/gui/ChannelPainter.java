@@ -30,9 +30,12 @@ public interface ChannelPainter {
      */
     public static ChannelPainter maxDistanceToNeighbors(Panorama pano) {
 
-        return (x,y) -> Math.max(Math.max(pano.distanceAt(x, y-1, 0), pano.distanceAt(x, y+1, 0)),
-                                 Math.max(pano.distanceAt(x+1, y, 0), pano.distanceAt(x-1, y, 0)))
-                        -pano.distanceAt(x, y);
+        return (x,y) -> Math.max(Math.max(pano.distanceAt(x, y-1, 0), 
+                                                pano.distanceAt(x, y+1, 0)),
+                    
+                        Math.max(pano.distanceAt(x+1, y, 0), 
+                                                     pano.distanceAt(x-1, y, 0)))
+                                                        -pano.distanceAt(x, y);
     }
     
     /**
@@ -80,12 +83,23 @@ public interface ChannelPainter {
     }
     
     /**
+     * returns a value corresponding to a chessboard
+     * calculated from longitude and latitude
+     * @param pano
+     * @return
+     */
+    public static ChannelPainter longLat(Panorama pano) {
+        float w = 7500, c1 = (float) 1, c2 = (float) 0.5;
+        
+        return (x,y) -> ((int)Math.floor(pano.longitudeAt(x, y) * w) + (int)Math.floor(pano.latitudeAt(x, y) * w)) % 2 == 0 ? c1 : c2;
+    }
+    
+    /**
      * add the constant to the value of the channel
      * @param constant the constant
      * @return a new Channel
      */
     public default ChannelPainter add(float constant) {
-        
         return (x,y) -> valueAt(x,y) + constant;  
     }
     
@@ -95,7 +109,6 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter mul(float constant) {
-        
         return (x,y) -> valueAt(x,y) * constant;  
     }
     
@@ -105,7 +118,6 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter sub(float constant) {
-        
         return (x,y) -> valueAt(x,y) - constant;  
     }
    
@@ -115,7 +127,6 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter div(float constant) {
-        
         return (x,y) -> valueAt(x,y)  / constant;  
     }
     
@@ -125,7 +136,6 @@ public interface ChannelPainter {
      * @return a new Channel
      */
     public default ChannelPainter map(DoubleUnaryOperator op) {
-        
         return (x,y) -> (float) op.applyAsDouble(valueAt(x,y));
     }
     
@@ -134,7 +144,6 @@ public interface ChannelPainter {
      * @return a new ChannelPainter
      */
     public default ChannelPainter clamp() {
-        
         return (x,y) -> Math.max(0, Math.min(valueAt(x,y), 1));
     }
     
@@ -143,8 +152,7 @@ public interface ChannelPainter {
      * @return a new ChannelPainter
      */
     public default ChannelPainter invert() {
-        
-        return (x,y) -> 1 - valueAt(x,y);
+        return (x,y) -> 1-valueAt(x,y);
     }
     
     /**
@@ -152,9 +160,6 @@ public interface ChannelPainter {
      * @return a new ChannelPainter
      */
     public default ChannelPainter cycle() {
-        
         return (x,y) -> valueAt(x,y) % 1;
     }
-    
-   
 }
