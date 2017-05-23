@@ -114,7 +114,6 @@ public interface Math2 {
         checkArgument(dX > 0);
         
         double currentMinX = minX;
-//        double currentMaxX = minX+dX;
         
         while (currentMinX + dX <= maxX) {
             if (f.applyAsDouble(currentMinX)
