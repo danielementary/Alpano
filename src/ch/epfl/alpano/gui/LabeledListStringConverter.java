@@ -33,7 +33,7 @@ public final class LabeledListStringConverter extends StringConverter<Integer> {
     @Override
     public String toString(Integer n) {
         
-        return labeledList.get(n);
+        return n == null ? "" : labeledList.get(n);
     }
 
 }
