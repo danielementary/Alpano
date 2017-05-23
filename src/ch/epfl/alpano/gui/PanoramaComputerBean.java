@@ -202,8 +202,12 @@ public final class PanoramaComputerBean {
             return ImagePainter.smallPainter(p);
         case 5:
             return ImagePainter.verticalPainter(p);
+        case 6:
+            return ImagePainter.chessboardPainter(p);
+        default :
+            return ImagePainter.stdPainter(p);
         }
-        return ImagePainter.stdPainter(p);
+        
     }
     
     

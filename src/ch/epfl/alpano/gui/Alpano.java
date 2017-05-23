@@ -203,7 +203,7 @@ public class Alpano extends Application{
         
         computeNotice.visibleProperty().bind(pCB.getComputeInProg());
         
-        Background backg = new Background(new BackgroundFill(color(0.5,0.5,0.5,0.9), CornerRadii.EMPTY, Insets.EMPTY));
+        Background backg = new Background(new BackgroundFill(color(1,1,1,0.9), CornerRadii.EMPTY, Insets.EMPTY));
         
         computeNotice.setBackground(backg);
         return computeNotice;
@@ -308,10 +308,10 @@ public class Alpano extends Application{
       //For changing ImagePainter
         Label painterChoiceLabel = new Label("Peintre d'image : ");
         ChoiceBox painterChoiceBox = new ChoiceBox<>();
-        painterChoiceBox.getItems().addAll(0, 1, 2, 3, 4, 5);
+        painterChoiceBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
         StringConverter<Integer> stringPainterChoice = new LabeledListStringConverter("Défaut", "Minimaliste",
                                                                     "Coloré", "Aléatoire", "Petites distances", 
-                                                                    "Couleurs verticales");
+                                                                    "Couleurs verticales", "Echiquier");
         painterChoiceBox.setConverter(stringPainterChoice);
         painterChoiceBox.getSelectionModel().selectFirst();
         pCB.getChoicePainterProp().bind(painterChoiceBox.valueProperty());
