@@ -320,18 +320,10 @@ public class Alpano extends Application{
             if(!pCB.getComputeInProg().get()){
                 if(pCB.getPanorama() != null){
                     pCB.updateImage();
-                }else{
-                    Alert computeFirst = new Alert(AlertType.ERROR);
-                    computeFirst.setContentText("Veuillez d'abord calculer un panorama");
-                    computeFirst.setHeaderText("");
-                    computeFirst.show();
                 }
-            }else{
-                Alert waitDuringCompute = new Alert(AlertType.ERROR);
-                waitDuringCompute.setContentText("Un calcul est en cours. Veuillez patienter");
-                waitDuringCompute.setHeaderText("");
-                waitDuringCompute.show();
+                
             }
+            
         });
 
         //For predefined selector

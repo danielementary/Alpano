@@ -168,6 +168,7 @@ public interface ImagePainter {
 
         hue = ChannelPainter.distance(p)
                             .div(100000)
+                            .sub((float)0.6)
                             .cycle()
                             .mul(1500);
         
