@@ -290,10 +290,18 @@ public class Alpano extends Application{
             if(pUP.parametersProperty().isEqualTo(pCB.parametersProp()).get() && !pCB.getComputeInProg().get()){
                 saveImage(panoPane, primary);
             }else{
-                Alert warning = new Alert(AlertType.WARNING);
-                warning.setHeaderText("");
-                warning.setContentText("Veuillez d'abord calculer le panorama");
-                warning.show();
+                
+                if(!pCB.getComputeInProg().get()){
+                    Alert warning = new Alert(AlertType.WARNING);
+                    warning.setHeaderText("");
+                    warning.setContentText("Veuillez d'abord calculer le panorama");
+                    warning.show();
+                }else{
+                    Alert warning = new Alert(AlertType.WARNING);
+                    warning.setHeaderText("");
+                    warning.setContentText("Un calcul est en cours");
+                    warning.show();
+                }
             }
         });
         
