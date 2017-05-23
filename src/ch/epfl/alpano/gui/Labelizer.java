@@ -141,7 +141,7 @@ public final class Labelizer {
                 double tan = elevationDifference(summit, param)/ distanceObserverSummit;
                 double angle = Math.atan(tan);
                 
-                if (distanceObserverSummit/1000 <= param.maxDistance()
+                if (distanceObserverSummit <= param.maxDistance()
                     && Math.abs(angle) <= param.verticalFieldOfView()/2) {
                     
                     ElevationProfile profile = new ElevationProfile(hgt, 

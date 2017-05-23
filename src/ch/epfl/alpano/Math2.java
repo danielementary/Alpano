@@ -114,17 +114,17 @@ public interface Math2 {
         checkArgument(dX > 0);
         
         double currentMinX = minX;
-        double currentMaxX = minX+dX;
+//        double currentMaxX = minX+dX;
         
-        while (currentMaxX <= maxX) {
+        while (currentMinX + dX <= maxX) {
             if (f.applyAsDouble(currentMinX)
-                    *f.applyAsDouble(currentMaxX) <= 0) {
+                    *f.applyAsDouble(currentMinX + dX) <= 0) {
                 
                 return currentMinX;
             }
             
-            currentMinX = currentMaxX;
-            currentMaxX += dX;
+            
+            currentMinX += dX;
         }
         
         return Double.POSITIVE_INFINITY;
