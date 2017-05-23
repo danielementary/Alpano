@@ -292,15 +292,10 @@ public class Alpano extends Application{
             }else{
                 
                 if(!pCB.getComputeInProg().get()){
-                    Alert warning = new Alert(AlertType.WARNING);
-                    warning.setHeaderText("");
-                    warning.setContentText("Veuillez d'abord calculer le panorama");
-                    warning.show();
+                    showWarning("Veuillez d'abord calculer le panorama");
                 }else{
-                    Alert warning = new Alert(AlertType.WARNING);
-                    warning.setHeaderText("");
-                    warning.setContentText("Un calcul est en cours");
-                    warning.show();
+                    showWarning("Un calcul est en cours");
+                
                 }
             }
         });
@@ -388,8 +383,6 @@ public class Alpano extends Application{
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
-//        paramsGrid.addRow(3, predefinedLab, predefinedBox);
-//        paramsGrid.addRow(4, painterChoiceLabel, painterChoiceBox);
         
         
         paramsGrid.add(painterChoiceLabel, 9, 1);
@@ -497,30 +490,26 @@ public class Alpano extends Application{
     }
     
     private void saveImage(Pane panoPane, Stage stage){
+        Alert successful = new Alert(AlertType.INFORMATION);
+        successful.setHeaderText("");
+        successful.setContentText("Sauvegarde réussie !");
+        
+        try {
         FileChooser fileChooser = new FileChooser();
+
+
         Image img = panoPane.snapshot(null, new WritableImage((int)panoPane.widthProperty().get(),
                 (int)panoPane.heightProperty().get()));
-        
+
+
+
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Images", "*.png");
         
         fileChooser.getExtensionFilters().add(extFilter);
         
         fileChooser.setInitialFileName("monPanorama");
         
-        Alert successful = new Alert(AlertType.INFORMATION);
-        successful.setHeaderText("");
-        successful.setContentText("Sauvegarde réussie !");
         
-        
-        Alert error = new Alert(AlertType.ERROR);
-        error.setContentText("La sauvegarde a échouée ! Vous n'avez probablement pas sélectionné de fichier");
-        error.setHeaderText("");
-        
-        Alert error2 = new Alert(AlertType.ERROR);
-        error2.setContentText("La sauvegarde a échouée. Veuillez réessayer");
-        error2.setHeaderText("Erreur");
-        
-        try {
             
             File file = fileChooser.showSaveDialog(stage);
             
@@ -529,10 +518,13 @@ public class Alpano extends Application{
                     file)){
                 successful.show();
             }
-        } catch (IOException e) {
-            error2.show();
+        }catch (IOException e) {
+            showError("La sauvegarde a échouée. Veuillez réessayer");
         }catch (IllegalArgumentException e){
-            error.show();
+            showError("La sauvegarde a échouée ! Vous n'avez probablement pas sélectionné de fichier");
+        }catch(OutOfMemoryError e){
+            showError("La mémoire disponible est trop faible."
+                + " Veuillez calculer un panorama avec une résolution plus faible.");
         }
     }
     
@@ -558,5 +550,20 @@ public class Alpano extends Application{
         DiscreteElevationModel dDemAll = dDem1234.union(dDem5678);
         
         return new ContinuousElevationModel(dDemAll);
+    }
+
+    
+    private void showError(String str){
+        Alert error = new Alert(AlertType.ERROR);
+        error.setContentText(str);
+        error.setHeaderText("");
+        error.show();
+    }
+    
+    private void showWarning(String str){
+        Alert warning = new Alert(AlertType.WARNING);
+        warning.setContentText(str);
+        warning.setHeaderText("");
+        warning.show();
     }
 }
