@@ -140,14 +140,6 @@ public final class PanoramaComputerBean {
         return labelsList;
     }
 
-    //    /**
-    //     * getter : labelsProperty
-    //     * @return ObservableList<Node>
-    //     */
-    //    public ObservableList<Node> getLabels() {
-    //        return FXCollections.unmodifiableObservableList(labelsList.get());
-    //    }
-
     public ObservableBooleanValue getComputeInProg(){
         return computeInProg;
     }
