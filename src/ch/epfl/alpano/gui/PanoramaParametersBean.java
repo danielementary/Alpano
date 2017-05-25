@@ -154,15 +154,16 @@ public final class PanoramaParametersBean {
     private void synchronizeParameters() {
         
         //create a new PanoramaUserParameters
-        PanoramaUserParameters nPUP = new PanoramaUserParameters(observerLongitudeProperty.get(),
-                                                                 observerLatitudeProperty.get(),
-                                                                 observerElevationProperty.get(),
-                                                                 centerAzimuthProperty.get(),
-                                                                 horizontalFieldOfViewProperty.get(),
-                                                                 maxDistanceProperty.get(),
-                                                                 widthProperty.get(),
-                                                                 heightProperty.get(),
-                                                                 superSamplingExponentProperty.get());
+        PanoramaUserParameters nPUP = 
+                new PanoramaUserParameters(observerLongitudeProperty.get(),
+                                           observerLatitudeProperty.get(),
+                                           observerElevationProperty.get(),
+                                           centerAzimuthProperty.get(),
+                                           horizontalFieldOfViewProperty.get(),
+                                           maxDistanceProperty.get(),
+                                           widthProperty.get(),
+                                           heightProperty.get(),
+                                           superSamplingExponentProperty.get());
         
         parametersProperty.set(nPUP);
         

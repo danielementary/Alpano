@@ -38,8 +38,10 @@ public enum UserParameter {
      */
     public int sanitize(int value) {
         if (value > max) {
+            
             return max;
         } else if (value < min) {
+            
             return min;
         }
         

@@ -60,6 +60,7 @@ public class GazetteerParser {
                 //add the Summit to the list
                 summits.add(summit);
             }
+            
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             throw new IOException();
         }
