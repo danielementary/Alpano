@@ -85,11 +85,8 @@ public final class GeoPoint {
      */
     @Override
     public final String toString() {
-        Locale region = null;
-        
-        String str = String.format(region, "(%.4f,%.4f)",
-                Math.toDegrees(longitude) , Math.toDegrees(latitude));
-        
-        return str;
+        return String.format((Locale)null, "(%.4f,%.4f)",
+                             Math.toDegrees(longitude),
+                             Math.toDegrees(latitude));
     }   
 }

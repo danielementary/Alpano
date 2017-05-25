@@ -22,7 +22,8 @@ public interface Azimuth {
      * @return boolean, true if azimuth is in [0,PI2[, false otherwise
      */
     public static boolean isCanonical(double azimuth) {
-        return (azimuth >= 0 && azimuth < PI2);
+        return azimuth >= 0
+               && azimuth < PI2;
     }
     
     /**
@@ -66,8 +67,8 @@ public interface Azimuth {
      * @return string which represents the cardinal direction corresponding to the azimuth
      */
     public static String toOctantString(double azimuth, 
-                                            String n, String e,
-                                            String s, String w) {
+                                        String n, String e,
+                                        String s, String w) {
         
         checkArgument(isCanonical(azimuth));
         
