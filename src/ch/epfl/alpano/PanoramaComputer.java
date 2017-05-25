@@ -57,9 +57,9 @@ public final class PanoramaComputer {
                                                                           Math.tan(altForYJ));
                 
                double lowerBoundRoot = Math2.firstIntervalContainingRoot(distanceFunction,
-                                                                  x,
-                                                                  parameters.maxDistance(),
-                                                                  step);
+                                                                         x,
+                                                                         parameters.maxDistance(),
+                                                                         step);
                
                 if (lowerBoundRoot < Double.POSITIVE_INFINITY) {
                     x = Math2.improveRoot(distanceFunction,
@@ -71,6 +71,7 @@ public final class PanoramaComputer {
                 }
                 
                 if (x < Double.POSITIVE_INFINITY) {
+                    
                     float distance = (float) (x/(Math.cos(Math.abs(altForYJ))));
                     
                     GeoPoint position = profile.positionAt(x);
@@ -104,11 +105,10 @@ public final class PanoramaComputer {
      */
     public static DoubleUnaryOperator rayToGroundDistance(ElevationProfile profile,
                                                           double ray0, double raySlope) {
-        return x -> {return ray0
-                            + x*raySlope
-                            - profile.elevationAt(x)
-                            + constantDoubleUnOp*Math2.sq(x);
-        };
+        return x -> ray0
+                    + x*raySlope
+                    - profile.elevationAt(x)
+                    + constantDoubleUnOp*Math2.sq(x);
     }
     
     /**

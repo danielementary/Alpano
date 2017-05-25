@@ -127,9 +127,7 @@ public final class Panorama {
     public static final class Builder {
         
         private final PanoramaParameters parameters;
-        
         private final float[] distance, longitude, latitude, elevation, slope;
-
         private boolean flag = false;
         
         /**
@@ -139,7 +137,6 @@ public final class Panorama {
         public Builder(PanoramaParameters parameters) {
          
             this.parameters = requireNonNull(parameters);
-            
             int listsLength = parameters.width()*parameters.height();
             
             distance = new float[listsLength];
@@ -239,7 +236,7 @@ public final class Panorama {
             flag = true;
             
             return new Panorama(parameters, distance, longitude, 
-                                            latitude, elevation, slope);
+                                latitude, elevation, slope);
         }  
         
         private int requireValidIndex(int x, int y) {
