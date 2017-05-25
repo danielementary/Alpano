@@ -20,6 +20,7 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     public CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
         
         if (!(requireNonNull(dem1).extent().isUnionableWith(requireNonNull(dem2).extent()))) {
+            
             throw new IllegalArgumentException();
         } else {
             union = dem1.extent().union(dem2.extent());
