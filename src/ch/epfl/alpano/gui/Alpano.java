@@ -356,7 +356,6 @@ public class Alpano extends Application{
 
         });
         
-        //end of predefined selector
 
         TextField latField = createTextField(stringConverterFixedPoint, 7, pUP.observerLatitudeProperty());
         TextField longField = createTextField(stringConverterFixedPoint, 7, pUP.observerLongitudeProperty());
@@ -490,9 +489,7 @@ public class Alpano extends Application{
     }
     
     private void saveImage(Pane panoPane, Stage stage){
-        Alert successful = new Alert(AlertType.INFORMATION);
-        successful.setHeaderText("");
-        successful.setContentText("Sauvegarde réussie !");
+        
         
         try {
         FileChooser fileChooser = new FileChooser();
@@ -516,7 +513,7 @@ public class Alpano extends Application{
             if(ImageIO.write(SwingFXUtils.fromFXImage(img, null),
                     "png",
                     file)){
-                successful.show();
+                showInfo("Sauvegarde réussie !");
             }
         }catch (IOException e) {
             showError("La sauvegarde a échouée. Veuillez réessayer");
@@ -565,5 +562,12 @@ public class Alpano extends Application{
         warning.setContentText(str);
         warning.setHeaderText("");
         warning.show();
+    }
+    
+    private void showInfo(String str){
+        Alert info = new Alert(AlertType.INFORMATION);
+        info.setHeaderText("");
+        info.setContentText(str);
+        info.show();
     }
 }
