@@ -18,7 +18,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public final class PanoramaParametersBean {
     
     //property for parameters
-    private final ObjectProperty parametersProperty;
+    private final ObjectProperty<PanoramaUserParameters> parametersProperty;
     
     //properties for each modifiable parameter
     private final ObjectProperty<Integer> observerLongitudeProperty,
