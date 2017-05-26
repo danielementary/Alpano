@@ -343,6 +343,7 @@ public class Alpano extends Application{
     }
     
     private final static ContinuousElevationModel loadHGT() {
+        
         DiscreteElevationModel dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
         DiscreteElevationModel dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
         DiscreteElevationModel dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));

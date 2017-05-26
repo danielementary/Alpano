@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.DoubleUnaryOperator;
 
 import ch.epfl.alpano.GeoPoint;
@@ -40,8 +41,8 @@ public final class Labelizer {
     
     Labelizer(ContinuousElevationModel hgt, List<Summit> summits) {
         
-        this.hgt = hgt;
-        this.summits = new ArrayList<>(summits);
+        this.hgt = Objects.requireNonNull(hgt);
+        this.summits = new ArrayList<>(Objects.requireNonNull(summits));
     }
     
     /**
@@ -53,7 +54,7 @@ public final class Labelizer {
      */
     public List<Node> labels(PanoramaParameters param) {
         
-        int width = param.width();
+        int width = Objects.requireNonNull(param).width();
         
         //false if the column is free, true if it is busy
         BitSet column = new BitSet(width);

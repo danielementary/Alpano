@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ShortBuffer;
 import java.nio.channels.FileChannel.MapMode;
+import java.util.Objects;
 
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
@@ -34,7 +35,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
      */
     public HgtDiscreteElevationModel(File file) {
         
-        long l = file.length();
+        long l = Objects.requireNonNull(file).length();
         
         checkArgument(l == FILE_LENGTH);
         
