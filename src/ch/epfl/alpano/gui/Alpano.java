@@ -122,8 +122,9 @@ public class Alpano extends Application{
 
         Scene scene = new Scene(root);
         
-        primaryStage.setMaximized(true);
-
+//        primaryStage.setMaximized(true);
+        primaryStage.setHeight(800);
+        primaryStage.setWidth(1200);
         primaryStage.setTitle("Alpano");
         primaryStage.setScene(scene);
         primaryStage.show();
