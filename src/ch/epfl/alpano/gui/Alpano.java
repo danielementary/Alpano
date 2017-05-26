@@ -56,6 +56,15 @@ import javafx.util.StringConverter;
 
 public class Alpano extends Application{
     
+    private static DiscreteElevationModel dDem1;
+    private static DiscreteElevationModel dDem3;
+    private static DiscreteElevationModel dDem5;
+    private static DiscreteElevationModel dDem7;
+    private static DiscreteElevationModel dDem2;
+    private static DiscreteElevationModel dDem4;
+    private static DiscreteElevationModel dDem6;
+    private static DiscreteElevationModel dDem8;
+
     /**
      * launch the application Alpano
      * @param args
@@ -236,7 +245,7 @@ public class Alpano extends Application{
         mouseInfo.setPrefRowCount(2);
         mouseInfo.textProperty().bind(mouseInfoProp);
         
-        ChoiceBox superSamplingBox = new ChoiceBox<>();
+        ChoiceBox<Integer> superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
 
         StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "2x", "4x");
@@ -344,14 +353,14 @@ public class Alpano extends Application{
     
     private final static ContinuousElevationModel loadHGT() {
         
-        DiscreteElevationModel dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
-        DiscreteElevationModel dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
-        DiscreteElevationModel dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
-        DiscreteElevationModel dDem4 = new HgtDiscreteElevationModel(new File("N45E009.hgt"));
-        DiscreteElevationModel dDem5 = new HgtDiscreteElevationModel(new File("N46E006.hgt"));
-        DiscreteElevationModel dDem6 = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
-        DiscreteElevationModel dDem7 = new HgtDiscreteElevationModel(new File("N46E008.hgt"));
-        DiscreteElevationModel dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"));
+        dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
+        dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
+        dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
+        dDem4 = new HgtDiscreteElevationModel(new File("N45E009.hgt"));
+        dDem5 = new HgtDiscreteElevationModel(new File("N46E006.hgt"));
+        dDem6 = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
+        dDem7 = new HgtDiscreteElevationModel(new File("N46E008.hgt"));
+        dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"));
 
         DiscreteElevationModel dDem12 = dDem1.union(dDem2);
         DiscreteElevationModel dDem34 = dDem3.union(dDem4);
