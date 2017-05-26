@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import ch.epfl.alpano.GeoPoint;
 
@@ -31,9 +32,9 @@ public class GazetteerParser {
      */
     public static List<Summit> readSummitsFrom(File file) throws IOException {
         
-        List<Summit> summits = new ArrayList<Summit>();
+        List<Summit> summits = new ArrayList<>();
         
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(Objects.requireNonNull(file))))) {
             
             String line;
             

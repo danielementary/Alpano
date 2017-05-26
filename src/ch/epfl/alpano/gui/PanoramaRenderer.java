@@ -7,6 +7,8 @@
 
 package ch.epfl.alpano.gui;
 
+import java.util.Objects;
+
 import ch.epfl.alpano.Panorama;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
@@ -22,7 +24,10 @@ public interface PanoramaRenderer {
      */
     public static Image renderPanorama(ImagePainter painter, Panorama pano) {
         
-        int width = pano.parameters().width();
+        if (painter == null)
+            throw new NullPointerException();
+        
+        int width = Objects.requireNonNull(pano).parameters().width();
         int height = pano.parameters().height();
         
         WritableImage img = new WritableImage(width, height);

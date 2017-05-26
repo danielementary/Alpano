@@ -9,6 +9,8 @@ package ch.epfl.alpano.gui;
 
 import static javafx.application.Platform.runLater;
 
+import java.util.Objects;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -37,7 +39,7 @@ public final class PanoramaParametersBean {
     public PanoramaParametersBean(PanoramaUserParameters pUP) {
         
         //parametersProperty does not require a listener because it is not modifiable
-        parametersProperty = new SimpleObjectProperty<>(pUP); 
+        parametersProperty = new SimpleObjectProperty<>(Objects.requireNonNull(pUP)); 
         
         //properties and their listeners
         observerLongitudeProperty = new SimpleObjectProperty<>(pUP.getOberserverLong());
