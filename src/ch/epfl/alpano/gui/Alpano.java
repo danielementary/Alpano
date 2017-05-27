@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.imageio.ImageIO;
+import javax.swing.ProgressMonitorInputStream;
 
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Panorama;
@@ -64,6 +65,7 @@ import javafx.stage.FileChooser;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ProgressIndicator;
 
 public class Alpano extends Application{
     
@@ -200,7 +202,9 @@ public class Alpano extends Application{
         text.setFont(new Font(40));
         text.setTextAlignment(TextAlignment.CENTER);
         
-        computeNotice.getChildren().add(text);
+        ProgressIndicator p = new ProgressIndicator();
+        
+        computeNotice.getChildren().addAll(text, p);
         
         computeNotice.visibleProperty().bind(pCB.getComputeInProg());
         
@@ -217,7 +221,7 @@ public class Alpano extends Application{
         
         Text text = new Text();
         text.setText("Les paramètres du panorama ont changé.\nCliquez ici pour mettre le dessin à jour.");
-        text.setFont(new Font(40));
+        text.setFont(new Font(textSize));
         text.setTextAlignment(TextAlignment.CENTER);
         
         updateNotice.getChildren().add(text);
