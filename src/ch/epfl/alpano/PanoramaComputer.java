@@ -13,6 +13,8 @@ import java.util.function.DoubleUnaryOperator;
 
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 
 public final class PanoramaComputer {
     private final static double step = Math.scalb(1, 6);
@@ -20,6 +22,7 @@ public final class PanoramaComputer {
     private final static double constantDoubleUnOp = ((1-0.13)/(2*Distance.EARTH_RADIUS));
     
     private final ContinuousElevationModel dem;
+    private SimpleObjectProperty<Double> progress;
     
     /**
      * create a instance of panoramaComputer with Continuous elevation model dem
@@ -28,6 +31,7 @@ public final class PanoramaComputer {
      */
     public PanoramaComputer(ContinuousElevationModel dem) {
         this.dem = requireNonNull(dem);
+        progress = new SimpleObjectProperty<>(0.0);
     }
     
     /**
@@ -88,6 +92,9 @@ public final class PanoramaComputer {
                 
                 --j;
             }
+            if(i%50 == 0){
+                progress.set(((double)i)/parameters.width());
+            }
         }
         
         return builder.build();
@@ -115,5 +122,13 @@ public final class PanoramaComputer {
      */
     public static double getStep() {
         return step;
+    }
+    
+    /**
+     * give the progress in property
+     * @return the property containing the progress in a double 0<=d<=1
+     */
+    public ReadOnlyObjectProperty<Double> getProgressProperty(){
+        return progress;
     }
 }

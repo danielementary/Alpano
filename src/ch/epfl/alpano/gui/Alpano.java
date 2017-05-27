@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.imageio.ImageIO;
-import javax.swing.ProgressMonitorInputStream;
 
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Panorama;
@@ -36,6 +35,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
@@ -66,9 +66,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ProgressBar;
 
 public class Alpano extends Application{
     
+    private static DiscreteElevationModel dDem1;
+    private static DiscreteElevationModel dDem3;
+    private static DiscreteElevationModel dDem5;
+    private static DiscreteElevationModel dDem7;
+    private static DiscreteElevationModel dDem2;
+    private static DiscreteElevationModel dDem4;
+    private static DiscreteElevationModel dDem6;
+    private static DiscreteElevationModel dDem8;
+
     /**
      * launch the application Alpano
      * @param args
@@ -124,7 +134,6 @@ public class Alpano extends Application{
 
         Scene scene = new Scene(root);
         
-//        primaryStage.setMaximized(true);
         primaryStage.setHeight(800);
         primaryStage.setWidth(1200);
         primaryStage.setTitle("Alpano");
@@ -202,9 +211,20 @@ public class Alpano extends Application{
         text.setFont(new Font(40));
         text.setTextAlignment(TextAlignment.CENTER);
         
-        ProgressIndicator p = new ProgressIndicator();
+        ProgressBar bar = new ProgressBar();
+        bar.progressProperty().bind(pCB.getProgressProp());
         
-        computeNotice.getChildren().addAll(text, p);
+        GridPane textBar = new GridPane();
+        textBar.addRow(0, text);
+        textBar.addRow(2, bar);
+        
+        GridPane.setHalignment(bar, HPos.CENTER);
+        GridPane.setHalignment(text, HPos.CENTER);
+        textBar.setAlignment(Pos.CENTER);
+        
+        computeNotice.getChildren().add(textBar);
+        
+        computeNotice.setCursor(Cursor.WAIT);
         
         computeNotice.visibleProperty().bind(pCB.getComputeInProg());
         
@@ -315,7 +335,7 @@ public class Alpano extends Application{
         
       //For changing ImagePainter
         Label painterChoiceLabel = new Label("Peintre d'image : ");
-        ChoiceBox painterChoiceBox = new ChoiceBox<>();
+        ChoiceBox<Integer> painterChoiceBox = new ChoiceBox<>();
         painterChoiceBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6);
         StringConverter<Integer> stringPainterChoice = new LabeledListStringConverter("Défaut", "Minimaliste",
                                                                     "Coloré", "Aléatoire", "Petites distances", 
@@ -336,7 +356,7 @@ public class Alpano extends Application{
 
         //For predefined selector
         Label predefinedLab = new Label("Paramètres prédéfinis : ");
-        ChoiceBox predefinedBox = new ChoiceBox<>();
+        ChoiceBox<Integer> predefinedBox = new ChoiceBox<>();
         predefinedBox.getItems().addAll(0,1,2,3,4,5,6,7,8);
         predefinedBox.getSelectionModel().select(1);
 
@@ -377,7 +397,7 @@ public class Alpano extends Application{
         mouseInfo.setPrefRowCount(2);
         mouseInfo.textProperty().bind(mouseInfoProp);
         
-        ChoiceBox superSamplingBox = new ChoiceBox<>();
+        ChoiceBox<Integer> superSamplingBox = new ChoiceBox<>();
         superSamplingBox.getItems().addAll(0,1,2);
 
         StringConverter<Integer> stringConverterSampling = new LabeledListStringConverter("non", "2x", "4x");
@@ -532,14 +552,14 @@ public class Alpano extends Application{
     
     
     private final static ContinuousElevationModel loadHGT() {
-        DiscreteElevationModel dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
-        DiscreteElevationModel dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
-        DiscreteElevationModel dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
-        DiscreteElevationModel dDem4 = new HgtDiscreteElevationModel(new File("N45E009.hgt"));
-        DiscreteElevationModel dDem5 = new HgtDiscreteElevationModel(new File("N46E006.hgt"));
-        DiscreteElevationModel dDem6 = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
-        DiscreteElevationModel dDem7 = new HgtDiscreteElevationModel(new File("N46E008.hgt"));
-        DiscreteElevationModel dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"));
+        dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
+        dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
+        dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
+        dDem4 = new HgtDiscreteElevationModel(new File("N45E009.hgt"));
+        dDem5 = new HgtDiscreteElevationModel(new File("N46E006.hgt"));
+        dDem6 = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
+        dDem7 = new HgtDiscreteElevationModel(new File("N46E008.hgt"));
+        dDem8 = new HgtDiscreteElevationModel(new File("N46E009.hgt"));
 
         DiscreteElevationModel dDem12 = dDem1.union(dDem2);
         DiscreteElevationModel dDem34 = dDem3.union(dDem4);

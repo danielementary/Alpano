@@ -46,6 +46,8 @@ public final class PanoramaComputerBean {
     private ObjectProperty<Integer> choicePainterProp;
     private List<ImagePainter> painterList;
     
+   
+    
 
 
     /***
@@ -144,8 +146,16 @@ public final class PanoramaComputerBean {
         return computeInProg;
     }
     
-    public ObjectProperty getChoicePainterProp(){
+    public ObjectProperty<Integer> getChoicePainterProp(){
         return choicePainterProp;
+    }
+    
+    /**
+     * give the progressProperty of the panoramaComputer
+     * @return progressProperty : double between 0 and 1
+     */
+    public ReadOnlyObjectProperty<Double> getProgressProp(){
+        return panoComp.getProgressProperty();
     }
 
     /**
