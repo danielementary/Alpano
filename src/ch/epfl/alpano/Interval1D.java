@@ -88,8 +88,8 @@ public final class Interval1D {
      * @return boolean true if unionable
      */
     public final boolean isUnionableWith(Interval1D that) {
-        return (this.size()+that.size()-this.sizeOfIntersectionWith(that) 
-                == this.boundingUnion(that).size());
+        return this.size()-this.sizeOfIntersectionWith(that)+that.size()
+               == this.boundingUnion(that).size();
     }
     
     /**
@@ -109,14 +109,10 @@ public final class Interval1D {
      */
     @Override
     public final boolean equals(Object that) {
-        if (that == null || that.getClass() != this.getClass()) {
-            return false;
-        }
-        
-        Interval1D thatInter = (Interval1D)that;
-        
-       return (thatInter.includedFrom() == this.includedFrom() && 
-               thatInter.includedTo() == this.includedTo());
+        return that != null
+               && that.getClass() == this.getClass()
+               && ((Interval1D)that).includedFrom() == this.includedFrom()
+               && ((Interval1D)that).includedTo() == this.includedTo();
     }
     
     /**

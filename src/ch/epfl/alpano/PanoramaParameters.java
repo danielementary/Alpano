@@ -31,11 +31,10 @@ public final class PanoramaParameters {
                               int maxDistance, int width, int height) {
         
         checkArgument(Azimuth.isCanonical(centerAzimuth),
-                                                    "azimuth not canonical");
+                      "azimuth not canonical");
         
-        checkArgument(horizontalFieldOfView > 0
-                                    && horizontalFieldOfView <= Math2.PI2,
-                                    "HFOV not in [0, 2pi]");
+        checkArgument(horizontalFieldOfView > 0 && horizontalFieldOfView <= Math2.PI2,
+                      "HFOV not in [0, 2pi]");
         
         checkArgument(maxDistance > 0, "maxDistance < 0");
         checkArgument(width > 0, "width < 0");

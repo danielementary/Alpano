@@ -7,9 +7,9 @@
 
 package ch.epfl.alpano;
 
-import java.util.Objects;
-
 import static ch.epfl.alpano.Preconditions.checkArgument;
+
+import java.util.Objects;
 
 public final class Interval2D {
     
@@ -54,7 +54,8 @@ public final class Interval2D {
      * @return true if (x,y) is in iX x iY
      */
     public final boolean contains(int x, int y) {
-        return (iX.contains(x) && iY.contains(y));
+        return iX.contains(x)
+               && iY.contains(y);
     }
     
     /**
@@ -62,7 +63,8 @@ public final class Interval2D {
      * @return int size of instance's bidimensional interval
      */
     public final int size() {
-        return iX.size()*iY.size();
+        return iX.size()
+               *iY.size();
     }
     
     /**
@@ -71,10 +73,8 @@ public final class Interval2D {
      * @return int size of intersection between this and that
      */
     public final int sizeOfIntersectionWith(Interval2D that) {
-        int sizeOfIntersectionWithX = iX.sizeOfIntersectionWith(that.iX());
-        int sizeOfIntersectionWithY = iY.sizeOfIntersectionWith(that.iY());
-        
-        return sizeOfIntersectionWithX*sizeOfIntersectionWithY;
+        return iX.sizeOfIntersectionWith(that.iX())
+               *iY.sizeOfIntersectionWith(that.iY());
     }
     
     /**
@@ -85,10 +85,8 @@ public final class Interval2D {
      * with that's intervals
      */
     public final Interval2D boundingUnion(Interval2D that) {
-        Interval1D interval1 = iX.boundingUnion(that.iX());
-        Interval1D interval2 = iY.boundingUnion(that.iY());
-        
-        return new Interval2D(interval1, interval2);
+        return new Interval2D(iX.boundingUnion(that.iX()),
+                              iY.boundingUnion(that.iY()));
     }
     
     /**
@@ -97,8 +95,8 @@ public final class Interval2D {
      * @return boolean true if this and that are unionable, false otherwise
      */
     public final boolean isUnionableWith(Interval2D that) {
-        return (this.size()+that.size()-this.sizeOfIntersectionWith(that)
-                ==this.boundingUnion(that).size());
+        return this.size()-this.sizeOfIntersectionWith(that)+that.size()
+               == this.boundingUnion(that).size();
     }
     
     /**
@@ -111,10 +109,7 @@ public final class Interval2D {
     public final Interval2D union(Interval2D that) {
         checkArgument(this.isUnionableWith(that));
         
-        Interval1D interval1 = iX.union(that.iX());
-        Interval1D interval2 = iY.union(that.iY());
-        
-        return new Interval2D(interval1, interval2);
+        return new Interval2D(iX.union(that.iX()), iY.union(that.iY()));
     }
     
     /**
@@ -122,13 +117,10 @@ public final class Interval2D {
      */
     @Override
     public boolean equals(Object thatO) {
-        if(thatO == null || thatO.getClass() != this.getClass()) {
-            return false;
-        }
-        
-        Interval2D that = (Interval2D)thatO;
-        
-        return ((this.iX().equals(that.iX())) && this.iY().equals(that.iY()));
+        return thatO != null
+               && this.getClass() == thatO.getClass()
+               && this.iX().equals(((Interval2D)thatO).iX())
+               && this.iY().equals(((Interval2D)thatO).iY());
     }
     
     /**

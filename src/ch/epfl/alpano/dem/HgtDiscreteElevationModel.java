@@ -7,15 +7,17 @@
 
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ShortBuffer;
 import java.nio.channels.FileChannel.MapMode;
+import java.util.Objects;
+
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
-
-import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
@@ -33,7 +35,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
      */
     public HgtDiscreteElevationModel(File file) {
         
-        long l = file.length();
+        long l = Objects.requireNonNull(file).length();
         
         checkArgument(l == FILE_LENGTH);
         
@@ -47,6 +49,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         try {
             latitude = Integer.parseInt(name.substring(1, 3));
             longitude = Integer.parseInt(name.substring(4, 7));
+            
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException();
         }
@@ -65,15 +68,17 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         checkArgument(name.substring(7).equals(".hgt"));
         
         try (FileInputStream stream = new FileInputStream(file)) {
+            
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
         } catch(IOException e) {
           throw new IllegalArgumentException();   
         } 
         
         Interval1D longitudeInterval = new Interval1D(longitude * SAMPLES_PER_DEGREE,
-                (longitude+1) * SAMPLES_PER_DEGREE);
+                                                      (longitude+1) * SAMPLES_PER_DEGREE);
+        
         Interval1D latitudeInterval = new Interval1D(latitude * SAMPLES_PER_DEGREE,
-                 (latitude+1) * SAMPLES_PER_DEGREE);
+                                                     (latitude+1) * SAMPLES_PER_DEGREE);
         
         extent = new Interval2D(longitudeInterval, latitudeInterval);
     }
@@ -91,10 +96,10 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     @Override
     public double elevationSample(int x, int y) {
         checkArgument(extent().contains(x, y));
+        
         int nbrLines = (latitude + 1)*SAMPLES_PER_DEGREE - y;
         int nbrColumns = x - (longitude * 3600);
-        int index = nbrLines*(SAMPLES_PER_DEGREE + 1) + nbrColumns;
-         
-        return buffer.get(index);
+        
+        return buffer.get(nbrLines*(SAMPLES_PER_DEGREE + 1) + nbrColumns);
     }
 }

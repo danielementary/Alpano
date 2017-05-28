@@ -7,10 +7,11 @@
 
 package ch.epfl.alpano.summit;
 
-import ch.epfl.alpano.GeoPoint;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Locale;
+
+import ch.epfl.alpano.GeoPoint;
 
 public final class Summit {
     

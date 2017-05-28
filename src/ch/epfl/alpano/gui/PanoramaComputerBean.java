@@ -7,7 +7,6 @@
 
 package ch.epfl.alpano.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,12 +30,14 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 
 public final class PanoramaComputerBean {
-
-    private ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
-    private ObjectProperty<Panorama> panoramaProperty;
-    private ObjectProperty<Image> imageProperty;
-    private ObservableList<Node> labelsList;
-    private ObservableList<Node> labels;
+    
+    private final ObjectProperty<PanoramaUserParameters> panoramaUserParamProperty;
+    private final ObjectProperty<Panorama> panoramaProperty;
+    private final ObjectProperty<Image> imageProperty;
+    
+    private final ObservableList<Node> labelsList;
+    private final ObservableList<Node> labels;
+    
     private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
     private final PanoramaComputer panoComp;
@@ -44,6 +45,8 @@ public final class PanoramaComputerBean {
     private SimpleBooleanProperty computeInProg;
     private ObjectProperty<Integer> choicePainterProp;
     private List<ImagePainter> painterList;
+    
+   
     
 
 
@@ -53,19 +56,19 @@ public final class PanoramaComputerBean {
      * @param summitsList
      */
     public PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summitsList) {
-
-        this.panoramaUserParamProperty = new SimpleObjectProperty<>(null);
+        
+        this.panoramaUserParamProperty = new SimpleObjectProperty<>();
         this.panoramaUserParamProperty.addListener((p, o, n) -> update());
 
         this.computeInProg = new SimpleBooleanProperty(false);
 
         this.panoramaProperty = new SimpleObjectProperty<>(); 
         this.imageProperty = new SimpleObjectProperty<>();
-
+        
         this.labels = FXCollections.observableArrayList();
         this.labelsList = FXCollections.unmodifiableObservableList(labels);
-
-        this.cem = cem;
+        
+        this.cem = Objects.requireNonNull(cem);
         this.summitsList = Objects.requireNonNull(summitsList);
 
         this.panoComp = new PanoramaComputer(cem);
@@ -135,28 +138,28 @@ public final class PanoramaComputerBean {
      * getter : labelsProperty
      * @return ReadOnlyObjectProperty<ObservableList<Node>>
      */
-    public ObservableList<Node> labelsList() {
+    public ObservableList<Node> getLabels() {
         return labelsList;
     }
-
-    //    /**
-    //     * getter : labelsProperty
-    //     * @return ObservableList<Node>
-    //     */
-    //    public ObservableList<Node> getLabels() {
-    //        return FXCollections.unmodifiableObservableList(labelsList.get());
-    //    }
 
     public ObservableBooleanValue getComputeInProg(){
         return computeInProg;
     }
     
-    public ObjectProperty getChoicePainterProp(){
+    public ObjectProperty<Integer> getChoicePainterProp(){
         return choicePainterProp;
+    }
+    
+    /**
+     * give the progressProperty of the panoramaComputer
+     * @return progressProperty : double between 0 and 1
+     */
+    public ReadOnlyObjectProperty<Double> getProgressProp(){
+        return panoComp.getProgressProperty();
     }
 
     /**
-     * 
+     * update the properties
      */
     private void update() {
         computeInProg.set(true);
@@ -190,58 +193,28 @@ public final class PanoramaComputerBean {
     private ImagePainter imgPainter(Panorama p){
         switch(choicePainterProp.get()){
         case 0:
-            return imgPainterDefault(p);
+            return ImagePainter.stdPainter(p);
         case 1:
-            return imgPainterLine(p);
+            return ImagePainter.linePainter(p);
+        case 2:
+            return ImagePainter.colorPainter(p);
+        case 3:
+            return ImagePainter.rndPainter(p);
+        case 4:
+            return ImagePainter.smallPainter(p);
+        case 5:
+            return ImagePainter.verticalPainter(p);
+        case 6:
+            return ImagePainter.chessboardPainter(p);
+        default :
+            return ImagePainter.stdPainter(p);
         }
-        return imgPainterDefault(p);
+        
     }
+    
+    
 
-    /**
-     * 
-     * @param p
-     * @return
-     */
-    private ImagePainter imgPainterDefault(Panorama p){
+   
 
-        ChannelPainter hue, saturation, brightness, opacity;
-
-        hue = ChannelPainter.distance(p)
-                .div(100000)
-                .cycle()
-                .mul(360);
-
-        saturation = ChannelPainter.distance(p)
-                .div(200000)
-                .clamp()
-                .invert();
-
-        brightness = ChannelPainter.slope(p)
-                .mul(2)
-                .div((float) Math.PI)
-                .invert()
-                .mul((float) 0.7)
-                .add((float) 0.3);
-
-        opacity = ChannelPainter.opacity(p);
-
-        return ImagePainter.hsb(hue, saturation, brightness, opacity);
-    }
-
-    private ImagePainter imgPainterLine(Panorama p){
-        ChannelPainter gray =
-                ChannelPainter.maxDistanceToNeighbors(p)
-                .sub(500)
-                .div(4500)
-                .clamp()
-                .invert();
-
-        ChannelPainter distance = p::distanceAt;
-        ChannelPainter opacity =
-                distance.map(d -> d == Float.POSITIVE_INFINITY ? 0 : 1);
-
-        return ImagePainter.gray(gray, opacity);
-
-
-    }
+    
 }

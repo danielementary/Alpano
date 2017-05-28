@@ -47,6 +47,20 @@ public interface ChannelPainter {
 
         return (x,y) -> pano.distanceAt(x, y);
     }
+   
+    
+    
+    /**
+     * return the distance of the pixel(x,y) from the observator
+     * @param pano the panorama in which you want to work
+     * @return a distance
+     */
+    public static ChannelPainter elevation(Panorama pano) {
+
+        return (x,y) -> pano.elevationAt(x, y);
+    }
+    
+    
     
     /**
      * return the slope of the pixel (x,y)
@@ -66,6 +80,18 @@ public interface ChannelPainter {
     public static ChannelPainter opacity(Panorama pano) {
 
         return (x,y) -> (pano.distanceAt(x, y) == Float.POSITIVE_INFINITY) ? 0 : 1;
+    }
+    
+    /**
+     * returns a value corresponding to a chessboard
+     * calculated from longitude and latitude
+     * @param pano
+     * @return
+     */
+    public static ChannelPainter longLat(Panorama pano) {
+        float w = 7500, c1 = (float) 1, c2 = (float) 0.5;
+        
+        return (x,y) -> ((int)Math.floor(pano.longitudeAt(x, y) * w) + (int)Math.floor(pano.latitudeAt(x, y) * w)) % 2 == 0 ? c1 : c2;
     }
     
     /**
@@ -136,6 +162,4 @@ public interface ChannelPainter {
     public default ChannelPainter cycle() {
         return (x,y) -> valueAt(x,y) % 1;
     }
-    
-   
 }

@@ -8,7 +8,6 @@
 package ch.epfl.alpano;
 
 import static ch.epfl.alpano.Preconditions.checkArgument;
-
 import static java.lang.Math.PI;
 import static java.lang.Math.floor;
 import static java.lang.Math.sin;
@@ -43,11 +42,7 @@ public interface Math2 {
      * @return x modulo y
      */
     public static double floorMod(double x, double y) {
-        double quotient = x/y;
-        double floQuotient = floor(quotient);
-        double remainder = x-floQuotient*y;
-        
-        return remainder;
+        return x-floor(x/y)*y;
     }
     
     /**
@@ -90,11 +85,10 @@ public interface Math2 {
      * @return the bilinear interpolation
      */
     public static double bilerp(double z00, double z10, 
-                                double z01, double z11, double x, double y) {
-        double lerp1 = lerp(z00, z10, x);
-        double lerp2 = lerp(z01, z11, x);
- 
-        return lerp(lerp1, lerp2, y);
+                                double z01, double z11,
+                                double x, double y) {
+        
+        return lerp(lerp(z00, z10, x), lerp(z01, z11, x), y);
     }
     
     /**
@@ -107,25 +101,24 @@ public interface Math2 {
      * @return the lower bound of the interval of size dX containing the root
      */
     public static double firstIntervalContainingRoot(DoubleUnaryOperator f, 
-                                         double minX, double maxX, double dX) {
-        
+                                                     double minX,
+                                                     double maxX,
+                                                     double dX) {
+        checkArgument(dX > 0);
         if (f == null) {
             throw new NullPointerException();
         }
-        checkArgument(dX > 0);
         
         double currentMinX = minX;
-        double currentMaxX = minX+dX;
         
-        while (currentMaxX <= maxX) {
+        while (currentMinX + dX <= maxX) {
             if (f.applyAsDouble(currentMinX)
-                    *f.applyAsDouble(currentMaxX) <= 0) {
+                *f.applyAsDouble(currentMinX + dX) <= 0) {
                 
                 return currentMinX;
             }
             
-            currentMinX = currentMaxX;
-            currentMaxX += dX;
+            currentMinX += dX;
         }
         
         return Double.POSITIVE_INFINITY;
@@ -141,7 +134,8 @@ public interface Math2 {
      * or equal to epsilon containing the root
      */
     public static double improveRoot(DoubleUnaryOperator f, 
-                                        double x1, double x2, double epsilon) {
+                                     double x1, double x2,
+                                     double epsilon) {
         
         checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
         
@@ -155,7 +149,9 @@ public interface Math2 {
         double middle = (x1+x2)/2;
         
         while (x2-x1 > epsilon) {
-            if (f.applyAsDouble(middle)*f.applyAsDouble(x1) <= 0) {
+            if (f.applyAsDouble(middle)
+                *f.applyAsDouble(x1) <= 0) {
+                
                 x2 = middle;
             } else {
                 x1 = middle;
