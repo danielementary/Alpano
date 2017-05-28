@@ -10,10 +10,10 @@ package ch.epfl.alpano.gui;
 import static javafx.scene.paint.Color.color;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,19 +32,27 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView ;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -55,18 +63,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import javafx.stage.FileChooser;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.ProgressBar;
 
 public class Alpano extends Application{
     
@@ -105,15 +104,11 @@ public class Alpano extends Application{
         predefined.add(PredefinedPanoramas.LA_ROCHE);
         predefined.add(PredefinedPanoramas.LE_JORDIL);
         
-
-        
-        
         PanoramaParametersBean panoParamBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_DU_JURA);
         PanoramaComputerBean panoCompBean = new PanoramaComputerBean(cem, summitsList);
         
         ObjectProperty<String> mouseInfoProperty = new SimpleObjectProperty<>();
-
-
+        
         ImageView panoView = createImageView(panoParamBean, panoCompBean, mouseInfoProperty);
         Pane labelsPane = createLabelsPane(panoParamBean, panoCompBean);
         
@@ -125,8 +120,8 @@ public class Alpano extends Application{
         
         StackPane panoPane = createPanoPane(panoParamBean, panoCompBean, updateNotice, scrollPane, computeNotice);
 
-        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup, primaryStage,
-                predefined, labelsPane);
+        GridPane paramsGrid = createParamsGrid(panoParamBean, panoCompBean, mouseInfoProperty, panoGroup,
+                                               primaryStage, predefined, labelsPane);
 
         BorderPane root = new BorderPane();
         root.setCenter(panoPane);
