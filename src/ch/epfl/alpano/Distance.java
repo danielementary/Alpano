@@ -20,9 +20,7 @@ public interface Distance {
      * @return radian angle
      */
     public static double toRadians(double distanceInMeters) {
-       double angle = distanceInMeters/EARTH_RADIUS;
-       
-       return angle;
+        return distanceInMeters/EARTH_RADIUS;
     }
     
     /**
@@ -31,8 +29,6 @@ public interface Distance {
      * @return distance in meters
      */
     public static double toMeters(double distanceInRadians) {
-        double distance = distanceInRadians*EARTH_RADIUS;
-        
-        return distance;
+        return distanceInRadians*EARTH_RADIUS;
     }
 }

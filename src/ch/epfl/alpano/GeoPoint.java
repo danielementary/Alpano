@@ -7,9 +7,7 @@
 
 package ch.epfl.alpano;
 
-
 import static ch.epfl.alpano.Preconditions.checkArgument;
-
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
 import static java.lang.Math.atan2;
@@ -59,9 +57,9 @@ public final class GeoPoint {
      * @return the distance between these points in double in meters
      */
     public final double distanceTo(GeoPoint that) {
-        double sqrt = sqrt(Math2.haversin(this.latitude - that.latitude)
-                + cos(this.latitude) * cos(that.latitude) 
-                * Math2.haversin(this.longitude - that.longitude));
+        double sqrt = sqrt(Math2.haversin(this.latitude()-that.latitude())
+                      + cos(this.latitude())*cos(that.latitude()) 
+                      * Math2.haversin(this.longitude()-that.longitude()));
         
         return Distance.toMeters(2*asin(sqrt));
     }
@@ -72,10 +70,10 @@ public final class GeoPoint {
      * @return azimuth in radians
      */
     public final double azimuthTo(GeoPoint that) {
-        double beta = atan2(sin(this.longitude - that.longitude)
-                * cos(that.latitude), cos(this.latitude) 
-                * sin(that.latitude) - sin(this.latitude)
-                * cos(that.latitude) * cos(this.longitude - that.longitude));
+        double beta = atan2(sin(this.longitude()-that.longitude())
+                      * cos(that.latitude()), cos(this.latitude()) 
+                      * sin(that.latitude())-sin(this.latitude())
+                      * cos(that.latitude())*cos(this.longitude()-that.longitude()));
         
         return Azimuth.fromMath(Azimuth.canonicalize(beta));
     }
@@ -86,11 +84,8 @@ public final class GeoPoint {
      */
     @Override
     public final String toString() {
-        Locale region = null;
-        
-        String str = String.format(region, "(%.4f,%.4f)",
-                Math.toDegrees(longitude) , Math.toDegrees(latitude));
-        
-        return str;
+        return String.format((Locale)null, "(%.4f,%.4f)",
+                             Math.toDegrees(longitude),
+                             Math.toDegrees(latitude));
     }   
 }

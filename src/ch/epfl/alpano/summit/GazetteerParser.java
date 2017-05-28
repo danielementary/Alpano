@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import ch.epfl.alpano.GeoPoint;
 
@@ -31,39 +32,26 @@ public class GazetteerParser {
      */
     public static List<Summit> readSummitsFrom(File file) throws IOException {
         
-        List<Summit> summits = new ArrayList<Summit>();
+        List<Summit> summits = new ArrayList<>();
         
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(Objects.requireNonNull(file))))) {
             
             String line;
             
             while ((line = buffer.readLine()) != null) {
                 
-                double longitude;
-                double latitude;
-                
-                //read the differents informations about the summit
-                try{
-                    longitude = angle(line.substring(0, 9).trim());
-                    latitude = angle(line.substring(10, 18).trim());
-                } catch(NumberFormatException e) {
-                    throw new IOException();
-                } catch(StringIndexOutOfBoundsException e) {
-                    throw new IOException();
-                }
-               
-                String name = toSummit(line);
-                
+                double longitude, latitude;
+                String name;
                 int elevation;
                 
-                try{
-                    elevation = Integer.parseInt(line.substring(20,24).trim());
-                } catch(NumberFormatException e) {
-                    throw new IOException();
-                } catch(StringIndexOutOfBoundsException e) {
-                    throw new IOException();
-                }
+                //read the differents informations about the summit
+                longitude = angle(line.substring(0, 9).trim());
+                latitude = angle(line.substring(10, 18).trim());
                 
+                name = toSummit(line);
+                
+                elevation = Integer.parseInt(line.substring(20,24).trim());
+                    
                 //instansiating the GeoPoint corresponding to the coordinates
                 GeoPoint localisation = new GeoPoint(longitude, latitude);
                 
@@ -73,6 +61,9 @@ public class GazetteerParser {
                 //add the Summit to the list
                 summits.add(summit);
             }
+            
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            throw new IOException();
         }
         
         //returns an unmodifiable version of the array of Summits

@@ -7,11 +7,13 @@
 
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
+
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Distance;
 import ch.epfl.alpano.GeoPoint;
@@ -19,14 +21,13 @@ import ch.epfl.alpano.Math2;
 
 public final class ElevationProfile {
     
-    private ContinuousElevationModel elevMod;
-    private GeoPoint origin;
-    private double azimuth, length;
+    private final ContinuousElevationModel elevMod;
+    private final double length;
     
     //distance between points we really calculate the altitude
-    private final int DELTA = 4096;
+    private final static int DELTA = 4096;
     //array for saving calculated points
-    private double[][] points;
+    private final double[][] points;
 
     /**
      * represents an altimetric profile corresponding to a great circle
@@ -35,12 +36,9 @@ public final class ElevationProfile {
      * @param azimuth
      * @param length
      */
-    public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin,
-                                              double azimuth, double length) {
-      
-        if (elevationModel == null) {
-            throw new NullPointerException();
-        }
+    public ElevationProfile(ContinuousElevationModel elevationModel, 
+                            GeoPoint origin,
+                            double azimuth, double length) {
         
         if (origin == null) {
             throw new NullPointerException();
@@ -49,9 +47,7 @@ public final class ElevationProfile {
         checkArgument(Azimuth.isCanonical(azimuth));
         checkArgument(length > 0);
         
-        this.elevMod = elevationModel;
-        this.origin = origin;
-        this.azimuth = azimuth;
+        this.elevMod = requireNonNull(elevationModel);
         this.length = length;
         
         //length of array containing all points
@@ -67,11 +63,11 @@ public final class ElevationProfile {
             double toMathAzimuth = Azimuth.toMath(azimuth);
             
             double pointLatitude = asin((sin(originLatitude) * cos(radianLength))
-                    + (cos(originLatitude) * sin(radianLength) * cos(toMathAzimuth)));
+                                   +(cos(originLatitude) * sin(radianLength) * cos(toMathAzimuth)));
             
             double pointLongitude = Azimuth.canonicalize((originLongitude
-                    -asin((sin(toMathAzimuth)*sin(radianLength))
-                            /cos(pointLatitude))+PI))-PI;
+                                    -asin((sin(toMathAzimuth)*sin(radianLength))
+                                    /cos(pointLatitude))+PI))-PI;
             
             double[] nextArray = new double[] {pointLongitude, pointLatitude};
             

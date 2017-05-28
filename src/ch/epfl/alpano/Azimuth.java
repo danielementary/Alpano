@@ -22,11 +22,8 @@ public interface Azimuth {
      * @return boolean, true if azimuth is in [0,PI2[, false otherwise
      */
     public static boolean isCanonical(double azimuth) {
-        if (azimuth >= 0 && azimuth < PI2) {
-            return true;
-        }
-        
-        return false;
+        return azimuth >= 0
+               && azimuth < PI2;
     }
     
     /**
@@ -46,9 +43,7 @@ public interface Azimuth {
     public static double toMath(double azimuth) {
         checkArgument(isCanonical(azimuth));
         
-        double radianAngle = PI2 - azimuth;
-        
-        return canonicalize(radianAngle);
+        return canonicalize(PI2-azimuth);
     }
     
     /**
@@ -59,9 +54,7 @@ public interface Azimuth {
     public static double fromMath(double radianAngle) {
         checkArgument(isCanonical(radianAngle));
         
-        double azimuth = PI2 - radianAngle;
-        
-        return canonicalize(azimuth);
+        return canonicalize(PI2-radianAngle);
     }
 
     /**
@@ -74,8 +67,8 @@ public interface Azimuth {
      * @return string which represents the cardinal direction corresponding to the azimuth
      */
     public static String toOctantString(double azimuth, 
-                                            String n, String e,
-                                            String s, String w) {
+                                        String n, String e,
+                                        String s, String w) {
         
         checkArgument(isCanonical(azimuth));
         

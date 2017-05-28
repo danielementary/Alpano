@@ -7,6 +7,10 @@
 
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
+import java.util.Objects;
+
 import ch.epfl.alpano.Interval2D;
 
 public interface DiscreteElevationModel extends AutoCloseable {
@@ -43,6 +47,8 @@ public interface DiscreteElevationModel extends AutoCloseable {
      * @return a compositeElevationModel (union of this and that)
      */
     default DiscreteElevationModel union(DiscreteElevationModel that) {
+        checkArgument(this.extent().isUnionableWith(Objects.requireNonNull(that).extent()));
+        
         return new CompositeDiscreteElevationModel(this, that);
     }
 }

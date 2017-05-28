@@ -9,6 +9,7 @@ package ch.epfl.alpano;
 
 import static ch.epfl.alpano.Preconditions.checkArgument;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public final class Interval1D {
@@ -52,7 +53,7 @@ public final class Interval1D {
      * @return size of interval in int
      */
     public final int size() {
-        return includedTo-includedFrom+1;
+        return includedTo()-includedFrom()+1;
     }
     
     /**
@@ -64,13 +65,9 @@ public final class Interval1D {
         int interFrom = Math.max(this.includedFrom(), that.includedFrom());
         int interTo = Math.min(this.includedTo(), that.includedTo());
         
-        if (interTo >= interFrom) {
-            Interval1D intersection = new Interval1D(interFrom, interTo);
-
-            return intersection.size();
-        }
+        int size = interTo-interFrom+1;
         
-        return 0;     
+        return (size > 0) ? size : 0;
     }
     
     /**
@@ -91,10 +88,8 @@ public final class Interval1D {
      * @return boolean true if unionable
      */
     public final boolean isUnionableWith(Interval1D that) {
-        int interFrom = Math.max(this.includedFrom(), that.includedFrom());
-        int interTo = Math.min(this.includedTo(), that.includedTo());
-        
-        return interTo >= interFrom-1;
+        return this.size()-this.sizeOfIntersectionWith(that)+that.size()
+               == this.boundingUnion(that).size();
     }
     
     /**
@@ -104,8 +99,7 @@ public final class Interval1D {
      * @throws IllegalArgumentException
      */
     public final Interval1D union(Interval1D that) {
-        checkArgument(this.isUnionableWith(that),
-                "These 2 Interval1D are not unionable");
+        checkArgument(this.isUnionableWith(that));
         
         return this.boundingUnion(that);
     }
@@ -115,18 +109,10 @@ public final class Interval1D {
      */
     @Override
     public final boolean equals(Object that) {
-        if (that == null || that.getClass() != this.getClass()) {
-            return false;
-        }
-        
-        Interval1D thatInter = (Interval1D)that;
-        
-        if (thatInter.includedFrom() == this.includedFrom() && 
-                thatInter.includedTo() == this.includedTo()) {
-            return true;
-        }
-        
-        return false;
+        return that != null
+               && that.getClass() == this.getClass()
+               && ((Interval1D)that).includedFrom() == this.includedFrom()
+               && ((Interval1D)that).includedTo() == this.includedTo();
     }
     
     /**
@@ -142,14 +128,7 @@ public final class Interval1D {
      */
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        
-        return str.append("[")
-                  .append(this.includedFrom())
-                  .append("..")
-                  .append(this.includedTo())
-                  .append("]")
-                  .toString();
+        return String.format((Locale)null, "[%d..%d]", includedFrom(), includedTo());
     }
     
     /**
