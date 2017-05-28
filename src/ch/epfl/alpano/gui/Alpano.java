@@ -42,7 +42,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -50,6 +49,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView ;
 import javafx.scene.image.WritableImage;
@@ -318,8 +318,7 @@ public class Alpano extends Application {
         });
         
         //For labels visible or not
-        CheckBox labelsVisibleCheck = new CheckBox();
-        Label labelsVisibleLabel = new Label("Afficher les labels : ");
+        ToggleButton labelsVisibleCheck = new ToggleButton("Afficher les labels");
         labelsVisibleCheck.selectedProperty().set(true);
         labelsPane.visibleProperty().bind(labelsVisibleCheck.selectedProperty());
 
@@ -345,6 +344,7 @@ public class Alpano extends Application {
         //For predefined selector
         Label predefinedLab = new Label("Paramètres prédéfinis : ");
         ChoiceBox<Integer> predefinedBox = new ChoiceBox<>();
+        
         predefinedBox.getItems().addAll(0,1,2,3,4,5,6,7,8);
         predefinedBox.getSelectionModel().select(1);
 
@@ -382,6 +382,7 @@ public class Alpano extends Application {
         
         mouseInfo.setEditable(false);
         mouseInfo.setPrefRowCount(2);
+        mouseInfo.setPrefWidth(300);
         mouseInfo.textProperty().bind(mouseInfoProp);
         
         ChoiceBox<Integer> superSamplingBox = new ChoiceBox<>();
@@ -394,16 +395,16 @@ public class Alpano extends Application {
         paramsGrid.addRow(0, latLab, latField, longLab, longField, altLab, altField);
         paramsGrid.addRow(1, azLab, azField, viewAngleLab, viewAngleField, visiLab, visiField);
         paramsGrid.addRow(2, widthLab, widthField, heightLab, heightField, superSamplingLab, superSamplingBox);
-        
-        paramsGrid.add(painterChoiceLabel, 9, 1);
-        paramsGrid.add(painterChoiceBox, 10, 1);
-        paramsGrid.add(predefinedLab, 9, 0);
-        paramsGrid.add(predefinedBox, 10, 0);
-        
-        paramsGrid.add(saveImageButton, 9, 2);
-        paramsGrid.addRow(3, labelsVisibleLabel, labelsVisibleCheck);
-        
         paramsGrid.add(mouseInfo, 7, 0, 1, 4);
+        
+        paramsGrid.add(predefinedLab, 8, 0);
+        paramsGrid.add(painterChoiceLabel, 8, 1);
+        paramsGrid.add(labelsVisibleCheck, 8, 2);
+        
+        paramsGrid.add(predefinedBox, 9, 0);
+        paramsGrid.add(painterChoiceBox, 9, 1);
+        paramsGrid.add(saveImageButton, 9, 2);
+        
         paramsGrid.setAlignment(Pos.CENTER);
         
         //little margin between texts and fields
