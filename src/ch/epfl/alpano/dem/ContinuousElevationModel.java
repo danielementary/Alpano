@@ -20,7 +20,6 @@ import ch.epfl.alpano.GeoPoint;
 public final class ContinuousElevationModel {
     
     private final DiscreteElevationModel dem;
-    
     private final static double D_NORTH_SUD = toMeters(PI2)/(PI2*SAMPLES_PER_RADIAN);
     
     public ContinuousElevationModel(DiscreteElevationModel dem) {

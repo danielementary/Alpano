@@ -12,6 +12,7 @@ import static java.lang.Math.scalb;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.PanoramaParameters;
@@ -32,7 +33,7 @@ public final class PanoramaUserParameters {
      */
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
         
-        parameters.replaceAll((k, v) -> k.sanitize(v));
+        Objects.requireNonNull(parameters).replaceAll((k, v) -> k.sanitize(v));
         
         //height correction
         int maxHeight = ((170*(parameters.get(UserParameter.WIDTH)-1))

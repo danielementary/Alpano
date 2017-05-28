@@ -7,7 +7,6 @@
 
 package ch.epfl.alpano;
 
-
 import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
@@ -85,11 +84,8 @@ public final class GeoPoint {
      */
     @Override
     public final String toString() {
-        Locale region = null;
-        
-        String str = String.format(region, "(%.4f,%.4f)",
-                Math.toDegrees(longitude) , Math.toDegrees(latitude));
-        
-        return str;
+        return String.format((Locale)null, "(%.4f,%.4f)",
+                             Math.toDegrees(longitude),
+                             Math.toDegrees(latitude));
     }   
 }

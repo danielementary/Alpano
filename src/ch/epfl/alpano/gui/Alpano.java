@@ -552,6 +552,7 @@ public class Alpano extends Application{
     
     
     private final static ContinuousElevationModel loadHGT() {
+        
         dDem1 = new HgtDiscreteElevationModel(new File("N45E006.hgt"));
         dDem2 = new HgtDiscreteElevationModel(new File("N45E007.hgt"));
         dDem3 = new HgtDiscreteElevationModel(new File("N45E008.hgt"));
@@ -566,6 +567,7 @@ public class Alpano extends Application{
         DiscreteElevationModel dDem56 = dDem5.union(dDem6);
         DiscreteElevationModel dDem78 = dDem7.union(dDem8);
 
+       
         DiscreteElevationModel dDem1234 = dDem12.union(dDem34);
         DiscreteElevationModel dDem5678 = dDem56.union(dDem78);
 

@@ -68,7 +68,7 @@ public final class PanoramaComputerBean {
         this.labels = FXCollections.observableArrayList();
         this.labelsList = FXCollections.unmodifiableObservableList(labels);
         
-        this.cem = cem;
+        this.cem = Objects.requireNonNull(cem);
         this.summitsList = Objects.requireNonNull(summitsList);
 
         this.panoComp = new PanoramaComputer(cem);

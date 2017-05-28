@@ -21,6 +21,7 @@ public final class LabeledListStringConverter extends StringConverter<Integer> {
      * @param labeledList
      */
     public LabeledListStringConverter(String... labeledList) {
+        
         this.labeledList = Arrays.asList(labeledList);
     }
 

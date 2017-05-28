@@ -35,8 +35,8 @@ public final class FixedPointStringConverter extends StringConverter<Integer> {
     @Override
     public String toString(Integer i) {
         
-        return i == null ? "" :new BigDecimal(i).movePointLeft(dec)
-                                .toPlainString();
+        return i == null ? "" : new BigDecimal(i).movePointLeft(dec)
+                                                 .toPlainString();
     }
 
 }

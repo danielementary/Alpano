@@ -9,6 +9,8 @@ package ch.epfl.alpano.gui;
 
 import static javafx.application.Platform.runLater;
 
+import java.util.Objects;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,7 +18,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public final class PanoramaParametersBean {
     
     //property for parameters
-    private final ObjectProperty parametersProperty;
+    private final ObjectProperty<PanoramaUserParameters> parametersProperty;
     
     //properties for each modifiable parameter
     private final ObjectProperty<Integer> observerLongitudeProperty,
@@ -37,7 +39,7 @@ public final class PanoramaParametersBean {
     public PanoramaParametersBean(PanoramaUserParameters pUP) {
         
         //parametersProperty does not require a listener because it is not modifiable
-        parametersProperty = new SimpleObjectProperty<>(pUP); 
+        parametersProperty = new SimpleObjectProperty<>(Objects.requireNonNull(pUP)); 
         
         //properties and their listeners
         observerLongitudeProperty = new SimpleObjectProperty<>(pUP.getOberserverLong());
@@ -154,15 +156,16 @@ public final class PanoramaParametersBean {
     private void synchronizeParameters() {
         
         //create a new PanoramaUserParameters
-        PanoramaUserParameters nPUP = new PanoramaUserParameters(observerLongitudeProperty.get(),
-                                                                 observerLatitudeProperty.get(),
-                                                                 observerElevationProperty.get(),
-                                                                 centerAzimuthProperty.get(),
-                                                                 horizontalFieldOfViewProperty.get(),
-                                                                 maxDistanceProperty.get(),
-                                                                 widthProperty.get(),
-                                                                 heightProperty.get(),
-                                                                 superSamplingExponentProperty.get());
+        PanoramaUserParameters nPUP = 
+                new PanoramaUserParameters(observerLongitudeProperty.get(),
+                                           observerLatitudeProperty.get(),
+                                           observerElevationProperty.get(),
+                                           centerAzimuthProperty.get(),
+                                           horizontalFieldOfViewProperty.get(),
+                                           maxDistanceProperty.get(),
+                                           widthProperty.get(),
+                                           heightProperty.get(),
+                                           superSamplingExponentProperty.get());
         
         parametersProperty.set(nPUP);
         
