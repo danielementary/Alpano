@@ -382,7 +382,7 @@ public class Alpano extends Application {
         
         mouseInfo.setEditable(false);
         mouseInfo.setPrefRowCount(2);
-        mouseInfo.setPrefWidth(300);
+        mouseInfo.setPrefWidth(300); 
         mouseInfo.textProperty().bind(mouseInfoProp);
         
         ChoiceBox<Integer> superSamplingBox = new ChoiceBox<>();
@@ -523,10 +523,9 @@ public class Alpano extends Application {
         } catch (IOException e) {
             showError("La sauvegarde a échouée. Veuillez réessayer");
         } catch (IllegalArgumentException e) {
-            showError("La sauvegarde a échouée ! Vous n'avez probablement pas sélectionné de fichier");
-        } catch(OutOfMemoryError e) {
-            showError("La mémoire disponible est trop faible."
-                      +" Veuillez calculer un panorama avec une résolution plus faible.");
+            showError("La sauvegarde a échouée !\n"
+                    + "Causes possibles : \n- l'image est trop grande (veuillez réessayer avec une résolution plus faible)"
+                    + "\n- vous n'avez pas sélectionné de fichier");
         }
     }
     
