@@ -210,12 +210,11 @@ public class Alpano extends Application {
         
         ProgressBar bar = new ProgressBar();
         bar.progressProperty().bind(pCB.getProgressProp());
-        
         bar.setStyle("-fx-accent: salmon;");
         
         GridPane textBar = new GridPane();
         textBar.addRow(0, text);
-        textBar.addRow(2, bar);
+        textBar.addRow(1, bar);
         
         GridPane.setHalignment(bar, HPos.CENTER);
         GridPane.setHalignment(text, HPos.CENTER);
