@@ -28,8 +28,8 @@ public final class GeoPoint {
      * @param latitude in radians
      */
     public GeoPoint(double longitude, double latitude) {
-        checkArgument(longitude <= PI && longitude >= -PI);
-        checkArgument(latitude <= PI/2 && latitude >= -PI/2);
+//        checkArgument(longitude <= PI && longitude >= -PI);
+//        checkArgument(latitude <= PI/2 && latitude >= -PI/2);
         
         this.latitude = latitude;
         this.longitude = longitude;

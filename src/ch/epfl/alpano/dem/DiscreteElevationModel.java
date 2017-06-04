@@ -47,7 +47,7 @@ public interface DiscreteElevationModel extends AutoCloseable {
      * @return a compositeElevationModel (union of this and that)
      */
     default DiscreteElevationModel union(DiscreteElevationModel that) {
-        checkArgument(this.extent().isUnionableWith(Objects.requireNonNull(that).extent()));
+//        checkArgument(this.extent().isUnionableWith(Objects.requireNonNull(that).extent()));
         
         return new CompositeDiscreteElevationModel(this, that);
     }

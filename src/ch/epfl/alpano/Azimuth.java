@@ -41,7 +41,7 @@ public interface Azimuth {
      * @return radian angle equivalent to azimuth
      */
     public static double toMath(double azimuth) {
-        checkArgument(isCanonical(azimuth));
+//        checkArgument(isCanonical(azimuth));
         
         return canonicalize(PI2-azimuth);
     }
@@ -52,7 +52,7 @@ public interface Azimuth {
      * @return azimuth equivalent to radian angle
      */
     public static double fromMath(double radianAngle) {
-        checkArgument(isCanonical(radianAngle));
+//        checkArgument(isCanonical(radianAngle));
         
         return canonicalize(PI2-radianAngle);
     }
@@ -70,7 +70,7 @@ public interface Azimuth {
                                         String n, String e,
                                         String s, String w) {
         
-        checkArgument(isCanonical(azimuth));
+//        checkArgument(isCanonical(azimuth));
         
         StringBuilder cardDir = new StringBuilder();
         

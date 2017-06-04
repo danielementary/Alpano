@@ -137,7 +137,7 @@ public interface Math2 {
                                      double x1, double x2,
                                      double epsilon) {
         
-        checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
+//        checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
         
         if (x1 > x2) {
             double temp = x1;

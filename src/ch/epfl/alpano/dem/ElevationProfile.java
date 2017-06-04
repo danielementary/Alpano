@@ -44,8 +44,8 @@ public final class ElevationProfile {
             throw new NullPointerException();
         }
         
-        checkArgument(Azimuth.isCanonical(azimuth));
-        checkArgument(length > 0);
+//        checkArgument(Azimuth.isCanonical(azimuth));
+//        checkArgument(length > 0);
         
         this.elevMod = requireNonNull(elevationModel);
         this.length = length;
@@ -81,7 +81,7 @@ public final class ElevationProfile {
      * @return the elevation as a double
      */
     public double elevationAt(double x) {
-        checkArgument(x <= length && x >= 0);
+//        checkArgument(x <= length && x >= 0);
         
         GeoPoint point = positionAt(x);
         
@@ -94,7 +94,7 @@ public final class ElevationProfile {
      * @return corresponding GeoPoint
      */
     public GeoPoint positionAt(double x) {
-        checkArgument(x <= length && x >= 0);
+//        checkArgument(x <= length && x >= 0);
         
         double[] lowerBound;
         double[] upperBound;
@@ -123,7 +123,7 @@ public final class ElevationProfile {
      * @return the slope as a double
      */
     public double slopeAt(double x) {
-        checkArgument(x <= length && x >= 0);
+//        checkArgument(x <= length && x >= 0);
         
         GeoPoint point = positionAt(x);
         

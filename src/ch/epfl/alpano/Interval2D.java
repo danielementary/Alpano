@@ -107,7 +107,7 @@ public final class Interval2D {
      * of bidimensional interval this and that
      */
     public final Interval2D union(Interval2D that) {
-        checkArgument(this.isUnionableWith(that));
+//        checkArgument(this.isUnionableWith(that));
         
         return new Interval2D(iX.union(that.iX()), iY.union(that.iY()));
     }

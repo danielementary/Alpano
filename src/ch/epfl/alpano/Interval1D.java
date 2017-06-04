@@ -26,7 +26,7 @@ public final class Interval1D {
      * @param includedTo upper bound included
      */
     public Interval1D(int includedFrom, int includedTo) {
-        checkArgument(includedTo >= includedFrom);
+//        checkArgument(includedTo >= includedFrom);
         
         this.includedFrom = includedFrom;
         this.includedTo = includedTo;
@@ -99,7 +99,7 @@ public final class Interval1D {
      * @throws IllegalArgumentException
      */
     public final Interval1D union(Interval1D that) {
-        checkArgument(this.isUnionableWith(that));
+//        checkArgument(this.isUnionableWith(that));
         
         return this.boundingUnion(that);
     }
