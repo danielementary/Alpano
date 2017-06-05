@@ -39,7 +39,7 @@ public final class PanoramaParametersBean {
     public PanoramaParametersBean(PanoramaUserParameters pUP) {
         
         //parametersProperty does not require a listener because it is not modifiable
-        parametersProperty = new SimpleObjectProperty<>(Objects.requireNonNull(pUP)); 
+        parametersProperty = new SimpleObjectProperty<>(pUP); 
         
         //properties and their listeners
         observerLongitudeProperty = new SimpleObjectProperty<>(pUP.getOberserverLong());

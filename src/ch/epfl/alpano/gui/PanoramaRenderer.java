@@ -24,10 +24,7 @@ public interface PanoramaRenderer {
      */
     public static Image renderPanorama(ImagePainter painter, Panorama pano) {
         
-        if (painter == null)
-            throw new NullPointerException();
-        
-        int width = Objects.requireNonNull(pano).parameters().width();
+        int width = pano.parameters().width();
         int height = pano.parameters().height();
         
         WritableImage img = new WritableImage(width, height);

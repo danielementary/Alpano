@@ -34,7 +34,7 @@ public class GazetteerParser {
         
         List<Summit> summits = new ArrayList<>();
         
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(Objects.requireNonNull(file))))) {
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             
             String line;
             

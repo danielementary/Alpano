@@ -38,18 +38,12 @@ public final class PanoramaComputerBean {
     private final ObservableList<Node> labelsList;
     private final ObservableList<Node> labels;
     
-    private final ContinuousElevationModel cem; 
     private final List<Summit> summitsList;
     private final PanoramaComputer panoComp;
     private final Labelizer labelizer;
     private SimpleBooleanProperty computeInProg;
     private ObjectProperty<Integer> choicePainterProp;
-    private List<ImagePainter> painterList;
     
-   
-    
-
-
     /***
      * constructs an instance of drawed panorama parameters
      * @param cem
@@ -68,8 +62,7 @@ public final class PanoramaComputerBean {
         this.labels = FXCollections.observableArrayList();
         this.labelsList = FXCollections.unmodifiableObservableList(labels);
         
-        this.cem = Objects.requireNonNull(cem);
-        this.summitsList = Objects.requireNonNull(summitsList);
+        this.summitsList = summitsList;
 
         this.panoComp = new PanoramaComputer(cem);
         this.labelizer = new Labelizer(cem, this.summitsList);
@@ -208,13 +201,6 @@ public final class PanoramaComputerBean {
             return ImagePainter.chessboardPainter(p);
         default :
             return ImagePainter.stdPainter(p);
-        }
-        
+        }   
     }
-    
-    
-
-   
-
-    
 }

@@ -82,7 +82,5 @@ public interface PredefinedPanoramas {
     public static final PanoramaUserParameters LE_JORDIL 
                         = new PanoramaUserParameters(68844, 465664, 870, 180, 60,
                                                      MAIN_MAX_DIST, MAIN_WIDTH,
-                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);
-
-                        
+                                                     MAIN_HEIGHT, MAIN_SUPER_SAMP);                        
 }

@@ -33,7 +33,7 @@ public final class PanoramaUserParameters {
      */
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
         
-        Objects.requireNonNull(parameters).replaceAll((k, v) -> k.sanitize(v));
+        parameters.replaceAll((k, v) -> k.sanitize(v));
         
         //height correction
         int maxHeight = ((170*(parameters.get(UserParameter.WIDTH)-1))

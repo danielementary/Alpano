@@ -41,8 +41,8 @@ public final class Labelizer {
     
     Labelizer(ContinuousElevationModel hgt, List<Summit> summits) {
         
-        this.hgt = Objects.requireNonNull(hgt);
-        this.summits = new ArrayList<>(Objects.requireNonNull(summits));
+        this.hgt = hgt;
+        this.summits = new ArrayList<>(summits);
     }
     
     /**
@@ -54,7 +54,7 @@ public final class Labelizer {
      */
     public List<Node> labels(PanoramaParameters param) {
         
-        int width = Objects.requireNonNull(param).width();
+        int width = param.width();
         
         //false if the column is free, true if it is busy
         BitSet column = new BitSet(width);
