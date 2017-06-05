@@ -7,8 +7,6 @@
 
 package ch.epfl.alpano;
 
-import static ch.epfl.alpano.Preconditions.checkArgument;
-
 import java.util.Locale;
 import java.util.Objects;
 
@@ -99,8 +97,6 @@ public final class Interval1D {
      * @throws IllegalArgumentException
      */
     public final Interval1D union(Interval1D that) {
-//        checkArgument(this.isUnionableWith(that));
-        
         return this.boundingUnion(that);
     }
     

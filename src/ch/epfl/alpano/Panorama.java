@@ -7,8 +7,6 @@
 
 package ch.epfl.alpano;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
 
 public final class Panorama {
@@ -136,7 +134,7 @@ public final class Panorama {
          */
         public Builder(PanoramaParameters parameters) {
          
-            this.parameters = requireNonNull(parameters);
+            this.parameters = parameters;
             int listsLength = parameters.width()*parameters.height();
             
             distance = new float[listsLength];

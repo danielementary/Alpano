@@ -7,9 +7,6 @@
 
 package ch.epfl.alpano;
 
-import static ch.epfl.alpano.Preconditions.checkArgument;
-import static java.util.Objects.requireNonNull;
-
 public final class PanoramaParameters {
     
     private final GeoPoint observerPosition;
@@ -30,17 +27,7 @@ public final class PanoramaParameters {
                               double centerAzimuth, double horizontalFieldOfView,
                               int maxDistance, int width, int height) {
         
-//        checkArgument(Azimuth.isCanonical(centerAzimuth),
-//                      "azimuth not canonical");
-//        
-//        checkArgument(horizontalFieldOfView > 0 && horizontalFieldOfView <= Math2.PI2,
-//                      "HFOV not in [0, 2pi]");
-//        
-//        checkArgument(maxDistance > 0, "maxDistance < 0");
-//        checkArgument(width > 0, "width < 0");
-//        checkArgument(height > 0, "height < 0");
-        
-        this.observerPosition = requireNonNull(observerPosition);
+        this.observerPosition = observerPosition;
         this.observerElevation = observerElevation;
         this.centerAzimuth = centerAzimuth;
         this.horizontalFieldOfView = horizontalFieldOfView;
@@ -115,7 +102,6 @@ public final class PanoramaParameters {
      * @return the azimuth
      */
     public double azimuthForX(double x) {
-//        checkArgument(x >= 0 && x < width());
         
         double aziPerUnit = horizontalFieldOfView()/(width()-1);
         
@@ -130,11 +116,6 @@ public final class PanoramaParameters {
         
         double az = Azimuth.canonicalize(a);
         double hFOVOverT = horizontalFieldOfView()/2;
-        
-//        checkArgument(Math.abs(Math2.angularDistance(az, centerAzimuth))
-//                      <= Math.abs(Math2.angularDistance(centerAzimuth, 
-//                      centerAzimuth-hFOVOverT))); 
-        
         double uniPerAzimuth = (width-1)/horizontalFieldOfView;
         double angle = (centerAzimuth-hFOVOverT);
         
@@ -147,8 +128,6 @@ public final class PanoramaParameters {
      * @return the elevation
      */
     public double altitudeForY(double y) {
-//        checkArgument(y >= 0 && y < height);
-        
         double aziPerUnits = verticalFieldOfView()/(height-1);
 
         return verticalFieldOfView()/2 -y*aziPerUnits;  
@@ -161,9 +140,6 @@ public final class PanoramaParameters {
     public double yForAltitude(double a) {
         
         double vFOVOverT = verticalFieldOfView()/2;
-        
-//        checkArgument(a >= (-1)*vFOVOverT && a <= vFOVOverT);
-        
         double unitsPerAzi = (height-1)/verticalFieldOfView();
         
         return (vFOVOverT-a)*unitsPerAzi;        
@@ -188,9 +164,6 @@ public final class PanoramaParameters {
      */
     //visibility by defaut -> only in the package
     int linearSampleIndex(int x, int y) {
-        
-//        checkArgument(isValidSampleIndex(x,y));
-        
         return y*width + x;
     }
 }

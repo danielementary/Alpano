@@ -10,7 +10,6 @@ package ch.epfl.alpano;
 import static ch.epfl.alpano.Math2.PI2;
 import static ch.epfl.alpano.Math2.PI_OVER8;
 import static ch.epfl.alpano.Math2.floorMod;
-import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.PI;
 
 
@@ -41,8 +40,6 @@ public interface Azimuth {
      * @return radian angle equivalent to azimuth
      */
     public static double toMath(double azimuth) {
-//        checkArgument(isCanonical(azimuth));
-        
         return canonicalize(PI2-azimuth);
     }
     
@@ -52,8 +49,6 @@ public interface Azimuth {
      * @return azimuth equivalent to radian angle
      */
     public static double fromMath(double radianAngle) {
-//        checkArgument(isCanonical(radianAngle));
-        
         return canonicalize(PI2-radianAngle);
     }
 
@@ -69,8 +64,6 @@ public interface Azimuth {
     public static String toOctantString(double azimuth, 
                                         String n, String e,
                                         String s, String w) {
-        
-//        checkArgument(isCanonical(azimuth));
         
         StringBuilder cardDir = new StringBuilder();
         

@@ -7,7 +7,6 @@
 
 package ch.epfl.alpano;
 
-import static java.util.Objects.requireNonNull;
 
 import java.util.function.DoubleUnaryOperator;
 
@@ -30,7 +29,7 @@ public final class PanoramaComputer {
      * @param dem Continuous elevation model
      */
     public PanoramaComputer(ContinuousElevationModel dem) {
-        this.dem = requireNonNull(dem);
+        this.dem = dem;
         progress = new SimpleObjectProperty<>(0.0);
     }
 

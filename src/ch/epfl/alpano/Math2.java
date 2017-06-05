@@ -7,7 +7,6 @@
 
 package ch.epfl.alpano;
 
-import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.PI;
 import static java.lang.Math.floor;
 import static java.lang.Math.sin;
@@ -104,11 +103,6 @@ public interface Math2 {
                                                      double minX,
                                                      double maxX,
                                                      double dX) {
-        checkArgument(dX > 0);
-        if (f == null) {
-            throw new NullPointerException();
-        }
-        
         double currentMinX = minX;
         
         while (currentMinX + dX <= maxX) {
@@ -136,8 +130,6 @@ public interface Math2 {
     public static double improveRoot(DoubleUnaryOperator f, 
                                      double x1, double x2,
                                      double epsilon) {
-        
-//        checkArgument(f.applyAsDouble(x1)*f.applyAsDouble(x2) <= 0);
         
         if (x1 > x2) {
             double temp = x1;
