@@ -13,8 +13,6 @@ import static ch.epfl.alpano.Math2.bilerp;
 import static ch.epfl.alpano.Math2.sq;
 import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_RADIAN;
 
-import java.util.Objects;
-
 import ch.epfl.alpano.GeoPoint;
 
 public final class ContinuousElevationModel {
@@ -23,7 +21,7 @@ public final class ContinuousElevationModel {
     private final static double D_NORTH_SUD = toMeters(PI2)/(PI2*SAMPLES_PER_RADIAN);
     
     public ContinuousElevationModel(DiscreteElevationModel dem) {
-        this.dem = Objects.requireNonNull(dem);
+        this.dem = dem;
     }
     
     /**

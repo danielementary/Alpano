@@ -7,9 +7,6 @@
 
 package ch.epfl.alpano.dem;
 
-import static ch.epfl.alpano.Preconditions.checkArgument;
-import static java.util.Objects.requireNonNull;
-
 import ch.epfl.alpano.Interval2D;
 
 final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
@@ -19,7 +16,7 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     
     public CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
         
-        if (!(requireNonNull(dem1).extent().isUnionableWith(requireNonNull(dem2).extent()))) {
+        if (!(dem1.extent().isUnionableWith(dem2.extent()))) {
             
             throw new IllegalArgumentException();
         } else {
@@ -44,9 +41,6 @@ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     @Override
     public double elevationSample(int x, int y) {
         Interval2D inter1 = dem1.extent();
-        Interval2D inter2 = dem2.extent();
-        
-        checkArgument(inter1.contains(x, y) || inter2.contains(x, y));
         
         if (inter1.contains(x, y)) {
             return dem1.elevationSample(x, y);

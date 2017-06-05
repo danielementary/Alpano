@@ -7,12 +7,10 @@
 
 package ch.epfl.alpano.dem;
 
-import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static java.util.Objects.requireNonNull;
 
 import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.Distance;
@@ -22,7 +20,6 @@ import ch.epfl.alpano.Math2;
 public final class ElevationProfile {
     
     private final ContinuousElevationModel elevMod;
-    private final double length;
     
     //distance between points we really calculate the altitude
     private final static int DELTA = 4096;
@@ -40,15 +37,7 @@ public final class ElevationProfile {
                             GeoPoint origin,
                             double azimuth, double length) {
         
-        if (origin == null) {
-            throw new NullPointerException();
-        }
-        
-//        checkArgument(Azimuth.isCanonical(azimuth));
-//        checkArgument(length > 0);
-        
-        this.elevMod = requireNonNull(elevationModel);
-        this.length = length;
+        this.elevMod = elevationModel;
         
         //length of array containing all points
         int positionLength = (int)Math.ceil(length/DELTA);
@@ -81,8 +70,6 @@ public final class ElevationProfile {
      * @return the elevation as a double
      */
     public double elevationAt(double x) {
-//        checkArgument(x <= length && x >= 0);
-        
         GeoPoint point = positionAt(x);
         
         return elevMod.elevationAt(point);
@@ -94,8 +81,6 @@ public final class ElevationProfile {
      * @return corresponding GeoPoint
      */
     public GeoPoint positionAt(double x) {
-//        checkArgument(x <= length && x >= 0);
-        
         double[] lowerBound;
         double[] upperBound;
         
@@ -123,8 +108,6 @@ public final class ElevationProfile {
      * @return the slope as a double
      */
     public double slopeAt(double x) {
-//        checkArgument(x <= length && x >= 0);
-        
         GeoPoint point = positionAt(x);
         
         return elevMod.slopeAt(point);
