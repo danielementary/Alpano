@@ -99,7 +99,6 @@ public final class PanoramaComputer {
                 progress.set(((double)i)/parameters.width());
             }
         }
-        
         return builder.build();
     }
 
